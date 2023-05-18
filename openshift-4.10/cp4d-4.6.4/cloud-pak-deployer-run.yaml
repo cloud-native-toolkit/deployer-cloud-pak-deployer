@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: cloud-pak-deployer-run
+spec:
+  pipelineRef:
+    name: cloud-pak-deployer
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+  params:
+    - name: namespace
+      value: "cloud-pak-deployer"
+    - name: storage-class
+      value: "ocs-storagecluster-cephfs"
+    - name: ocp-client-version
+      value: "4.10"
