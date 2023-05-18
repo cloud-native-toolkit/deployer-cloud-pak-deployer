@@ -1,4 +1,4 @@
-# deployer-cp4d
+# deployer-cloud-pak-deployer
 
 Tektoncd pipeline to deploy initial Cloud Pak Deployer setup for IBM TechZone Deployer (experimental)
 
