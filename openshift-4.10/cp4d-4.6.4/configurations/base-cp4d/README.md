@@ -1,4 +1,4 @@
-# deployer-cp4d
+# base-cp4d
 
 Tektoncd pipeline to deploy base CP4D foundational services and control plane via Cloud Pak Deployer for IBM TechZone Deployer (experimental)
 
