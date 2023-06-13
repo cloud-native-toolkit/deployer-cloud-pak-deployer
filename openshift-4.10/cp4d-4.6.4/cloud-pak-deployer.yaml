@@ -159,9 +159,9 @@ spec:
       description: variable determining if voice gateway will be installed
       default: "removed"
     - name: voice-gateway-replicas
-      type: number
+      type: string
       description: variable determining number of voice gateway replicas
-      default: 1
+      default: "1"
     - name: watson-assistant-state
       type: string
       description: variable determining if watson assistant will be installed
@@ -251,9 +251,9 @@ spec:
       description: variable determining wml accelerator size
       default: "small"
     - name: wml-accelerator-replicas
-      type: number
+      type: string
       description: variable determining number of wml accelerator replicas
-      default: 1
+      default: "1"
     - name: wsl-state
       type: string
       description: variable determining if wsl will be installed
@@ -409,6 +409,8 @@ spec:
                 $(tasks.get-ibm-entitlement-key.results.secret-value)
             EOF
     - name: configure-cloud-paks-services
+      runAfter:
+        - set-entitlement-key
       taskRef:
         kind: Task
         name: ibm-pak
