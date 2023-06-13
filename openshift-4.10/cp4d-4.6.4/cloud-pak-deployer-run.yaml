@@ -21,3 +21,5 @@ spec:
       value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version
       value: "4.10"
+    - name: cp4d-version
+      value: "4.6.4"
