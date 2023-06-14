@@ -15,11 +15,17 @@ spec:
             requests:
               storage: 1Gi
   params:
+    # - name: namespace
+    #   value: "cloud-pak-deployer"
     - name: namespace
-      value: "cloud-pak-deployer"
+      value:
+        required: "true"
+        value: "cloud-pak-deployer"
     - name: storage-class
       value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version
       value: "4.10"
     - name: cp4d-version
       value: "4.6.4"
+    - name: ibm-entitlement-key
+      value: "test"

@@ -6,9 +6,20 @@ metadata:
 spec:
   params:
     - name: namespace
-      type: string
+      type: object
       description: Namespace for Cloud Pak Deployer deployment
-      default: "cloud-pak-deployer"
+      properties:
+        required:
+          type: string
+        value:
+          type: string
+      default:
+        value: "cloud-pak-deployer"
+        required: "true"
+    # - name: namespace
+    #   type: string
+    #   description: Namespace for Cloud Pak Deployer deployment
+    #   default: "cloud-pak-deployer"
     - name: storage-class
       type: string
       description: RWX storage class needed for cp4d
@@ -21,6 +32,10 @@ spec:
       type: string
       description: Cloud Pak for Data version
       default: "4.6.4"
+    - name: ibm-entitlement-key
+      type: string
+      description: The IBM entitlement key with permissions for pulling cp4d images
+      default: "false"
 
     - name: analyticsengine-state
       type: string
@@ -262,7 +277,6 @@ spec:
       type: string
       description: variable determining if ws pipelines will be installed
       default: "removed"
-
   tasks:
     - name: add-namespace
       taskRef:
@@ -278,7 +292,7 @@ spec:
             kind: Namespace
             metadata:
               creationTimestamp: null
-              name: $(params.namespace)
+              name: $(params.namespace.value)
             EOF
     - name: add-sa
       taskRef:
@@ -296,7 +310,7 @@ spec:
             kind: ServiceAccount
             metadata:
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             EOF
     - name: add-sa-permissions
       taskRef:
@@ -314,7 +328,7 @@ spec:
             kind: RoleBinding
             metadata:
               name: system:openshift:scc:privileged
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             roleRef:
               apiGroup: rbac.authorization.k8s.io
               kind: ClusterRole
@@ -322,7 +336,7 @@ spec:
             subjects:
             - kind: ServiceAccount
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             EOF
     - name: bind-sa-permissions
       taskRef:
@@ -347,7 +361,7 @@ spec:
             subjects:
             - kind: ServiceAccount
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             EOF
     - name: create-pvc
       taskRef:
@@ -365,7 +379,7 @@ spec:
             kind: PersistentVolumeClaim
             metadata:
               name: cloud-pak-deployer-status
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             spec:
               accessModes:
               - ReadWriteMany
@@ -375,6 +389,10 @@ spec:
                   storage: 10Gi
             EOF
     - name: get-ibm-entitlement-key
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: in
+          values: ["false"]
       params:
         - name: KEY_ID
           value: 968d7819-f2c5-7b67-c420-3c6bfd51521e
@@ -386,7 +404,7 @@ spec:
         name: ibmcloud-secrets-manager-get
       runAfter:
         - create-pvc
-    - name: set-entitlement-key
+    - name: set-retrieved-entitlement-key
       taskRef:
         kind: Task
         name: ibm-pak
@@ -402,15 +420,15 @@ spec:
             kind: Secret
             metadata:
               name: cloud-pak-entitlement-key
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             type: Opaque
             stringData:
               cp-entitlement-key: |
                 $(tasks.get-ibm-entitlement-key.results.secret-value)
             EOF
-    - name: configure-cloud-paks-services
+    - name: configure-cloud-paks-services-1
       runAfter:
-        - set-entitlement-key
+        - set-retrieved-entitlement-key
       taskRef:
         kind: Task
         name: ibm-pak
@@ -424,7 +442,7 @@ spec:
             kind: ConfigMap
             metadata:
               name: cloud-pak-deployer-config
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             data:
               cpd-config.yaml: |
                 global_config:
@@ -585,24 +603,24 @@ spec:
                   - name: ws-pipelines
                     state: $(params.ws-pipelines-state)
             EOF
-    - name: delete-previous-job
+    - name: delete-previous-job-1
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
-        - configure-cloud-paks-services
+        - configure-cloud-paks-services-1
       params:
         - name: VERSION
           value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
-            oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
-    - name: run-the-deployer
+            oc delete job cloud-pak-deployer -n $(params.namespace.value) --ignore-not-found
+    - name: run-the-deployer-1
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
-        - delete-previous-job
+        - delete-previous-job-1
       params:
         - name: VERSION
           value: $(params.ocp-client-version)
@@ -615,7 +633,7 @@ spec:
               labels:
                 app: cloud-pak-deployer
               name: cloud-pak-deployer
-              namespace: $(params.namespace)
+              namespace: $(params.namespace.value)
             spec:
               parallelism: 1
               completions: 1
@@ -662,3 +680,327 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
+    - name: wait-till-job-complete-1
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - run-the-deployer-1
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            while true
+            do
+              is_complete=$(oc get -n $(params.namespace.value) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              if [[ $is_complete != "true" ]]; then
+                echo "Waiting for job to be Complete."
+              else
+                echo "Cloud Pak Deployer job is Complete."
+                break
+              fi
+              sleep 10
+            done
+    - name: set-provided-entitlement-key
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: notin
+          values: ["false"]
+      runAfter:
+        - create-pvc
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: cloud-pak-entitlement-key
+              namespace: $(params.namespace.value)
+            type: Opaque
+            stringData:
+              cp-entitlement-key: |
+                $(params.ibm-entitlement-key)
+            EOF
+    - name: configure-cloud-paks-services-2
+      runAfter:
+        - set-provided-entitlement-key
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: v1
+            kind: ConfigMap
+            metadata:
+              name: cloud-pak-deployer-config
+              namespace: $(params.namespace.value)
+            data:
+              cpd-config.yaml: |
+                global_config:
+                  environment_name: demo
+                  cloud_platform: existing-ocp
+                  confirm_destroy: False
+
+                openshift:
+                - name: cpd-demo
+                  ocp_version: '$(params.ocp-client-version)'
+                  cluster_name: cpd-demo
+                  domain_name: example.com
+                  openshift_storage:
+                  - storage_name: auto-storage
+                    storage_type: ocs
+
+                cp4d:
+                - project: cpd
+                  openshift_cluster_name: cpd-demo
+                  cp4d_version: $(params.cp4d-version) 
+                  sequential_install: True
+                  accept_licenses: True
+                  cartridges:
+                  - name: cp-foundation
+                    license_service:
+                      state: disabled
+                      threads_per_core: 2
+                  - name: lite
+
+                  - name: analyticsengine 
+                    size: $(params.analyticsengine-size) 
+                    state: $(params.analyticsengine-state)
+
+                  - name: bigsql
+                    state: $(params.bigsql-state)
+
+                  - name: ca
+                    size: $(params.ca-size)
+                    instances:
+                    - name: $(params.ca-instance)
+                      metastore_ref: ca-metastore
+                    state: $(params.ca-state)
+
+                  - name: cde
+                    state: $(params.cde-state)
+
+                  - name: datagate
+                    state: $(params.datagate-state)
+
+                  - name: datastage-ent-plus
+                    state: $(params.datastage-ent-plus-state)
+
+                  - name: db2
+                    size: $(params.db2-size)
+                    instances:
+                    - name: ca-metastore
+                      metadata_size_gb: 20
+                      data_size_gb: 20
+                      backup_size_gb: 20  
+                      transactionlog_size_gb: 20
+                    state: $(params.db2-state)
+
+                  - name: db2wh
+                    state: $(params.db2wh-state)
+
+                  - name: dmc
+                    state: $(params.dmc-state)
+
+                  - name: dods
+                    size: $(params.dods-size)
+                    state: $(params.dods-state)
+
+                  - name: dp
+                    size: $(params.dp-size)
+                    state: $(params.dp-state)
+
+                  - name: dv
+                    size: $(params.dv-size)
+                    instances:
+                    - name: $(params.dv-instance)
+                    state: $(params.dv-state)
+
+                  - name: factsheet
+                    size: $(params.factsheet-size)
+                    state: $(params.factsheet-state)
+
+                  - name: hadoop
+                    size: $(params.hadoop-size)
+                    state: $(params.hadoop-state)
+
+                  - name: mdm
+                    size: $(params.mdm-size)
+                    wkc_enabled: $(params.mdm-wkc-enabled)
+                    state: $(params.mdm-state)
+
+                  - name: openpages
+                    state: $(params.openpages-state)
+                    instances:
+                    - name: $(params.openpages-instance)
+                      size: $(params.openpages-size)
+
+                  - name: planning-analytics
+                    state: $(params.planning-analytics-state)
+
+                  - name: rstudio
+                    size: $(params.rstudio-size)
+                    state: $(params.rstudio-state)
+
+                  - name: spss
+                    state: $(params.spss-state)
+
+                  - name: voice-gateway
+                    replicas: $(params.voice-gateway-replicas)
+                    state: $(params.voice-gateway-state)
+
+                  - name: watson-assistant
+                    size: $(params.watson-assistant-size)
+                    state: $(params.watson-assistant-state)
+
+                  - name: watson-discovery
+                    state: $(params.watson-discovery-state)
+
+                  - name: watson-ks
+                    size: $(params.watson-ks-size)
+                    state: $(params.watson-ks-state)
+
+                  - name: watson-openscale
+                    size: $(params.watson-openscale-size)
+                    state: $(params.watson-openscale-state)
+
+                  - name: watson-speech
+                    stt_size: $(params.watson-speech-stt-size)
+                    tts_size: $(params.watson-speech-tts-size)
+                    state: $(params.watson-speech-state)
+
+                  - name: wkc
+                    size: $(params.wkc-size)
+                    state: $(params.wkc-state)
+                    installation_options:
+                      install_wkc_core_only: $(params.wkc-options-core-only)
+                      enableKnowledgeGraph: $(params.wkc-options-knowledge-graph)
+                      enableDataQuality: $(params.wkc-options-enable-data-quality)
+                      enableFactSheet: $(params.wkc-options-enable-fact-sheet)
+                      enableMANTA: $(params.wkc-options-enable-manta)
+
+                  - name: wml
+                    size: $(params.wml-size)
+                    state: $(params.wml-state)
+
+                  - name: wml-accelerator
+                    replicas: $(params.wml-accelerator-replicas)
+                    size: $(params.wml-accelerator-size)
+                    state: $(params.wml-accelerator-state)
+
+                  - name: wsl
+                    state: $(params.wsl-state)
+
+                  - name: ws-pipelines
+                    state: $(params.ws-pipelines-state)
+            EOF
+    - name: delete-previous-job-2
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - configure-cloud-paks-services-2
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            oc delete job cloud-pak-deployer -n $(params.namespace.value) --ignore-not-found
+    - name: run-the-deployer-2
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - delete-previous-job-2
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: batch/v1
+            kind: Job
+            metadata:
+              labels:
+                app: cloud-pak-deployer
+              name: cloud-pak-deployer
+              namespace: $(params.namespace.value)
+            spec:
+              parallelism: 1
+              completions: 1
+              backoffLimit: 0
+              template:
+                metadata:
+                  name: cloud-pak-deployer
+                  labels:
+                    app: cloud-pak-deployer
+                spec:
+                  containers:
+                  - name: cloud-pak-deployer
+                    image: quay.io/cloud-pak-deployer/cloud-pak-deployer:latest
+                    imagePullPolicy: Always
+                    terminationMessagePath: /dev/termination-log
+                    terminationMessagePolicy: File
+                    env:
+                    - name: CONFIG_DIR
+                      value: /Data/cpd-config
+                    - name: STATUS_DIR
+                      value: /Data/cpd-status
+                    - name: CP_ENTITLEMENT_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          key: cp-entitlement-key
+                          name: cloud-pak-entitlement-key
+                    volumeMounts:
+                    - name: config-volume
+                      mountPath: /Data/cpd-config/config
+                    - name: status-volume
+                      mountPath: /Data/cpd-status
+                    command: ["/bin/sh","-xc"]
+                    args: 
+                      - /cloud-pak-deployer/cp-deploy.sh env apply -v
+                  restartPolicy: Never
+                  securityContext:
+                    runAsUser: 0
+                  serviceAccountName: cloud-pak-deployer-sa
+                  volumes:
+                  - name: config-volume
+                    configMap:
+                      name: cloud-pak-deployer-config
+                  - name: status-volume
+                    persistentVolumeClaim:
+                      claimName: cloud-pak-deployer-status
+            EOF
+    - name: wait-till-job-complete-2
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - run-the-deployer-2
+      params:
+        - name: VERSION
+          value: $(params.ocp-client-version)
+        - name: SCRIPT
+          value: |
+            while true
+            do
+              is_complete=$(oc get -n $(params.namespace.value) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              if [[ $is_complete != "true" ]]; then
+                echo "Waiting for job to be Complete."
+              else
+                echo "Cloud Pak Deployer job is Complete."
+                break
+              fi
+              sleep 10
+            done
