@@ -15,12 +15,8 @@ spec:
             requests:
               storage: 1Gi
   params:
-    # - name: namespace
-    #   value: "cloud-pak-deployer"
     - name: namespace
-      value:
-        required: "true"
-        value: "cloud-pak-deployer"
+      value: "cloud-pak-deployer"
     - name: storage-class
       value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version

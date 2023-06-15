@@ -3,23 +3,14 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: cloud-pak-deployer
+  annotations:
+
 spec:
   params:
     - name: namespace
-      type: object
+      type: string
       description: Namespace for Cloud Pak Deployer deployment
-      properties:
-        required:
-          type: string
-        value:
-          type: string
-      default:
-        value: "cloud-pak-deployer"
-        required: "true"
-    # - name: namespace
-    #   type: string
-    #   description: Namespace for Cloud Pak Deployer deployment
-    #   default: "cloud-pak-deployer"
+      default: "cloud-pak-deployer"
     - name: storage-class
       type: string
       description: RWX storage class needed for cp4d
@@ -394,6 +385,10 @@ spec:
           operator: in
           values: ["false"]
       params:
+        # This defaults to false, but if a value is passed in then the task
+        # returns the passed in value
+        # - name: RETURN_VALUE
+        #   value: $(params.ibm-entitlement-key)
         - name: KEY_ID
           value: 968d7819-f2c5-7b67-c420-3c6bfd51521e
         - name: SECRETS_MANAGER_ENDPOINT_URL
