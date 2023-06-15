@@ -24,4 +24,4 @@ spec:
     - name: cp4d-version
       value: "4.6.4"
     - name: ibm-entitlement-key
-      value: "test"
+      value: "false"
