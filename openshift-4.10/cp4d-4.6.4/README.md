@@ -7,7 +7,7 @@ Tektoncd pipeline to deploy initial Cloud Pak Deployer setup for IBM TechZone De
 - Openshift Cluster with OpenShift Pipelines 1.8 installed
 - OpenShift Pipelines
 - OpenShift Data Foundation
-- IBM Entitlement key or access to Techzone IBM Secrets Manager
+- IBM Entitlement key passed in as a parameter or access to Techzone IBM Secrets Manager
 
 ## Tasks
 
@@ -18,4 +18,4 @@ Currently uses modified openshift-client and ibmcloud-secrets-manager-get
 ###
 
 oc apply -f cloud-pak-deployer.yaml to install install tasks and pipeline  
-oc create -f cloud-pak-deployer-run.yaml to kick off pipeline
+oc create -f cloud-pak-deployer-run.yaml to kick off pipeline with base cp4d configuration

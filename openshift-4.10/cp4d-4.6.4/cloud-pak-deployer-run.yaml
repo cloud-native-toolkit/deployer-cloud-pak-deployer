@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   name: cloud-pak-deployer-run
 spec:
+  timeout: 6h0m0s
   pipelineRef:
     name: cloud-pak-deployer
   workspaces:
@@ -21,3 +22,7 @@ spec:
       value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version
       value: "4.10"
+    - name: cp4d-version
+      value: "4.6.4"
+    - name: ibm-entitlement-key
+      value: "false"
