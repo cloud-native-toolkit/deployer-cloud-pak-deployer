@@ -4,7 +4,6 @@ kind: Pipeline
 metadata:
   name: cloud-pak-deployer
   annotations:
-
 spec:
   params:
     - name: namespace
@@ -30,23 +29,60 @@ spec:
 
     - name: analyticsengine-state
       type: string
-      description: variable determining if analyticsengine will be installed
+      description: |
+        variable determining if analytics engine will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: analyticsengine-size
       type: string
-      description: variable determining analyticsengine size
+      description: |
+        variable determining analytics engine size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: bigsql-state
       type: string
-      description: variable determining if bigsql will be installed
+      description: |
+        variable determining if bigsql will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: ca-state
       type: string
-      description: variable determining if ca will be installed
+      description: |
+        variable determining if ca will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: ca-size
       type: string
-      description: variable determining ca size
+      description: |
+        variable determining ca size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: ca-instance
       type: string
@@ -54,63 +90,173 @@ spec:
       default: "ca-instance"
     - name: cde-state
       type: string
-      description: variable determining if cde will be installed
+      description: |
+        variable determining if cde will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: datagate-state
       type: string
-      description: variable determining if datagate will be installed
+      description: |
+        variable determining if datagate will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: datastage-ent-plus-state
       type: string
-      description: variable determining if datastage enterprise plus will be installed
+      description: |
+        variable determining if datastage enterprise plus will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: db2-state
       type: string
-      description: variable determining if db2 will be installed
+      description: |
+        variable determining if db2 will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: db2-size
       type: string
-      description: variable determining db2 size
+      description: |
+        variable determining db2 size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: db2wh-state
       type: string
-      description: variable determining if db2wh will be installed
+      description: |
+        variable determining if db2wh will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: dmc-state
       type: string
-      description: variable determining if dmc will be installed
+      description: |
+        variable determining if dmc will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: dods-state
       type: string
-      description: variable determining if dods will be installed
+      description: |
+        variable determining if dods will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: dods-size
       type: string
-      description: variable determining dods size
+      description: |
+        variable determining dods size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: dp-state
       type: string
-      description: variable determining if dp will be installed
+      description: |
+        variable determining if dp will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: dp-size
       type: string
-      description: variable determining dp size
+      description: |
+        variable determining dp size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: factsheet-state
       type: string
-      description: variable determining if factsheet will be installed
+      description: |
+        variable determining if factsheet will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: factsheet-size
       type: string
-      description: variable determining factsheet size
+      description: |
+        variable determining factsheet size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: dv-state
       type: string
-      description: variable determining if dv will be installed
+      description: |
+        variable determining if dv will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: dv-size
       type: string
-      description: variable determining dv size
+      description: |
+        variable determining dv size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: dv-instance
       type: string
@@ -118,31 +264,84 @@ spec:
       default: "data-virtualization"
     - name: hadoop-state
       type: string
-      description: variable determining if hadoop will be installed
+      description: |
+        variable determining if hadoop will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: hadoop-size
       type: string
-      description: variable determining hadoop size
+      description: |
+        variable determining hadoop size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: mdm-state
       type: string
-      description: variable determining if mdm will be installed
+      description: |
+        variable determining if mdm will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: mdm-size
       type: string
-      description: variable determining mdm size
+      description: |
+        variable determining mdm size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: mdm-wkc-enabled
       type: string
-      description: variable determining if wkc is enabled for mdm
+      description: |
+        variable determining if wkc is enabled for mdm
+        {
+          "options": [
+            {"text": "True","value": "true", "default": "true"}
+            {"text": "False","value": "false"}
+          ]
+        }
       default: "true"
     - name: openpages-state
       type: string
-      description: variable determining if openpages will be installed
+      description: |
+        variable determining if openpages will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: openpages-size
       type: string
-      description: variable determining openpages size
+      description: |
+        variable determining openpages size
+        {
+          "options": [
+            {"text": "Extra Small","value": "xsmall", "default": "true"}
+            {"text": "Small","value": "small"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "xsmall"
     - name: openpages-instance
       type: string
@@ -150,19 +349,48 @@ spec:
       default: "openpages-instance"
     - name: rstudio-state
       type: string
-      description: variable determining if rstudio will be installed
+      description: |
+        variable determining if rstudio will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: rstudio-size
       type: string
-      description: variable determining rstudio size
+      description: |
+        variable determining rstudio size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: spss-state
       type: string
-      description: variable determining if spss will be installed
+      description: |
+        variable determining if spss will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: voice-gateway-state
       type: string
-      description: variable determining if voice gateway will be installed
+      description: |
+        variable determining if voice gateway will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: voice-gateway-replicas
       type: string
@@ -170,91 +398,255 @@ spec:
       default: "1"
     - name: watson-assistant-state
       type: string
-      description: variable determining if watson assistant will be installed
+      description: |
+        variable determining if watson assistant will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: watson-assistant-size
       type: string
-      description: variable determining watson assistant size
+      description: |
+        variable determining watson assistant size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: watson-discovery-state
       type: string
-      description: variable determining if watson discovery will be installed
+      description: |
+        variable determining if watson discovery will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: watson-ks-state
       type: string
-      description: variable determining if watson ks will be installed
+      description: |
+        variable determining if watson ks will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: watson-ks-size
       type: string
-      description: variable determining watson ks size
+      description: |
+        variable determining watson ks size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: watson-openscale-state
       type: string
-      description: variable determining if watson openscale will be installed
+      description: |
+        variable determining if watson openscale will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: watson-openscale-size
       type: string
-      description: variable determining watson openscale size
+      description: |
+        variable determining watson openscale size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: watson-speech-state
       type: string
-      description: variable determining if watson speech will be installed
+      description: |
+        variable determining if watson speech will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: watson-speech-stt-size
       type: string
-      description: variable determining watson speech stt size
+      description: |
+        variable determining watson speech stt size
+        {
+          "options": [
+            {"text": "Extra Small","value": "xsmall", "default": "true"}
+            {"text": "Small","value": "small"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "xsmall"
     - name: watson-speech-tts-size
       type: string
-      description: variable determining watson speech tts size
+      description: |
+        variable determining watson speech tts size
+        {
+          "options": [
+            {"text": "Extra Small","value": "xsmall", "default": "true"}
+            {"text": "Small","value": "small"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "xsmall"
     - name: wkc-size
       type: string
-      description: size of wkc configuration
+      description: |
+        size of wkc configuration
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: wkc-state
       type: string
-      description: variable determining if wkc will be installed
+      description: |
+        variable determining if wkc will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: wkc-options-core-only
       type: string
-      description: install option for wkc to install core only
+      description: |
+        install option for wkc to install core only
+        {
+          "options": [
+            {"text": "True","value": "True", "default": "true"}
+            {"text": "False","value": "False"}
+          ]
+        }
       default: "True"
     - name: wkc-options-knowledge-graph
       type: string
-      description: install option for wkc to install knowledge graph
+      description: |
+        install option for wkc to install knowledge graph
+        {
+          "options": [
+            {"text": "False","value": "False", "default": "true"}
+            {"text": "True","value": "True"}
+          ]
+        }
       default: "False"
     - name: wkc-options-enable-data-quality
       type: string
-      description: install option for wkc to enable data quality
+      description: |
+        install option for wkc to enable data quality
+        {
+          "options": [
+            {"text": "False","value": "False", "default": "true"}
+            {"text": "True","value": "True"}
+          ]
+        }
       default: "False"
     - name: wkc-options-enable-fact-sheet
       type: string
-      description: install option for wkc to enable fact sheet
+      description: |
+        install option for wkc to enable fact sheet
+        {
+          "options": [
+            {"text": "False","value": "False", "default": "true"}
+            {"text": "True","value": "True"}
+          ]
+        }
       default: "False"
     - name: wkc-options-enable-manta
       type: string
-      description: install option for wkc to enable manta
+      description: |
+        install option for wkc to enable manta
+        {
+          "options": [
+            {"text": "False","value": "False", "default": "true"}
+            {"text": "True","value": "True"}
+          ]
+        }
       default: "False"
     - name: planning-analytics-state
       type: string
-      description: variable determining if planning analytics will be installed
+      description: |
+        variable determining if planning analytics will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: wml-state
       type: string
-      description: variable determining if wml will be installed
+      description: |
+        variable determining if wml will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: wml-size
       type: string
-      description: variable determining wml size
+      description: |
+        variable determining wml size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: wml-accelerator-state
       type: string
-      description: variable determining if wml accelerator will be installed
+      description: |
+        variable determining if wml accelerator will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: wml-accelerator-size
       type: string
-      description: variable determining wml accelerator size
+      description: |
+        variable determining wml accelerator size
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"}
+            {"text": "Medium","value": "medium"}
+            {"text": "Large","value": "large"}
+          ]
+        }
       default: "small"
     - name: wml-accelerator-replicas
       type: string
@@ -262,11 +654,25 @@ spec:
       default: "1"
     - name: wsl-state
       type: string
-      description: variable determining if wsl will be installed
+      description: |
+        variable determining if wsl will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed"}
+          ]
+        }
       default: "removed"
     - name: ws-pipelines-state
       type: string
-      description: variable determining if ws pipelines will be installed
+      description: |
+        variable determining if ws pipelines will be installed
+        {
+          "options": [
+            {"text": "False","value": "removed", "default": "true"}
+            {"text": "True","value": "installed" }
+          ]
+        }
       default: "removed"
   tasks:
     - name: add-namespace
@@ -385,10 +791,6 @@ spec:
           operator: in
           values: ["false"]
       params:
-        # This defaults to false, but if a value is passed in then the task
-        # returns the passed in value
-        # - name: RETURN_VALUE
-        #   value: $(params.ibm-entitlement-key)
         - name: KEY_ID
           value: 968d7819-f2c5-7b67-c420-3c6bfd51521e
         - name: SECRETS_MANAGER_ENDPOINT_URL
@@ -676,6 +1078,7 @@ spec:
                       claimName: cloud-pak-deployer-status
             EOF
     - name: wait-till-job-complete-1
+      timeout: 6h0m0s
       taskRef:
         kind: Task
         name: ibm-pak
@@ -978,6 +1381,7 @@ spec:
                       claimName: cloud-pak-deployer-status
             EOF
     - name: wait-till-job-complete-2
+      timeout: 6h0m0s
       taskRef:
         kind: Task
         name: ibm-pak
