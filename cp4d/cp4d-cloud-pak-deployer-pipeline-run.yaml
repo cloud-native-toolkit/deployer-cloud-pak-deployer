@@ -6,15 +6,6 @@ spec:
   timeout: 6h0m0s
   pipelineRef:
     name: cloud-pak-deployer
-  workspaces:
-    - name: shared-workspace
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
   params:
     - name: namespace
       value: "cloud-pak-deployer"
