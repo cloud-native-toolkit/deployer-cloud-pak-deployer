@@ -680,8 +680,8 @@ spec:
         kind: Task
         name: ibm-pak
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -689,7 +689,7 @@ spec:
             kind: Namespace
             metadata:
               creationTimestamp: null
-              name: $(params.namespace.value)
+              name: $(params.namespace)
             EOF
     - name: add-sa
       taskRef:
@@ -698,8 +698,8 @@ spec:
       runAfter:
         - add-namespace
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -707,7 +707,7 @@ spec:
             kind: ServiceAccount
             metadata:
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             EOF
     - name: add-sa-permissions
       taskRef:
@@ -716,8 +716,8 @@ spec:
       runAfter:
         - add-sa
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -725,7 +725,7 @@ spec:
             kind: RoleBinding
             metadata:
               name: system:openshift:scc:privileged
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             roleRef:
               apiGroup: rbac.authorization.k8s.io
               kind: ClusterRole
@@ -733,7 +733,7 @@ spec:
             subjects:
             - kind: ServiceAccount
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             EOF
     - name: bind-sa-permissions
       taskRef:
@@ -742,8 +742,8 @@ spec:
       runAfter:
         - add-sa-permissions
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -758,7 +758,7 @@ spec:
             subjects:
             - kind: ServiceAccount
               name: cloud-pak-deployer-sa
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             EOF
     - name: create-pvc
       taskRef:
@@ -767,8 +767,8 @@ spec:
       runAfter:
         - bind-sa-permissions
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -776,7 +776,7 @@ spec:
             kind: PersistentVolumeClaim
             metadata:
               name: cloud-pak-deployer-status
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             spec:
               accessModes:
               - ReadWriteMany
@@ -808,8 +808,8 @@ spec:
       runAfter:
         - get-ibm-entitlement-key
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -817,7 +817,7 @@ spec:
             kind: Secret
             metadata:
               name: cloud-pak-entitlement-key
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             type: Opaque
             stringData:
               cp-entitlement-key: |
@@ -830,8 +830,8 @@ spec:
         kind: Task
         name: ibm-pak
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -839,7 +839,7 @@ spec:
             kind: ConfigMap
             metadata:
               name: cloud-pak-deployer-config
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             data:
               cpd-config.yaml: |
                 global_config:
@@ -1007,11 +1007,11 @@ spec:
       runAfter:
         - configure-cloud-paks-services-1
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
-            oc delete job cloud-pak-deployer -n $(params.namespace.value) --ignore-not-found
+            oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
     - name: run-the-deployer-1
       taskRef:
         kind: Task
@@ -1019,8 +1019,8 @@ spec:
       runAfter:
         - delete-previous-job-1
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1030,7 +1030,7 @@ spec:
               labels:
                 app: cloud-pak-deployer
               name: cloud-pak-deployer
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             spec:
               parallelism: 1
               completions: 1
@@ -1085,13 +1085,13 @@ spec:
       runAfter:
         - run-the-deployer-1
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             while true
             do
-              is_complete=$(oc get -n $(params.namespace.value) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
               if [[ $is_complete != "true" ]]; then
                 echo "Waiting for job to be Complete."
               else
@@ -1111,8 +1111,8 @@ spec:
       runAfter:
         - create-pvc
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1120,7 +1120,7 @@ spec:
             kind: Secret
             metadata:
               name: cloud-pak-entitlement-key
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             type: Opaque
             stringData:
               cp-entitlement-key: |
@@ -1129,12 +1129,16 @@ spec:
     - name: configure-cloud-paks-services-2
       runAfter:
         - set-provided-entitlement-key
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: notin
+          values: ["false"]
       taskRef:
         kind: Task
         name: ibm-pak
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1142,7 +1146,7 @@ spec:
             kind: ConfigMap
             metadata:
               name: cloud-pak-deployer-config
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             data:
               cpd-config.yaml: |
                 global_config:
@@ -1304,26 +1308,34 @@ spec:
                     state: $(params.ws-pipelines-state)
             EOF
     - name: delete-previous-job-2
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: notin
+          values: ["false"]
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
         - configure-cloud-paks-services-2
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
-            oc delete job cloud-pak-deployer -n $(params.namespace.value) --ignore-not-found
+            oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
     - name: run-the-deployer-2
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: notin
+          values: ["false"]
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
         - delete-previous-job-2
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1333,7 +1345,7 @@ spec:
               labels:
                 app: cloud-pak-deployer
               name: cloud-pak-deployer
-              namespace: $(params.namespace.value)
+              namespace: $(params.namespace)
             spec:
               parallelism: 1
               completions: 1
@@ -1381,6 +1393,10 @@ spec:
                       claimName: cloud-pak-deployer-status
             EOF
     - name: wait-till-job-complete-2
+      when:
+        - input: "$(params.ibm-entitlement-key)"
+          operator: notin
+          values: ["false"]
       timeout: 6h0m0s
       taskRef:
         kind: Task
@@ -1388,13 +1404,13 @@ spec:
       runAfter:
         - run-the-deployer-2
       params:
-        - name: VERSION
-          value: $(params.ocp-client-version)
+        # - name: VERSION
+        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             while true
             do
-              is_complete=$(oc get -n $(params.namespace.value) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
               if [[ $is_complete != "true" ]]; then
                 echo "Waiting for job to be Complete."
               else
