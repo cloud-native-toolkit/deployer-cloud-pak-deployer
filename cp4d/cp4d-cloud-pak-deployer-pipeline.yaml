@@ -33,7 +33,7 @@ spec:
         variable determining if analytics engine will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -44,8 +44,8 @@ spec:
         variable determining analytics engine size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -56,7 +56,7 @@ spec:
         variable determining if bigsql will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -67,7 +67,7 @@ spec:
         variable determining if ca will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -78,8 +78,8 @@ spec:
         variable determining ca size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -94,7 +94,7 @@ spec:
         variable determining if cde will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -105,7 +105,7 @@ spec:
         variable determining if datagate will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -116,7 +116,7 @@ spec:
         variable determining if datastage enterprise plus will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -127,7 +127,7 @@ spec:
         variable determining if db2 will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -138,8 +138,8 @@ spec:
         variable determining db2 size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -150,7 +150,7 @@ spec:
         variable determining if db2wh will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -161,7 +161,7 @@ spec:
         variable determining if dmc will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -172,7 +172,7 @@ spec:
         variable determining if dods will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -183,8 +183,8 @@ spec:
         variable determining dods size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -195,7 +195,7 @@ spec:
         variable determining if dp will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -206,8 +206,8 @@ spec:
         variable determining dp size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -218,7 +218,7 @@ spec:
         variable determining if factsheet will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -229,8 +229,8 @@ spec:
         variable determining factsheet size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -241,7 +241,7 @@ spec:
         variable determining if dv will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -252,8 +252,8 @@ spec:
         variable determining dv size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -268,7 +268,7 @@ spec:
         variable determining if hadoop will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -279,8 +279,8 @@ spec:
         variable determining hadoop size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -291,7 +291,7 @@ spec:
         variable determining if mdm will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -302,8 +302,8 @@ spec:
         variable determining mdm size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -314,7 +314,7 @@ spec:
         variable determining if wkc is enabled for mdm
         {
           "options": [
-            {"text": "True","value": "true", "default": "true"}
+            {"text": "True","value": "true", "default": "true"},
             {"text": "False","value": "false"}
           ]
         }
@@ -325,7 +325,7 @@ spec:
         variable determining if openpages will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -336,9 +336,9 @@ spec:
         variable determining openpages size
         {
           "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"}
-            {"text": "Small","value": "small"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Extra Small","value": "xsmall", "default": "true"},
+            {"text": "Small","value": "small"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -353,7 +353,7 @@ spec:
         variable determining if rstudio will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -364,8 +364,8 @@ spec:
         variable determining rstudio size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -376,7 +376,7 @@ spec:
         variable determining if spss will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -387,7 +387,7 @@ spec:
         variable determining if voice gateway will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -402,7 +402,7 @@ spec:
         variable determining if watson assistant will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -413,8 +413,8 @@ spec:
         variable determining watson assistant size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -425,7 +425,7 @@ spec:
         variable determining if watson discovery will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -436,7 +436,7 @@ spec:
         variable determining if watson ks will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -447,8 +447,8 @@ spec:
         variable determining watson ks size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -459,7 +459,7 @@ spec:
         variable determining if watson openscale will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -470,8 +470,8 @@ spec:
         variable determining watson openscale size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -482,7 +482,7 @@ spec:
         variable determining if watson speech will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -493,9 +493,9 @@ spec:
         variable determining watson speech stt size
         {
           "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"}
-            {"text": "Small","value": "small"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Extra Small","value": "xsmall", "default": "true"},
+            {"text": "Small","value": "small"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -506,9 +506,9 @@ spec:
         variable determining watson speech tts size
         {
           "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"}
-            {"text": "Small","value": "small"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Extra Small","value": "xsmall", "default": "true"},
+            {"text": "Small","value": "small"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -519,8 +519,8 @@ spec:
         size of wkc configuration
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -531,7 +531,7 @@ spec:
         variable determining if wkc will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -542,7 +542,7 @@ spec:
         install option for wkc to install core only
         {
           "options": [
-            {"text": "True","value": "True", "default": "true"}
+            {"text": "True","value": "True", "default": "true"},
             {"text": "False","value": "False"}
           ]
         }
@@ -553,7 +553,7 @@ spec:
         install option for wkc to install knowledge graph
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"}
+            {"text": "False","value": "False", "default": "true"},
             {"text": "True","value": "True"}
           ]
         }
@@ -564,7 +564,7 @@ spec:
         install option for wkc to enable data quality
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"}
+            {"text": "False","value": "False", "default": "true"},
             {"text": "True","value": "True"}
           ]
         }
@@ -575,7 +575,7 @@ spec:
         install option for wkc to enable fact sheet
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"}
+            {"text": "False","value": "False", "default": "true"},
             {"text": "True","value": "True"}
           ]
         }
@@ -586,7 +586,7 @@ spec:
         install option for wkc to enable manta
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"}
+            {"text": "False","value": "False", "default": "true"},
             {"text": "True","value": "True"}
           ]
         }
@@ -597,7 +597,7 @@ spec:
         variable determining if planning analytics will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -608,7 +608,7 @@ spec:
         variable determining if wml will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -619,8 +619,8 @@ spec:
         variable determining wml size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -631,7 +631,7 @@ spec:
         variable determining if wml accelerator will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -642,8 +642,8 @@ spec:
         variable determining wml accelerator size
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"}
-            {"text": "Medium","value": "medium"}
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
             {"text": "Large","value": "large"}
           ]
         }
@@ -658,7 +658,7 @@ spec:
         variable determining if wsl will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed"}
           ]
         }
@@ -669,7 +669,7 @@ spec:
         variable determining if ws pipelines will be installed
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"}
+            {"text": "False","value": "removed", "default": "true"},
             {"text": "True","value": "installed" }
           ]
         }
