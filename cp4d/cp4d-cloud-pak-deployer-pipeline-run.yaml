@@ -12,7 +12,7 @@ spec:
     - name: storage-class
       value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version
-      value: "4.10"
+      value: "4.12"
     - name: cp4d-version
       value: "4.6.4"
     - name: ibm-entitlement-key
