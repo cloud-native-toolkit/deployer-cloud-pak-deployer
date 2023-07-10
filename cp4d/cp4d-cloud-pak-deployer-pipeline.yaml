@@ -17,11 +17,11 @@ spec:
     - name: ocp-client-version
       type: string
       description: Openshift client version
-      default: "4.10"
+      default: "4.12"
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.6.4"
+      default: "4.7.0"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
@@ -30,18 +30,18 @@ spec:
     - name: analyticsengine-state
       type: string
       description: |
-        variable determining if analytics engine will be installed
+        Do you want to install analytics engine?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: analyticsengine-size
       type: string
       description: |
-        variable determining analytics engine size
+        Choose the size of analytics engine installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -53,29 +53,29 @@ spec:
     - name: bigsql-state
       type: string
       description: |
-        variable determining if bigsql will be installed
+        Do you want to install bigsql?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: ca-state
       type: string
       description: |
-        variable determining if ca will be installed
+        Do you want to install cognos analytics?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: ca-size
       type: string
       description: |
-        variable determining ca size
+        Choose size of cognos analytics installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -86,56 +86,67 @@ spec:
       default: "small"
     - name: ca-instance
       type: string
-      description: variable determining name of ca instance
+      description: Choose the name of cognos analytics instance.
       default: "ca-instance"
     - name: cde-state
       type: string
       description: |
-        variable determining if cde will be installed
+        Do you want to install cognos dashboards?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: datagate-state
       type: string
       description: |
-        variable determining if datagate will be installed
+        Do you want to install datagate?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: datastage-ent-state
+      type: string
+      description: |
+        Do you want to install datastage enterprise plus?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: datastage-ent-plus-state
       type: string
       description: |
-        variable determining if datastage enterprise plus will be installed
+        Do you want to install datastage enterprise plus?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: db2-state
       type: string
       description: |
-        variable determining if db2 will be installed
+        Do you want to install db2?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: db2-size
       type: string
       description: |
-        variable determining db2 size
+        Choose size of db2 installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -147,7 +158,7 @@ spec:
     - name: db2wh-state
       type: string
       description: |
-        variable determining if db2wh will be installed
+        Do you want to install db2 warehouse?
         {
           "options": [
             {"text": "False","value": "removed", "default": "true"},
@@ -158,29 +169,29 @@ spec:
     - name: dmc-state
       type: string
       description: |
-        variable determining if dmc will be installed
+        Do you want to install db2 data management console?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: dods-state
       type: string
       description: |
-        variable determining if dods will be installed
+        Do you want to install decision optimization?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: dods-size
       type: string
       description: |
-        variable determining dods size
+        Choose size of decision optimization installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -192,18 +203,18 @@ spec:
     - name: dp-state
       type: string
       description: |
-        variable determining if dp will be installed
+        Do you want to install data privacy?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: dp-size
       type: string
       description: |
-        variable determining dp size
+        Choose size of data privacy installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -212,21 +223,32 @@ spec:
           ]
         }
       default: "small"
+    - name: dpra-state
+      type: string
+      description: |
+        Do you want to install data privacy risk assessment?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: factsheet-state
       type: string
       description: |
-        variable determining if factsheet will be installed
+        Do you want to install ai factsheets?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: factsheet-size
       type: string
       description: |
-        variable determining factsheet size
+        Choose size of ai factsheets installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -238,18 +260,18 @@ spec:
     - name: dv-state
       type: string
       description: |
-        variable determining if dv will be installed
+        Do you want to install data virtualization?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: dv-size
       type: string
       description: |
-        variable determining dv size
+        Choose size of data virtualization installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -260,23 +282,23 @@ spec:
       default: "small"
     - name: dv-instance
       type: string
-      description: variable determining name of dv instance
+      description: Provide name of the data virtualization instance.
       default: "data-virtualization"
     - name: hadoop-state
       type: string
       description: |
-        variable determining if hadoop will be installed
+        Do you want to install hadoop?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: hadoop-size
       type: string
       description: |
-        variable determining hadoop size
+        Choose size of hadoop installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -285,21 +307,21 @@ spec:
           ]
         }
       default: "small"
-    - name: mdm-state
+    - name: match360-state
       type: string
       description: |
-        variable determining if mdm will be installed
+        Do you want to install match360?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
-    - name: mdm-size
+    - name: match360-size
       type: string
       description: |
-        variable determining mdm size
+        Choose size of match360 installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -308,60 +330,43 @@ spec:
           ]
         }
       default: "small"
-    - name: mdm-wkc-enabled
+    - name: match360-wkc-enabled
       type: string
       description: |
-        variable determining if wkc is enabled for mdm
+        Do you want wkc enabled for match360 installation? (only applied if component is installed)
         {
           "options": [
-            {"text": "True","value": "true", "default": "true"},
-            {"text": "False","value": "false"}
+            {"text": "Yes","value": "true", "default": "true"},
+            {"text": "No","value": "false"}
           ]
         }
       default: "true"
     - name: openpages-state
       type: string
       description: |
-        variable determining if openpages will be installed
+        Do you want to install openpages?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
-    - name: openpages-size
-      type: string
-      description: |
-        variable determining openpages size
-        {
-          "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"},
-            {"text": "Small","value": "small"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
-          ]
-        }
-      default: "xsmall"
-    - name: openpages-instance
-      type: string
-      description: variable determining name of openpages instance
-      default: "openpages-instance"
     - name: rstudio-state
       type: string
       description: |
-        variable determining if rstudio will be installed
+        Do you want to install rstudio?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: rstudio-size
       type: string
       description: |
-        variable determining rstudio size
+        Choose size of rstudio installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -373,44 +378,44 @@ spec:
     - name: spss-state
       type: string
       description: |
-        variable determining if spss will be installed
+        Do you want to install spss modeler?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: voice-gateway-state
       type: string
       description: |
-        variable determining if voice gateway will be installed
+        Do you want to install voice gateway?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: voice-gateway-replicas
       type: string
-      description: variable determining number of voice gateway replicas
+      description: Provide number of voice gateway replicas.
       default: "1"
     - name: watson-assistant-state
       type: string
       description: |
-        variable determining if watson assistant will be installed
+        Do you want to install watson assistant.
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: watson-assistant-size
       type: string
       description: |
-        variable determining watson assistant size
+        Choose size of watson assistant installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -422,29 +427,29 @@ spec:
     - name: watson-discovery-state
       type: string
       description: |
-        variable determining if watson discovery will be installed
+        Do you want to install watson discovery?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: watson-ks-state
       type: string
       description: |
-        variable determining if watson ks will be installed
+        Do you want to install watson knowledge studio?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: watson-ks-size
       type: string
       description: |
-        variable determining watson ks size
+        Choose size of watson knowledge studio installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -456,18 +461,18 @@ spec:
     - name: watson-openscale-state
       type: string
       description: |
-        variable determining if watson openscale will be installed
+        Do you want to install watson openscale?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: watson-openscale-size
       type: string
       description: |
-        variable determining watson openscale size
+        Choose size of watson openscale installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -479,18 +484,18 @@ spec:
     - name: watson-speech-state
       type: string
       description: |
-        variable determining if watson speech will be installed
+        Do you want to install watson speech?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: watson-speech-stt-size
       type: string
       description: |
-        variable determining watson speech stt size
+        Choose size of watson speech to text. (only applied if component is installed)
         {
           "options": [
             {"text": "Extra Small","value": "xsmall", "default": "true"},
@@ -503,7 +508,7 @@ spec:
     - name: watson-speech-tts-size
       type: string
       description: |
-        variable determining watson speech tts size
+        Choose size of watson text to speech. (only applied if component is installed)
         {
           "options": [
             {"text": "Extra Small","value": "xsmall", "default": "true"},
@@ -516,7 +521,7 @@ spec:
     - name: wkc-size
       type: string
       description: |
-        size of wkc configuration
+        Choose size of watson knowledge catalogue. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -528,95 +533,118 @@ spec:
     - name: wkc-state
       type: string
       description: |
-        variable determining if wkc will be installed
+        Do you want to install watson knowledge catalog?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: wkc-options-core-only
       type: string
       description: |
-        install option for wkc to install core only
+        Do you want to install core wkc only? (only applied if wkc is installed)
         {
           "options": [
-            {"text": "True","value": "True", "default": "true"},
-            {"text": "False","value": "False"}
+            {"text": "Yes","value": "True", "default": "true"},
+            {"text": "No","value": "False"}
           ]
         }
       default: "True"
     - name: wkc-options-knowledge-graph
       type: string
       description: |
-        install option for wkc to install knowledge graph
+        Do you want to enable knowledge graph for wkc? (only applied if wkc is installed)
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"},
-            {"text": "True","value": "True"}
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
           ]
         }
       default: "False"
     - name: wkc-options-enable-data-quality
       type: string
       description: |
-        install option for wkc to enable data quality
+        Do you want to enable data quality for wkc?
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"},
-            {"text": "True","value": "True"}
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
           ]
         }
       default: "False"
     - name: wkc-options-enable-fact-sheet
       type: string
       description: |
-        install option for wkc to enable fact sheet
+        Do you want to enable fact sheet for wkc?
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"},
-            {"text": "True","value": "True"}
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
           ]
         }
       default: "False"
     - name: wkc-options-enable-manta
       type: string
       description: |
-        install option for wkc to enable manta
+        Do you want to enable manta for wkc?
         {
           "options": [
-            {"text": "False","value": "False", "default": "true"},
-            {"text": "True","value": "True"}
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
           ]
         }
       default: "False"
     - name: planning-analytics-state
       type: string
       description: |
-        variable determining if planning analytics will be installed
+        Do you want to install planning analytics?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
+    - name: replication-state
+      type: string
+      description: |
+        Do you want to install data replication?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: replication-size
+      type: string
+      description: |
+        Choose size of data replication. (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
+            {"text": "Large","value": "large"}
+          ]
+        }
+      default: "small"
     - name: wml-state
       type: string
       description: |
-        variable determining if wml will be installed
+        Do you want to install watson machine learning?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: wml-size
       type: string
       description: |
-        variable determining wml size
+        Choose size of watson machine learning. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -628,18 +656,18 @@ spec:
     - name: wml-accelerator-state
       type: string
       description: |
-        variable determining if wml accelerator will be installed
+        Do you want to install watson machine learning accelerator?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: wml-accelerator-size
       type: string
       description: |
-        variable determining wml accelerator size
+        Choose size of watson machine learning accelerator. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -650,27 +678,38 @@ spec:
       default: "small"
     - name: wml-accelerator-replicas
       type: string
-      description: variable determining number of wml accelerator replicas
+      description: Provide number of wml accelerator replicas.
       default: "1"
-    - name: wsl-state
+    - name: ws-state
       type: string
       description: |
-        variable determining if wsl will be installed
+        Do you want to install watson studio?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
           ]
         }
       default: "removed"
     - name: ws-pipelines-state
       type: string
       description: |
-        variable determining if ws pipelines will be installed
+        Do you want to install watson studio pipelines?
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed" }
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed" }
+          ]
+        }
+      default: "removed"
+    - name: ws-runtimes-state
+      type: string
+      description: |
+        Do you want to install watson studio runtimes?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed" }
           ]
         }
       default: "removed"
@@ -680,8 +719,6 @@ spec:
         kind: Task
         name: ibm-pak
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -698,8 +735,6 @@ spec:
       runAfter:
         - add-namespace
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -716,8 +751,6 @@ spec:
       runAfter:
         - add-sa
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -742,8 +775,6 @@ spec:
       runAfter:
         - add-sa-permissions
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF 
@@ -767,8 +798,6 @@ spec:
       runAfter:
         - bind-sa-permissions
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -785,11 +814,7 @@ spec:
                 requests:
                   storage: 10Gi
             EOF
-    - name: get-ibm-entitlement-key
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: in
-          values: ["false"]
+    - name: get-tz-ibm-entitlement-key
       params:
         - name: KEY_ID
           value: 968d7819-f2c5-7b67-c420-3c6bfd51521e
@@ -801,318 +826,44 @@ spec:
         name: ibmcloud-secrets-manager-get
       runAfter:
         - create-pvc
-    - name: set-retrieved-entitlement-key
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - get-ibm-entitlement-key
+    - name: assign-ibm-entitlement-key
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
-        - name: SCRIPT
-          value: |
-            oc apply -f - <<EOF
-            apiVersion: v1
-            kind: Secret
-            metadata:
-              name: cloud-pak-entitlement-key
-              namespace: $(params.namespace)
-            type: Opaque
-            stringData:
-              cp-entitlement-key: |
-                $(tasks.get-ibm-entitlement-key.results.secret-value)
-            EOF
-    - name: configure-cloud-paks-services-1
-      runAfter:
-        - set-retrieved-entitlement-key
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
-        - name: SCRIPT
-          value: |
-            oc apply -f - <<EOF
-            apiVersion: v1
-            kind: ConfigMap
-            metadata:
-              name: cloud-pak-deployer-config
-              namespace: $(params.namespace)
-            data:
-              cpd-config.yaml: |
-                global_config:
-                  environment_name: demo
-                  cloud_platform: existing-ocp
-                  confirm_destroy: False
+        - name: ibm-entitlement-key
+          value: "$(params.ibm-entitlement-key)"
+        - name: tz-ibm-entitlement-key
+          value: "$(tasks.get-tz-ibm-entitlement-key.results.secret-value)"
+      taskSpec:
+        params:
+          - name: ibm-entitlement-key
+            type: string
+            description: user provided ibm-entitlement-key
+          - name: tz-ibm-entitlement-key
+            type: string
+            description: user provided ibm-entitlement-key
+        results:
+          - name: key
+            description: The key to use for the secret
+            type: string
+        steps:
+          - image: ubuntu
 
-                openshift:
-                - name: cpd-demo
-                  ocp_version: '$(params.ocp-client-version)'
-                  cluster_name: cpd-demo
-                  domain_name: example.com
-                  openshift_storage:
-                  - storage_name: auto-storage
-                    storage_type: ocs
-
-                cp4d:
-                - project: cpd
-                  openshift_cluster_name: cpd-demo
-                  cp4d_version: $(params.cp4d-version) 
-                  sequential_install: True
-                  accept_licenses: True
-                  cartridges:
-                  - name: cp-foundation
-                    license_service:
-                      state: disabled
-                      threads_per_core: 2
-                  - name: lite
-
-                  - name: analyticsengine 
-                    size: $(params.analyticsengine-size) 
-                    state: $(params.analyticsengine-state)
-
-                  - name: bigsql
-                    state: $(params.bigsql-state)
-
-                  - name: ca
-                    size: $(params.ca-size)
-                    instances:
-                    - name: $(params.ca-instance)
-                      metastore_ref: ca-metastore
-                    state: $(params.ca-state)
-
-                  - name: cde
-                    state: $(params.cde-state)
-
-                  - name: datagate
-                    state: $(params.datagate-state)
-
-                  - name: datastage-ent-plus
-                    state: $(params.datastage-ent-plus-state)
-
-                  - name: db2
-                    size: $(params.db2-size)
-                    instances:
-                    - name: ca-metastore
-                      metadata_size_gb: 20
-                      data_size_gb: 20
-                      backup_size_gb: 20  
-                      transactionlog_size_gb: 20
-                    state: $(params.db2-state)
-
-                  - name: db2wh
-                    state: $(params.db2wh-state)
-
-                  - name: dmc
-                    state: $(params.dmc-state)
-
-                  - name: dods
-                    size: $(params.dods-size)
-                    state: $(params.dods-state)
-
-                  - name: dp
-                    size: $(params.dp-size)
-                    state: $(params.dp-state)
-
-                  - name: dv
-                    size: $(params.dv-size)
-                    instances:
-                    - name: $(params.dv-instance)
-                    state: $(params.dv-state)
-
-                  - name: factsheet
-                    size: $(params.factsheet-size)
-                    state: $(params.factsheet-state)
-
-                  - name: hadoop
-                    size: $(params.hadoop-size)
-                    state: $(params.hadoop-state)
-
-                  - name: mdm
-                    size: $(params.mdm-size)
-                    wkc_enabled: $(params.mdm-wkc-enabled)
-                    state: $(params.mdm-state)
-
-                  - name: openpages
-                    state: $(params.openpages-state)
-                    instances:
-                    - name: $(params.openpages-instance)
-                      size: $(params.openpages-size)
-
-                  - name: planning-analytics
-                    state: $(params.planning-analytics-state)
-
-                  - name: rstudio
-                    size: $(params.rstudio-size)
-                    state: $(params.rstudio-state)
-
-                  - name: spss
-                    state: $(params.spss-state)
-
-                  - name: voice-gateway
-                    replicas: $(params.voice-gateway-replicas)
-                    state: $(params.voice-gateway-state)
-
-                  - name: watson-assistant
-                    size: $(params.watson-assistant-size)
-                    state: $(params.watson-assistant-state)
-
-                  - name: watson-discovery
-                    state: $(params.watson-discovery-state)
-
-                  - name: watson-ks
-                    size: $(params.watson-ks-size)
-                    state: $(params.watson-ks-state)
-
-                  - name: watson-openscale
-                    size: $(params.watson-openscale-size)
-                    state: $(params.watson-openscale-state)
-
-                  - name: watson-speech
-                    stt_size: $(params.watson-speech-stt-size)
-                    tts_size: $(params.watson-speech-tts-size)
-                    state: $(params.watson-speech-state)
-
-                  - name: wkc
-                    size: $(params.wkc-size)
-                    state: $(params.wkc-state)
-                    installation_options:
-                      install_wkc_core_only: $(params.wkc-options-core-only)
-                      enableKnowledgeGraph: $(params.wkc-options-knowledge-graph)
-                      enableDataQuality: $(params.wkc-options-enable-data-quality)
-                      enableFactSheet: $(params.wkc-options-enable-fact-sheet)
-                      enableMANTA: $(params.wkc-options-enable-manta)
-
-                  - name: wml
-                    size: $(params.wml-size)
-                    state: $(params.wml-state)
-
-                  - name: wml-accelerator
-                    replicas: $(params.wml-accelerator-replicas)
-                    size: $(params.wml-accelerator-size)
-                    state: $(params.wml-accelerator-state)
-
-                  - name: wsl
-                    state: $(params.wsl-state)
-
-                  - name: ws-pipelines
-                    state: $(params.ws-pipelines-state)
-            EOF
-    - name: delete-previous-job-1
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - configure-cloud-paks-services-1
-      params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
-        - name: SCRIPT
-          value: |
-            oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
-    - name: run-the-deployer-1
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - delete-previous-job-1
-      params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
-        - name: SCRIPT
-          value: |
-            oc apply -f - <<EOF
-            apiVersion: batch/v1
-            kind: Job
-            metadata:
-              labels:
-                app: cloud-pak-deployer
-              name: cloud-pak-deployer
-              namespace: $(params.namespace)
-            spec:
-              parallelism: 1
-              completions: 1
-              backoffLimit: 0
-              template:
-                metadata:
-                  name: cloud-pak-deployer
-                  labels:
-                    app: cloud-pak-deployer
-                spec:
-                  containers:
-                  - name: cloud-pak-deployer
-                    image: quay.io/cloud-pak-deployer/cloud-pak-deployer:latest
-                    imagePullPolicy: Always
-                    terminationMessagePath: /dev/termination-log
-                    terminationMessagePolicy: File
-                    env:
-                    - name: CONFIG_DIR
-                      value: /Data/cpd-config
-                    - name: STATUS_DIR
-                      value: /Data/cpd-status
-                    - name: CP_ENTITLEMENT_KEY
-                      valueFrom:
-                        secretKeyRef:
-                          key: cp-entitlement-key
-                          name: cloud-pak-entitlement-key
-                    volumeMounts:
-                    - name: config-volume
-                      mountPath: /Data/cpd-config/config
-                    - name: status-volume
-                      mountPath: /Data/cpd-status
-                    command: ["/bin/sh","-xc"]
-                    args: 
-                      - /cloud-pak-deployer/cp-deploy.sh env apply -v
-                  restartPolicy: Never
-                  securityContext:
-                    runAsUser: 0
-                  serviceAccountName: cloud-pak-deployer-sa
-                  volumes:
-                  - name: config-volume
-                    configMap:
-                      name: cloud-pak-deployer-config
-                  - name: status-volume
-                    persistentVolumeClaim:
-                      claimName: cloud-pak-deployer-status
-            EOF
-    - name: wait-till-job-complete-1
-      timeout: 6h0m0s
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - run-the-deployer-1
-      params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
-        - name: SCRIPT
-          value: |
-            while true
-            do
-              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
-              if [[ $is_complete != "true" ]]; then
-                echo "Waiting for job to be Complete."
+            script: |
+              if [ "$(params.ibm-entitlement-key)" != "false" ]; then
+                echo "user provided key - $(params.ibm-entitlement-key)"
+                printf "$(params.ibm-entitlement-key)" | tee $(results.key.path)
               else
-                echo "Cloud Pak Deployer job is Complete."
-                break
+                echo "techzone key - $(params.tz-ibm-entitlement-key)"
+                printf "$(params.tz-ibm-entitlement-key)" | tee $(results.key.path)
               fi
-              sleep 10
-            done
-    - name: set-provided-entitlement-key
+      runAfter:
+        - get-tz-ibm-entitlement-key
+    - name: create-entitlement-key-secret
       taskRef:
         kind: Task
         name: ibm-pak
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: notin
-          values: ["false"]
       runAfter:
-        - create-pvc
+        - assign-ibm-entitlement-key
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1124,21 +875,15 @@ spec:
             type: Opaque
             stringData:
               cp-entitlement-key: |
-                $(params.ibm-entitlement-key)
+                $(tasks.assign-ibm-entitlement-key.results.key)
             EOF
-    - name: configure-cloud-paks-services-2
+    - name: configure-cloud-paks-services
       runAfter:
-        - set-provided-entitlement-key
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: notin
-          values: ["false"]
+        - create-entitlement-key-secret
       taskRef:
         kind: Task
         name: ibm-pak
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1163,27 +908,43 @@ spec:
                   - storage_name: auto-storage
                     storage_type: ocs
 
+                #
+                # All tested cartridges. To install, change the "state" property to "installed". To uninstall, change the state
+                # to "removed" or comment out the entire cartridge. Make sure that the "-" and properties are aligned with the lite
+                # cartridge; the "-" is at position 3 and the property starts at position 5.
+                #
+                # If a cartridge has dependencies and you want to install it, you must ensure that the dependent cartridge is also
+                # installed.
+                #
+
                 cp4d:
                 - project: cpd
                   openshift_cluster_name: cpd-demo
                   cp4d_version: $(params.cp4d-version) 
-                  sequential_install: True
+                  sequential_install: False
                   accept_licenses: True
                   cartridges:
                   - name: cp-foundation
                     license_service:
                       state: disabled
                       threads_per_core: 2
+
                   - name: lite
 
-                  - name: analyticsengine 
+                  - name: scheduler 
+                    state: installed
+
+                  - name: analyticsengine
+                    description: Analytics Engine Powered by Apache Spark 
                     size: $(params.analyticsengine-size) 
                     state: $(params.analyticsengine-state)
 
                   - name: bigsql
+                    description: Db2 Big SQL
                     state: $(params.bigsql-state)
 
                   - name: ca
+                    description: Cognos Analytics
                     size: $(params.ca-size)
                     instances:
                     - name: $(params.ca-instance)
@@ -1191,15 +952,43 @@ spec:
                     state: $(params.ca-state)
 
                   - name: cde
+                    description: Cognos Dashboards
                     state: $(params.cde-state)
 
                   - name: datagate
+                    description: Db2 Data Gate
                     state: $(params.datagate-state)
 
+                  - name: datastage-ent
+                    description: DataStage Enterprise
+                    state: $(params.datastage-ent-state)
+
                   - name: datastage-ent-plus
+                    description: DataStage Enterprise Plus
                     state: $(params.datastage-ent-plus-state)
+                    # instances:
+                    #   - name: ds-instance
+                    #     # Optional settings
+                    #     description: "datastage ds-instance"
+                    #     size: medium
+                    #     storage_class: efs-nfs-client
+                    #     storage_size_gb: 60
+                    #     # Custom Scale options
+                    #     scale_px_runtime:
+                    #       replicas: 2
+                    #       cpu_request: 500m
+                    #       cpu_limit: 2
+                    #       memory_request: 2Gi
+                    #       memory_limit: 4Gi
+                    #     scale_px_compute:
+                    #       replicas: 2
+                    #       cpu_request: 1
+                    #       cpu_limit: 3
+                    #       memory_request: 4Gi
+                    #       memory_limit: 12Gi 
 
                   - name: db2
+                    description: Db2 OLTP
                     size: $(params.db2-size)
                     instances:
                     - name: ca-metastore
@@ -1210,79 +999,123 @@ spec:
                     state: $(params.db2-state)
 
                   - name: db2wh
+                    description: Db2 Warehouse
                     state: $(params.db2wh-state)
 
                   - name: dmc
+                    description: Db2 Data Management Console
                     state: $(params.dmc-state)
 
                   - name: dods
+                    description: Decision Optimization
                     size: $(params.dods-size)
                     state: $(params.dods-state)
 
                   - name: dp
+                    description: Data Privacy
                     size: $(params.dp-size)
                     state: $(params.dp-state)
 
+                  - name: dpra
+                    description: Data Privacy Risk Assessment
+                    state: $(params.dpra-state)
+
                   - name: dv
+                    description: Data Virtualization
                     size: $(params.dv-size)
                     instances:
                     - name: $(params.dv-instance)
                     state: $(params.dv-state)
 
+                  # Please note that for EDB Postgress, a secret edb-postgres-license-key must be created in the vault
+                  # before deploying
+                  - name: edb_cp4d
+                    description: EDB Postgres
+                    state: removed
+                    instances:
+                      - name: instance1
+                        version: "13.5"
+                        #type: Standard
+                        #members: 1
+                        #size_gb: 50
+                        #resource_request_cpu: 1000m
+                        #resource_request_memory: 4Gi
+                        #resource_limit_cpu: 1000m
+                        #resource_limit_memory: 4Gi
+
                   - name: factsheet
+                    description: AI Factsheets
                     size: $(params.factsheet-size)
                     state: $(params.factsheet-state)
 
                   - name: hadoop
+                    description: Execution Engine for Apache Hadoop
                     size: $(params.hadoop-size)
                     state: $(params.hadoop-state)
 
-                  - name: mdm
-                    size: $(params.mdm-size)
-                    wkc_enabled: $(params.mdm-wkc-enabled)
-                    state: $(params.mdm-state)
+                  - name: match360
+                    description: IBM Match 360
+                    size: $(params.match360-size)
+                    wkc_enabled: $(params.match360-wkc-enabled)
+                    state: $(params.match360-state)
 
                   - name: openpages
+                    description: OpenPages
                     state: $(params.openpages-state)
-                    instances:
-                    - name: $(params.openpages-instance)
-                      size: $(params.openpages-size)
 
+                  # For Planning Analytics, the case version is needed due to defect in olm utils
                   - name: planning-analytics
+                    description: Planning Analytics
                     state: $(params.planning-analytics-state)
 
+                  - name: replication
+                    description: Data Replication
+                    license: IDRC
+                    size: $(params.replication-size)
+                    state: $(params.replication-state)
+
                   - name: rstudio
+                    description: RStudio Server with R 3.6
                     size: $(params.rstudio-size)
                     state: $(params.rstudio-state)
 
                   - name: spss
+                    description: SPSS Modeler
                     state: $(params.spss-state)
 
                   - name: voice-gateway
+                    description: Voice Gateway
                     replicas: $(params.voice-gateway-replicas)
                     state: $(params.voice-gateway-state)
 
                   - name: watson-assistant
+                    description: Watson Assistant
                     size: $(params.watson-assistant-size)
                     state: $(params.watson-assistant-state)
 
                   - name: watson-discovery
+                    description: Watson Discovery
                     state: $(params.watson-discovery-state)
 
+                  # For Watson Knowledge Studio, the case version is needed due to defect in olm utils
                   - name: watson-ks
+                    description: Watson Knowledge Studio
                     size: $(params.watson-ks-size)
                     state: $(params.watson-ks-state)
 
                   - name: watson-openscale
+                    description: Watson OpenScale
                     size: $(params.watson-openscale-size)
                     state: $(params.watson-openscale-state)
 
                   - name: watson-speech
+                    description: Watson Speech (STT and TTS)
                     stt_size: $(params.watson-speech-stt-size)
                     tts_size: $(params.watson-speech-tts-size)
                     state: $(params.watson-speech-state)
 
                   - name: wkc
+                    description: Watson Knowledge Catalog
                     size: $(params.wkc-size)
                     state: $(params.wkc-state)
                     installation_options:
@@ -1293,49 +1126,60 @@ spec:
                       enableMANTA: $(params.wkc-options-enable-manta)
 
                   - name: wml
+                    description: Watson Machine Learning
                     size: $(params.wml-size)
                     state: $(params.wml-state)
 
                   - name: wml-accelerator
+                    description: Watson Machine Learning Accelerator
                     replicas: $(params.wml-accelerator-replicas)
                     size: $(params.wml-accelerator-size)
                     state: $(params.wml-accelerator-state)
 
-                  - name: wsl
-                    state: $(params.wsl-state)
+                  - name: ws
+                    description: Watson Studio
+                    state: $(params.ws-state)
 
                   - name: ws-pipelines
+                    description: Watson Studio Pipelines
                     state: $(params.ws-pipelines-state)
+                  
+                  - name: ws-runtimes
+                    description: Watson Studio Runtimes
+                    runtimes:
+                    - ibm-cpd-ws-runtime-py39
+                    - ibm-cpd-ws-runtime-222-py
+                    - ibm-cpd-ws-runtime-py39gpu
+                    - ibm-cpd-ws-runtime-222-pygpu
+                    - ibm-cpd-ws-runtime-r36
+                    - ibm-cpd-ws-runtime-222-r
+                    state: $(params.ws-runtimes-state)
+
+                  # Cartridges where extra work is needed (will not install automatically)
+
+                  # Product Master requires set up of the Db2 instance secret before install
+                  - name: productmaster
+                    description: Product Master
+                    size: small  
+                    state: removed 
             EOF
-    - name: delete-previous-job-2
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: notin
-          values: ["false"]
+    - name: delete-previous-job
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
-        - configure-cloud-paks-services-2
+        - configure-cloud-paks-services
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
-    - name: run-the-deployer-2
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: notin
-          values: ["false"]
+    - name: run-the-deployer
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
-        - delete-previous-job-2
+        - delete-previous-job
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             oc apply -f - <<EOF
@@ -1392,20 +1236,14 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
-    - name: wait-till-job-complete-2
-      when:
-        - input: "$(params.ibm-entitlement-key)"
-          operator: notin
-          values: ["false"]
+    - name: wait-till-job-complete
       timeout: 6h0m0s
       taskRef:
         kind: Task
         name: ibm-pak
       runAfter:
-        - run-the-deployer-2
+        - run-the-deployer
       params:
-        # - name: VERSION
-        #   value: $(params.ocp-client-version)
         - name: SCRIPT
           value: |
             while true
