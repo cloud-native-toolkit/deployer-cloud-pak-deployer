@@ -5,7 +5,7 @@ metadata:
 spec:
   timeout: 6h0m0s
   pipelineRef:
-    name: cloud-pak-deployer
+    name: cloud-pak-deployer-
   params:
     - name: namespace
       value: "cloud-pak-deployer"
