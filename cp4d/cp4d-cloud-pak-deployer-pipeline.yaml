@@ -113,7 +113,7 @@ spec:
     - name: datastage-ent-state
       type: string
       description: |
-        Do you want to install datastage enterprise plus?
+        Do you want to install datastage enterprise?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
