@@ -1,11 +1,11 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: cloud-pak-deployer-run
+  generateName: cloud-pak-deployer-run-
 spec:
   timeout: 6h0m0s
   pipelineRef:
-    name: cloud-pak-deployer-
+    name: cloud-pak-deployer
   params:
     - name: namespace
       value: "cloud-pak-deployer"
