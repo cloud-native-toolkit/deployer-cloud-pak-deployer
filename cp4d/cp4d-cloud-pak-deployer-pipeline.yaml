@@ -17,16 +17,27 @@ spec:
     - name: ocp-client-version
       type: string
       description: Openshift client version
-      default: "4.10"
+      default: "4.12"
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.6.4"
+      default: "4.7.0"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
 
+    - name: scheduler-state
+      type: string
+      description: |
+        Do you want to install scheduler?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: analyticsengine-state
       type: string
       description: |
@@ -897,7 +908,7 @@ spec:
                 global_config:
                   environment_name: demo
                   cloud_platform: existing-ocp
-                  confirm_destroy: False
+                  confirm_destroy: True
 
                 openshift:
                 - name: cpd-demo
@@ -932,7 +943,7 @@ spec:
                   - name: lite
 
                   - name: scheduler 
-                    state: installed
+                    state: $(params.scheduler-state)
 
                   - name: analyticsengine
                     description: Analytics Engine Powered by Apache Spark 
