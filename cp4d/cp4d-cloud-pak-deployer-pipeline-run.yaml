@@ -17,9 +17,3 @@ spec:
       value: "4.7.0"
     - name: ibm-entitlement-key
       value: "false"
-    - name: ca-state
-      value: "installed"
-    - name: ws-state
-      value: "installed"
-    - name: db2-state
-      value: "installed"
