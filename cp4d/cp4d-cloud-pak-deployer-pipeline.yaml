@@ -17,16 +17,27 @@ spec:
     - name: ocp-client-version
       type: string
       description: Openshift client version
-      default: "4.10"
+      default: "4.12"
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.6.4"
+      default: "4.7.0"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
 
+    - name: scheduler-state
+      type: string
+      description: |
+        Do you want to install scheduler?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: analyticsengine-state
       type: string
       description: |
@@ -113,7 +124,7 @@ spec:
     - name: datastage-ent-state
       type: string
       description: |
-        Do you want to install datastage enterprise plus?
+        Do you want to install datastage enterprise?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -518,6 +529,17 @@ spec:
           ]
         }
       default: "xsmall"
+    - name: wkc-state
+      type: string
+      description: |
+        Do you want to install watson knowledge catalog?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: wkc-size
       type: string
       description: |
@@ -530,17 +552,6 @@ spec:
           ]
         }
       default: "small"
-    - name: wkc-state
-      type: string
-      description: |
-        Do you want to install watson knowledge catalog?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
     - name: wkc-options-core-only
       type: string
       description: |
@@ -845,12 +856,15 @@ spec:
             description: The key to use for the secret
             type: string
         steps:
-          - image: ubuntu
+          - image: docker
 
             script: |
               if [ "$(params.ibm-entitlement-key)" != "false" ]; then
                 echo "user provided key - $(params.ibm-entitlement-key)"
                 printf "$(params.ibm-entitlement-key)" | tee $(results.key.path)
+
+                echo "testing key for cp.icr.io"
+                docker login cp.icr.io --username cp --password $(params.ibm-entitlement-key)
               else
                 echo "techzone key - $(params.tz-ibm-entitlement-key)"
                 printf "$(params.tz-ibm-entitlement-key)" | tee $(results.key.path)
@@ -897,7 +911,7 @@ spec:
                 global_config:
                   environment_name: demo
                   cloud_platform: existing-ocp
-                  confirm_destroy: False
+                  confirm_destroy: True
 
                 openshift:
                 - name: cpd-demo
@@ -932,7 +946,7 @@ spec:
                   - name: lite
 
                   - name: scheduler 
-                    state: installed
+                    state: $(params.scheduler-state)
 
                   - name: analyticsengine
                     description: Analytics Engine Powered by Apache Spark 
@@ -1163,25 +1177,21 @@ spec:
                     size: small  
                     state: removed 
             EOF
-    - name: delete-previous-job
+    - name: run-the-deployer
       taskRef:
         kind: Task
         name: ibm-pak
+      timeout: 6h0m0s
+      retries: 3
       runAfter:
         - configure-cloud-paks-services
       params:
         - name: SCRIPT
           value: |
             oc delete job cloud-pak-deployer -n $(params.namespace) --ignore-not-found
-    - name: run-the-deployer
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - delete-previous-job
-      params:
-        - name: SCRIPT
-          value: |
+
+            sleep 20
+
             oc apply -f - <<EOF
             apiVersion: batch/v1
             kind: Job
@@ -1236,16 +1246,9 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
-    - name: wait-till-job-complete
-      timeout: 6h0m0s
-      taskRef:
-        kind: Task
-        name: ibm-pak
-      runAfter:
-        - run-the-deployer
-      params:
-        - name: SCRIPT
-          value: |
+
+            sleep 20
+
             while true
             do
               is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
@@ -1255,5 +1258,14 @@ spec:
                 echo "Cloud Pak Deployer job is Complete."
                 break
               fi
+
+              did_fail=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | contains({"status": "'True'"})')
+              if [[ $did_fail == "true" ]]; then
+                echo "Cloud Pak Deployer job failed."
+                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .reason)')
+                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .message)')
+                exit 68
+              fi
+              
               sleep 10
             done
