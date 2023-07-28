@@ -14,6 +14,6 @@ spec:
     - name: ocp-client-version
       value: "4.12"
     - name: cp4d-version
-      value: "4.7.0"
+      value: "4.7.1"
     - name: ibm-entitlement-key
       value: "false"
