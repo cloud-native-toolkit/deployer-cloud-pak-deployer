@@ -21,7 +21,7 @@ spec:
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.7.0"
+      default: "4.7.1"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
