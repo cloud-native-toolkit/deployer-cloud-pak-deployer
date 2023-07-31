@@ -21,7 +21,7 @@ spec:
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.7.0"
+      default: "4.7.1"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
@@ -726,6 +726,7 @@ spec:
       default: "removed"
   tasks:
     - name: add-namespace
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -740,6 +741,7 @@ spec:
               name: $(params.namespace)
             EOF
     - name: add-sa
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -756,6 +758,7 @@ spec:
               namespace: $(params.namespace)
             EOF
     - name: add-sa-permissions
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -780,6 +783,7 @@ spec:
               namespace: $(params.namespace)
             EOF
     - name: bind-sa-permissions
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -803,6 +807,7 @@ spec:
               namespace: $(params.namespace)
             EOF
     - name: create-pvc
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -826,6 +831,7 @@ spec:
                   storage: 10Gi
             EOF
     - name: get-tz-ibm-entitlement-key
+      retries: 3
       params:
         - name: KEY_ID
           value: 968d7819-f2c5-7b67-c420-3c6bfd51521e
@@ -838,6 +844,7 @@ spec:
       runAfter:
         - create-pvc
     - name: assign-ibm-entitlement-key
+      retries: 3
       params:
         - name: ibm-entitlement-key
           value: "$(params.ibm-entitlement-key)"
@@ -877,6 +884,7 @@ spec:
         name: ibm-pak
       runAfter:
         - assign-ibm-entitlement-key
+      retries: 3
       params:
         - name: SCRIPT
           value: |
@@ -894,6 +902,7 @@ spec:
     - name: configure-cloud-paks-services
       runAfter:
         - create-entitlement-key-secret
+      retries: 3
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1269,3 +1278,9 @@ spec:
               
               sleep 10
             done
+
+            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
+            echo "Console Route: $cpd_route"
+            initial_admin_password=$(oc get secret admin-user-details -n cpd -o jsonpath='{.data.initial_admin_password}' | base64 -d)
+            echo "Username: admin"
+            echo "Password: $initial_admin_password"
