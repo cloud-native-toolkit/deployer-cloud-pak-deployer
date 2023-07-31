@@ -17,3 +17,5 @@ spec:
       value: "4.7.0"
     - name: ibm-entitlement-key
       value: "false"
+    - name: watson-discovery-state
+      value: "removed"
