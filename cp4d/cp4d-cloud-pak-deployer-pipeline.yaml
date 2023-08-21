@@ -724,6 +724,37 @@ spec:
           ]
         }
       default: "removed"
+  finally:
+    - name: update-configmap-failure
+      when:
+        - input: $(tasks.run-the-deployer.status)
+          operator: notin
+          values: ["Succeeded"]
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: SCRIPT
+          value: |
+            oc patch configmap/pipeline-output -p '{"data":{"Status":"Pipeline run failed. See Pipeline run for more details and consider running the pipeline again."}}'
+    - name: update-configmap-success
+      when:
+        - input: $(tasks.run-the-deployer.status)
+          operator: in
+          values: ["Succeeded"]
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: SCRIPT
+          value: |
+            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
+            echo "Console Route: $cpd_route"
+            initial_admin_password=$(oc get secret admin-user-details -n cpd -o jsonpath='{.data.initial_admin_password}' | base64 -d)
+            echo "Username: admin"
+            echo "Password: $initial_admin_password"
+
+            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
   tasks:
     - name: add-namespace
       retries: 3
@@ -1278,9 +1309,3 @@ spec:
               
               sleep 10
             done
-
-            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
-            echo "Console Route: $cpd_route"
-            initial_admin_password=$(oc get secret admin-user-details -n cpd -o jsonpath='{.data.initial_admin_password}' | base64 -d)
-            echo "Username: admin"
-            echo "Password: $initial_admin_password"
