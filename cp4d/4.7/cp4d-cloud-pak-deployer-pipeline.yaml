@@ -1,5 +1,5 @@
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: cloud-pak-deployer
@@ -894,15 +894,17 @@ spec:
             description: The key to use for the secret
             type: string
         steps:
-          - image: docker
-
+          - image: podman
+            securityContext:
+              capabilities:
+                add: ["SETFCAP"]
             script: |
               if [ "$(params.ibm-entitlement-key)" != "false" ]; then
                 echo "user provided key - $(params.ibm-entitlement-key)"
                 printf "$(params.ibm-entitlement-key)" | tee $(results.key.path)
 
                 echo "testing key for cp.icr.io"
-                docker login cp.icr.io --username cp --password $(params.ibm-entitlement-key)
+                podman login cp.icr.io --username cp --password $(params.ibm-entitlement-key)
               else
                 echo "techzone key - $(params.tz-ibm-entitlement-key)"
                 printf "$(params.tz-ibm-entitlement-key)" | tee $(results.key.path)
