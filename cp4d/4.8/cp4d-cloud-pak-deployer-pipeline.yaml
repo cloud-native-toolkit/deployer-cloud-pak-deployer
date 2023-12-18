@@ -14,6 +14,30 @@ spec:
       type: string
       description: RWX storage class needed for cp4d
       default: "ocs-storagecluster-cephfs"
+    - name: cloud-pak-deployer-storage-class
+      type: string
+      description: |
+        Choose the defined storage class for the cloud pak deployer.
+        {
+          "options": [
+            {"text": "auto-storage","value": "auto-storage", "default": "true"},
+            {"text": "ocs-storage","value": "ocs-storage"},
+            {"text": "nfs-storage","value": "nfs-storage"}
+          ]
+        }
+      default: "auto-storage"
+    - name: cloud-pak-deployer-storage-type
+      type: string
+      description: |
+        Choose the defined storage type for the cloud pak deployer.
+        {
+          "options": [
+            {"text": "auto","value": "auto"},
+            {"text": "ocs","value": "ocs", "default": "true"},
+            {"text": "nfs","value": "nfs"}
+          ]
+        }
+      default: "ocs"
     - name: ocp-client-version
       type: string
       description: Openshift client version
@@ -1095,8 +1119,8 @@ spec:
                   cluster_name: cpd-demo
                   domain_name: example.com
                   openshift_storage:
-                  - storage_name: auto-storage
-                    storage_type: ocs
+                  - storage_name: $(params.cloud-pak-deployer-storage-class)
+                    storage_type: $(params.cloud-pak-deployer-storage-type)
 
                 #
                 # All tested cartridges. To install, change the "state" property to "installed". To uninstall, change the state
