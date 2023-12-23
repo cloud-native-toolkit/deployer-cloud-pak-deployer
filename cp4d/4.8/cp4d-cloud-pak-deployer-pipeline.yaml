@@ -32,12 +32,23 @@ spec:
         Choose the defined storage type for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto","value": "auto"},
-            {"text": "ocs","value": "ocs", "default": "true"},
+            {"text": "auto","value": "auto", "default": "true"},
+            {"text": "ocs","value": "ocs"},
             {"text": "nfs","value": "nfs"}
           ]
         }
-      default: "ocs"
+      default: "auto"
+    - name: configure-gpu
+      type: string
+      description: |
+        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
     - name: ocp-client-version
       type: string
       description: Openshift client version
@@ -1118,6 +1129,8 @@ spec:
                   ocp_version: '$(params.ocp-client-version)'
                   cluster_name: cpd-demo
                   domain_name: example.com
+                  gpu:
+                    install: $(params.configure-gpu)
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)

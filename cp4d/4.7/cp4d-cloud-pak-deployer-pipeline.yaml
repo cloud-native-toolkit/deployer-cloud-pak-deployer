@@ -32,12 +32,12 @@ spec:
         Choose the defined storage type for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto","value": "auto"},
-            {"text": "ocs","value": "ocs", "default": "true"},
+            {"text": "auto","value": "auto", "default": "true"},
+            {"text": "ocs","value": "ocs"},
             {"text": "nfs","value": "nfs"}
           ]
         }
-      default: "ocs"
+      default: "auto"
     - name: ocp-client-version
       type: string
       description: Openshift client version
