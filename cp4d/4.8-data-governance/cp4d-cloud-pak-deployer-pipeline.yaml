@@ -1146,8 +1146,9 @@ spec:
 
                 cp4d:
                 - project: cpd
-                  openshift_cluster_name: cpd-demo
-                  cp4d_version: $(params.cp4d-version) 
+                  openshift_cluster_name: level-4-data-governance
+                  cp4d_version: $(params.cp4d-version)
+                  use_fs_iam: False
                   sequential_install: False
                   accept_licenses: True
                   cartridges:
@@ -1218,7 +1219,7 @@ spec:
                     description: Db2 OLTP
                     size: $(params.db2-size)
                     instances:
-                    - name: ca-metastore
+                    - name: Db2
                       metadata_size_gb: 20
                       data_size_gb: 20
                       backup_size_gb: 20  
