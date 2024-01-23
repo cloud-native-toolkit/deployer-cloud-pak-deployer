@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer
+  name: cloud-pak-deployer-4.8
   annotations:
 spec:
   params:
