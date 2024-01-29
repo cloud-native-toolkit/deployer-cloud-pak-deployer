@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer
+  name: cloud-pak-deployer-4.8.1
   annotations:
 spec:
   params:
@@ -1146,9 +1146,8 @@ spec:
 
                 cp4d:
                 - project: cpd
-                  openshift_cluster_name: level-4-data-governance
-                  cp4d_version: $(params.cp4d-version)
-                  use_fs_iam: False
+                  openshift_cluster_name: cpd-demo
+                  cp4d_version: $(params.cp4d-version) 
                   sequential_install: False
                   accept_licenses: True
                   cartridges:
@@ -1219,7 +1218,7 @@ spec:
                     description: Db2 OLTP
                     size: $(params.db2-size)
                     instances:
-                    - name: Db2
+                    - name: ca-metastore
                       metadata_size_gb: 20
                       data_size_gb: 20
                       backup_size_gb: 20  

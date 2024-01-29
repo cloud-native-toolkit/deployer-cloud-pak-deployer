@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer-4.7
+  name: cloud-pak-deployer-4.8-ai-governance
   annotations:
 spec:
   params:
@@ -38,6 +38,17 @@ spec:
           ]
         }
       default: "auto"
+    - name: configure-gpu
+      type: string
+      description: |
+        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
     - name: ocp-client-version
       type: string
       description: Openshift client version
@@ -45,7 +56,7 @@ spec:
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.7.1"
+      default: "4.8.0"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
@@ -123,7 +134,7 @@ spec:
       type: string
       description: Choose the name of cognos analytics instance.
       default: "ca-instance"
-    - name: cde-state
+    - name: dashboard-state
       type: string
       description: |
         Do you want to install cognos dashboards?
@@ -342,6 +353,30 @@ spec:
           ]
         }
       default: "small"
+    - name: mantaflow-state
+      type: string
+      description: |
+        Do you want to install MANTA Automated Lineage?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: mantaflow-size
+      type: string
+      description: |
+        Choose size of MANTA Automated Lineage installation. (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Small with min cpu","value": "small_mincpureq"},
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
+            {"text": "Large","value": "large"}
+          ]
+        }
+      default: "small"
     - name: match360-state
       type: string
       description: |
@@ -553,6 +588,127 @@ spec:
           ]
         }
       default: "xsmall"
+    - name: watsonx-ai-state
+      type: string
+      description: |
+        Do you want to install watsonx.ai?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-google-flan-t5-xxl-state
+      type: string
+      description: |
+        Do you want to install google-flan-t5-xxl llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-google-flan-ul2-state
+      type: string
+      description: |
+        Do you want to install google-flan-ul2 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-eleutherai-gpt-neox-20b-state
+      type: string
+      description: |
+        Do you want to install eleutherai-gpt-neox-20b llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-13b-chat-v1-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-13b-chat-v1 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-granite-13b-instruct-v1-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-13b-instruct-v1 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-meta-llama-llama-2-70b-chat-state
+      type: string
+      description: |
+        Do you want to install meta-llama-llama-2-70b-chat llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-mpt-7b-instruct2-state
+      type: string
+      description: |
+        Do you want to install ibm-mpt-7b-instruct2 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-bigscience-mt0-xxl-state
+      type: string
+      description: |
+        Do you want to install bigscience-mt0-xxl llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-bigcode-starcoder-state
+      type: string
+      description: |
+        Do you want to install bigcode-starcoder llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: watsonx-data-state
+      type: string
+      description: |
+        Do you want to install watsonx.data?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: wkc-state
       type: string
       description: |
@@ -613,17 +769,6 @@ spec:
       type: string
       description: |
         Do you want to enable fact sheet for wkc?
-        {
-          "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
-          ]
-        }
-      default: "False"
-    - name: wkc-options-enable-manta
-      type: string
-      description: |
-        Do you want to enable manta for wkc?
         {
           "options": [
             {"text": "No","value": "False", "default": "true"},
@@ -984,6 +1129,8 @@ spec:
                   ocp_version: '$(params.ocp-client-version)'
                   cluster_name: cpd-demo
                   domain_name: example.com
+                  gpu:
+                    install: $(params.configure-gpu)
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)
@@ -999,8 +1146,8 @@ spec:
 
                 cp4d:
                 - project: cpd
-                  openshift_cluster_name: cpd-demo
-                  cp4d_version: $(params.cp4d-version) 
+                  cp4d_version: $(params.cp4d-version)
+                  use_fs_iam: False
                   sequential_install: False
                   accept_licenses: True
                   cartridges:
@@ -1031,9 +1178,9 @@ spec:
                       metastore_ref: ca-metastore
                     state: $(params.ca-state)
 
-                  - name: cde
+                  - name: dashboard
                     description: Cognos Dashboards
-                    state: $(params.cde-state)
+                    state: $(params.dashboard-state)
 
                   - name: datagate
                     description: Db2 Data Gate
@@ -1070,12 +1217,12 @@ spec:
                   - name: db2
                     description: Db2 OLTP
                     size: $(params.db2-size)
-                    instances:
-                    - name: ca-metastore
-                      metadata_size_gb: 20
-                      data_size_gb: 20
-                      backup_size_gb: 20  
-                      transactionlog_size_gb: 20
+                    # instances:
+                    # - name: Db2
+                    #   metadata_size_gb: 20
+                    #   data_size_gb: 20
+                    #   backup_size_gb: 20  
+                    #   transactionlog_size_gb: 20
                     state: $(params.db2-state)
 
                   - name: db2wh
@@ -1084,6 +1231,8 @@ spec:
 
                   - name: dmc
                     description: Db2 Data Management Console
+                    instances:
+                    - name: data-management-console
                     state: $(params.dmc-state)
 
                   - name: dods
@@ -1114,13 +1263,13 @@ spec:
                     state: removed
                     instances:
                       - name: instance1
-                        version: "13.5"
+                        version: "15.4"
                         #type: Standard
                         #members: 1
                         #size_gb: 50
-                        #resource_request_cpu: 1000m
+                        #resource_request_cpu: 1
                         #resource_request_memory: 4Gi
-                        #resource_limit_cpu: 1000m
+                        #resource_limit_cpu: 1
                         #resource_limit_memory: 4Gi
 
                   - name: factsheet
@@ -1133,6 +1282,11 @@ spec:
                     size: $(params.hadoop-size)
                     state: $(params.hadoop-state)
 
+                  - name: mantaflow
+                    description: MANTA Automated Lineage
+                    size: $(params.mantaflow-size)
+                    state: $(params.mantaflow-state)
+
                   - name: match360
                     description: IBM Match 360
                     size: $(params.match360-size)
@@ -1141,6 +1295,8 @@ spec:
 
                   - name: openpages
                     description: OpenPages
+                    instances:
+                    - name: open-pages-cpd
                     state: $(params.openpages-state)
 
                   # For Planning Analytics, the case version is needed due to defect in olm utils
@@ -1171,16 +1327,22 @@ spec:
                   - name: watson-assistant
                     description: Watson Assistant
                     size: $(params.watson-assistant-size)
+                    # noobaa_account_secret: noobaa-admin
+                    # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-assistant-state)
 
                   - name: watson-discovery
                     description: Watson Discovery
+                    # noobaa_account_secret: noobaa-admin
+                    # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-discovery-state)
 
                   # For Watson Knowledge Studio, the case version is needed due to defect in olm utils
                   - name: watson-ks
                     description: Watson Knowledge Studio
                     size: $(params.watson-ks-size)
+                    # noobaa_account_secret: noobaa-admin
+                    # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-ks-state)
 
                   - name: watson-openscale
@@ -1194,6 +1356,33 @@ spec:
                     tts_size: $(params.watson-speech-tts-size)
                     state: $(params.watson-speech-state)
 
+                  - name: watsonx_ai
+                    description: watsonx.ai
+                    state: $(params.watsonx-ai-state)
+                    models:
+                    - model_id: google-flan-t5-xxl
+                      state: $(params.llm-google-flan-t5-xxl-state)
+                    - model_id: google-flan-ul2
+                      state: $(params.llm-google-flan-ul2-state)
+                    - model_id: eleutherai-gpt-neox-20b
+                      state: $(params.llm-eleutherai-gpt-neox-20b-state)
+                    - model_id: ibm-granite-13b-chat-v1
+                      state: $(params.llm-granite-13b-chat-v1-state)
+                    - model_id: ibm-granite-13b-instruct-v1
+                      state: $(params.llm-ibm-granite-13b-instruct-v1-state)
+                    - model_id: meta-llama-llama-2-70b-chat
+                      state: $(params.llm-meta-llama-llama-2-70b-chat-state)
+                    - model_id: ibm-mpt-7b-instruct2
+                      state: $(params.llm-ibm-mpt-7b-instruct2-state)
+                    - model_id: bigscience-mt0-xxl
+                      state: $(params.llm-bigscience-mt0-xxl-state)
+                    - model_id: bigcode-starcoder
+                      state: $(params.llm-bigcode-starcoder-state)
+
+                  - name: watsonx_data
+                    description: watsonx.data
+                    state: $(params.watsonx-data-state)
+
                   - name: wkc
                     description: Watson Knowledge Catalog
                     size: $(params.wkc-size)
@@ -1203,7 +1392,6 @@ spec:
                       enableKnowledgeGraph: $(params.wkc-options-knowledge-graph)
                       enableDataQuality: $(params.wkc-options-enable-data-quality)
                       enableFactSheet: $(params.wkc-options-enable-fact-sheet)
-                      enableMANTA: $(params.wkc-options-enable-manta)
 
                   - name: wml
                     description: Watson Machine Learning
@@ -1231,8 +1419,10 @@ spec:
                     - ibm-cpd-ws-runtime-222-py
                     - ibm-cpd-ws-runtime-py39gpu
                     - ibm-cpd-ws-runtime-222-pygpu
+                    - ibm-cpd-ws-runtime-231-pygpu
                     - ibm-cpd-ws-runtime-r36
                     - ibm-cpd-ws-runtime-222-r
+                    - ibm-cpd-ws-runtime-231-r
                     state: $(params.ws-runtimes-state)
 
                   # Cartridges where extra work is needed (will not install automatically)
@@ -1243,6 +1433,59 @@ spec:
                     size: small  
                     state: removed 
             EOF
+    - name: check-for-4-8-db2-patch
+      when:
+        - input: $(params.db2-state)
+          operator: notin
+          values: ["removed"]
+      retries: 3
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      timeout: 6h0m0s
+      runAfter:
+        - configure-cloud-paks-services
+      params:
+        - name: SCRIPT
+          value: |
+            echo "This patch is only to fix an error in 4.8.0 - 4.8.1 with DB2"
+            sleep 180
+
+            i=0
+            while true
+            do
+              # Check to see if the deployment exists and apply patch if it does
+              oc get -n cpd deployment/zen-databases
+              if [ $? -ne 0 ] ; then
+                echo "Still waiting for zen-databases deployment to exist"
+              else
+                echo "Deployment exists"
+                if [ $(oc get -n cpd deployment zen-databases -o yaml | yq '.spec.template.spec.containers.0.env.2.name') != "npm_config_cache" ] ; then
+                  oc patch deployment zen-databases -n cpd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/env/-", "value": {"name": "npm_config_cache", "value": "/tmp"}}]'
+                  echo "Deployment patched"
+                else
+                  echo "Deployment already patched"
+                fi
+                break
+              fi
+
+              # Check to make sure the job hasn't completed
+              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              did_fail=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | contains({"status": "'True'"})')
+              if [ $is_complete != "true" ] | [ $did_fail == "true" ] ; then
+                echo "$is_complete"
+                echo "$did_fail"
+                echo "Cloud Pak Deployer job is Complete and patch did not apply."
+                break
+              fi
+
+              ((i++))
+              sleep 60
+              if [[ "$i" == '300' ]]; then
+                echo "Deployment zen-databases not created within timeout limit"
+                break
+              fi
+            done
     - name: run-the-deployer
       taskRef:
         kind: Task
