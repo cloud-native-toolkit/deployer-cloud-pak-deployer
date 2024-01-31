@@ -1429,6 +1429,59 @@ spec:
                     size: small  
                     state: removed 
             EOF
+    - name: check-for-4-8-db2-patch
+      when:
+        - input: $(params.db2-state)
+          operator: notin
+          values: ["removed"]
+      retries: 3
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      timeout: 6h0m0s
+      runAfter:
+        - configure-cloud-paks-services
+      params:
+        - name: SCRIPT
+          value: |
+            echo "This patch is only to fix an error in 4.8.0 - 4.8.1 with DB2"
+            sleep 180
+
+            i=0
+            while true
+            do
+              # Check to see if the deployment exists and apply patch if it does
+              oc get -n cpd deployment/zen-databases
+              if [ $? -ne 0 ] ; then
+                echo "Still waiting for zen-databases deployment to exist"
+              else
+                echo "Deployment exists"
+                if [ $(oc get -n cpd deployment zen-databases -o yaml | yq '.spec.template.spec.containers.0.env.2.name') != "npm_config_cache" ] ; then
+                  oc patch deployment zen-databases -n cpd --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/env/-", "value": {"name": "npm_config_cache", "value": "/tmp"}}]'
+                  echo "Deployment patched"
+                else
+                  echo "Deployment already patched"
+                fi
+                break
+              fi
+
+              # Check to make sure the job hasn't completed
+              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              did_fail=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | contains({"status": "'True'"})')
+              if [ $is_complete != "true" ] | [ $did_fail == "true" ] ; then
+                echo "$is_complete"
+                echo "$did_fail"
+                echo "Cloud Pak Deployer job is Complete and patch did not apply."
+                break
+              fi
+
+              ((i++))
+              sleep 60
+              if [[ "$i" == '300' ]]; then
+                echo "Deployment zen-databases not created within timeout limit"
+                break
+              fi
+            done
     - name: run-the-deployer
       taskRef:
         kind: Task
