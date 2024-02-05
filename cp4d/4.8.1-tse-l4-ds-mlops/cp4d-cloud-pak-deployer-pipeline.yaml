@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer-4.8-ds-mlops
+  name: cloud-pak-deployer-4.8.1-ds-mlops
   annotations:
 spec:
   params:
@@ -52,11 +52,11 @@ spec:
     - name: ocp-client-version
       type: string
       description: Openshift client version
-      default: "4.12"
+      default: "4.14"
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.8.0"
+      default: "4.8.1"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images

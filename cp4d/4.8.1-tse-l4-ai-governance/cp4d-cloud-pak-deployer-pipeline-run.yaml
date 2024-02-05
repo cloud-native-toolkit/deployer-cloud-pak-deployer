@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  generateName: cloud-pak-deployer-4.8-ai-governance-run-
+  generateName: cloud-pak-deployer-4.8.1-ai-governance-run-
 spec:
   timeouts:
     pipeline: 6h0m0s
   pipelineRef:
-    name: cloud-pak-deployer-4.8-ai-governance
+    name: cloud-pak-deployer-4.8.1-ai-governance
   params:
     - name: namespace
       value: "cloud-pak-deployer"
