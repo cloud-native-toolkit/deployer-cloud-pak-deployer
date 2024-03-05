@@ -61,6 +61,28 @@ spec:
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
+    - name: cpd-sequential-install
+      type: string
+      description: |
+        Do you want to install components sequentially?
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
+    - name: cpd-use-fs-iam
+      type: string
+      description: |
+        Do you want to enable FS IAM?
+        {
+          "options": [
+            {"text": "Yes","value": "True", "default": "true"},
+            {"text": "No","value": "False"}
+          ]
+        }
+      default: "True"
 
     - name: scheduler-state
       type: string
@@ -906,11 +928,14 @@ spec:
         - name: SCRIPT
           value: |
             oc patch configmap/pipeline-output -p '{"data":{"Status":"Pipeline run failed. See Pipeline run for more details and consider running the pipeline again."}}'
-    - name: update-configmap-success
+    - name: update-configmap-success-no-iam
       when:
         - input: $(tasks.run-the-deployer.status)
           operator: in
           values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: notin
+          values: ["True"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -921,6 +946,27 @@ spec:
             echo "Console Route: $cpd_route"
             initial_admin_password=$(oc get secret admin-user-details -n cpd -o jsonpath='{.data.initial_admin_password}' | base64 -d)
             echo "Username: admin"
+            echo "Password: $initial_admin_password"
+
+            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
+    - name: update-configmap-success-iam
+      when:
+        - input: $(tasks.run-the-deployer.status)
+          operator: in
+          values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: in
+          values: ["True"]
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: SCRIPT
+          value: |
+            initial_admin_password=$(oc extract --namespace cpd secret/platform-auth-idp-credentials --keys=admin_password --to=-)
+            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
+            echo "Console Route: $cpd_route"
+            echo "Username: cpadmin"
             echo "Password: $initial_admin_password"
 
             oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
@@ -1148,7 +1194,8 @@ spec:
                 - project: cpd
                   openshift_cluster_name: cpd-demo
                   cp4d_version: $(params.cp4d-version) 
-                  sequential_install: False
+                  sequential_install: $(params.cpd-sequential-install)
+                  use_fs_iam: $(params.cpd-use-fs-iam)
                   accept_licenses: True
                   cartridges:
                   - name: cp-foundation
@@ -1505,7 +1552,7 @@ spec:
             do
               is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
               if [[ $is_complete != "true" ]]; then
-                echo "Waiting for job to be Complete."
+                echo "Waiting for job to be Complete. See cloud-pak-deployer pod's logs in project $(params.namespace) for more details."
               else
                 echo "Cloud Pak Deployer job is Complete."
                 break
@@ -1519,5 +1566,5 @@ spec:
                 exit 68
               fi
               
-              sleep 10
+              sleep 60
             done

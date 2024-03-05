@@ -18,6 +18,10 @@ spec:
       value: "4.8.3"
     - name: ibm-entitlement-key
       value: "false"
+    - name: cpd-sequential-install
+      value: "False"
+    - name: cpd-use-fs-iam
+      value: "True"
     # - name: ws-state
     #   value: "installed"
     # - name: wml-state
