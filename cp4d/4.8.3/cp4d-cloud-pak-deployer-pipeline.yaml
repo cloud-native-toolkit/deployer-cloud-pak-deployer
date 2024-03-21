@@ -665,10 +665,32 @@ spec:
           ]
         }
       default: "removed"
+    - name: llm-granite-13b-chat-v2-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-13b-chat-v2 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: llm-ibm-granite-13b-instruct-v1-state
       type: string
       description: |
         Do you want to install ibm-granite-13b-instruct-v1 llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-granite-13b-instruct-v2-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-13b-instruct-v2 llm?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -832,6 +854,62 @@ spec:
           ]
         }
       default: "small"
+    - name: watsonx-governance-state
+      type: string
+      description: |
+        Do you want to install watsonx governance?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: watsonx-gov-installType
+      type: string
+      description: |
+        Specify which watsonx.governance entitlement you purchased.
+        {
+          "options": [
+            {"text": "Both Model Management and Risk & Compliance Foundation entitlements","value": "all", "default": "true"},
+            {"text": "Just Model Management entitlement","value": "mm"},
+            {"text": "Just Risk and Compliance Foundation entitlement","value": "rcf"}
+          ]
+        }
+      default: "all"
+    - name: watsonx-gov-enableFactsheet
+      type: string
+      description: |
+        Do you want Factsheets enabled for watsonx governance installation? (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Yes","value": "true", "default": "true"},
+            {"text": "No","value": "false"}
+          ]
+        }
+      default: "true"
+    - name: watsonx-gov-enableOpenpages
+      type: string
+      description: |
+        Do you want OpenPages enabled for watsonx governance installation? (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Yes","value": "true", "default": "true"},
+            {"text": "No","value": "false"}
+          ]
+        }
+      default: "true"
+    - name: watsonx-gov-enableOpenscale
+      type: string
+      description: |
+        Do you want OpenScale enabled for watsonx governance installation? (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Yes","value": "true", "default": "true"},
+            {"text": "No","value": "false"}
+          ]
+        }
+      default: "true"
     - name: wml-state
       type: string
       description: |
@@ -1411,8 +1489,12 @@ spec:
                       state: $(params.llm-eleutherai-gpt-neox-20b-state)
                     - model_id: ibm-granite-13b-chat-v1
                       state: $(params.llm-granite-13b-chat-v1-state)
+                    - model_id: ibm-granite-13b-chat-v2
+                      state: $(params.llm-granite-13b-chat-v2-state)
                     - model_id: ibm-granite-13b-instruct-v1
                       state: $(params.llm-ibm-granite-13b-instruct-v1-state)
+                    - model_id: ibm-granite-13b-instruct-v2
+                      state: $(params.llm-ibm-granite-13b-instruct-v2-state)
                     - model_id: meta-llama-llama-2-70b-chat
                       state: $(params.llm-meta-llama-llama-2-70b-chat-state)
                     - model_id: ibm-mpt-7b-instruct2
@@ -1425,6 +1507,15 @@ spec:
                   - name: watsonx_data
                     description: watsonx.data
                     state: $(params.watsonx-data-state)
+
+                  - name: watsonx_governance
+                    description: watsonx.governance
+                    state: $(params.watsonx-governance-state)
+                    installation_options:
+                      installType: $(params.watsonx-gov-installType)
+                      enableFactsheet: $(params.watsonx-gov-enableFactsheet)
+                      enableOpenpages: $(params.watsonx-gov-enableOpenpages)
+                      enableOpenscale: $(params.watsonx-gov-enableOpenscale)
 
                   - name: wkc
                     description: Watson Knowledge Catalog
