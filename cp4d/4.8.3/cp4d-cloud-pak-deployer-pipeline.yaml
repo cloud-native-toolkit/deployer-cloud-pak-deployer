@@ -527,6 +527,10 @@ spec:
           ]
         }
       default: "removed"
+    - name: watson-discovery-instance
+      type: string
+      description: Choose the name of Watson Discovery instance.
+      default: "wd-instance"
     - name: watson-ks-state
       type: string
       description: |
@@ -1047,7 +1051,7 @@ spec:
             echo "Username: cpadmin"
             echo "Password: $initial_admin_password"
 
-            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
+            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"cpadmin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
   tasks:
     - name: add-namespace
       retries: 3
@@ -1457,6 +1461,9 @@ spec:
                     # noobaa_account_secret: noobaa-admin
                     # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-discovery-state)
+                    instances:
+                    - name: $(params.watson-discovery-instance)
+                      description: "Watson Discovery instance"
 
                   # For Watson Knowledge Studio, the case version is needed due to defect in olm utils
                   - name: watson-ks
