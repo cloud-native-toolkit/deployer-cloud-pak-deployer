@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer-4.8.3-data-governance
+  name: cloud-pak-deployer-4.8.x-tse-l4-base
   annotations:
 spec:
   params:
@@ -56,7 +56,7 @@ spec:
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.8.3"
+      default: "4.8.4"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images

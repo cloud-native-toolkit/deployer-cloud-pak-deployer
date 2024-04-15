@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: cloud-pak-deployer-4.8.x-run-
+spec:
+  timeouts:
+    pipeline: 6h0m0s
+  pipelineRef:
+    name: cloud-pak-deployer-4.8.x
+  params:
+    - name: namespace
+      value: "cloud-pak-deployer"
+    - name: storage-class
+      value: "ocs-storagecluster-cephfs"
+    - name: ocp-client-version
+      value: "4.14"
+    - name: cp4d-version
+      value: "4.8.4"
+    - name: ibm-entitlement-key
+      value: "false"
+    - name: cpd-sequential-install
+      value: "False"
+    - name: cpd-use-fs-iam
+      value: "True"
+    # - name: ws-state
+    #   value: "installed"
+    # - name: wml-state
+    #   value: "installed"
+    # - name: watsonx-ai-state
+    #   value: "installed"
