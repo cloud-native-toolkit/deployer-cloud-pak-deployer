@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer-4.8.3-data-governance
+  name: cloud-pak-deployer-4.8.x
   annotations:
 spec:
   params:
@@ -56,11 +56,33 @@ spec:
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
-      default: "4.8.3"
+      default: "4.8.4"
     - name: ibm-entitlement-key
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
+    - name: cpd-sequential-install
+      type: string
+      description: |
+        Do you want to install components sequentially?
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
+    - name: cpd-use-fs-iam
+      type: string
+      description: |
+        Do you want to enable FS IAM?
+        {
+          "options": [
+            {"text": "Yes","value": "True", "default": "true"},
+            {"text": "No","value": "False"}
+          ]
+        }
+      default: "True"
 
     - name: scheduler-state
       type: string
@@ -505,6 +527,10 @@ spec:
           ]
         }
       default: "removed"
+    - name: watson-discovery-instance
+      type: string
+      description: Choose the name of Watson Discovery instance.
+      default: "wd-instance"
     - name: watson-ks-state
       type: string
       description: |
@@ -986,11 +1012,14 @@ spec:
         - name: SCRIPT
           value: |
             oc patch configmap/pipeline-output -p '{"data":{"Status":"Pipeline run failed. See Pipeline run for more details and consider running the pipeline again."}}'
-    - name: update-configmap-success
+    - name: update-configmap-success-no-iam
       when:
         - input: $(tasks.run-the-deployer.status)
           operator: in
           values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: notin
+          values: ["True"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1004,6 +1033,27 @@ spec:
             echo "Password: $initial_admin_password"
 
             oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
+    - name: update-configmap-success-iam
+      when:
+        - input: $(tasks.run-the-deployer.status)
+          operator: in
+          values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: in
+          values: ["True"]
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: SCRIPT
+          value: |
+            initial_admin_password=$(oc extract --namespace cpd secret/platform-auth-idp-credentials --keys=admin_password --to=-)
+            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
+            echo "Console Route: $cpd_route"
+            echo "Username: cpadmin"
+            echo "Password: $initial_admin_password"
+
+            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"cpadmin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
   tasks:
     - name: add-namespace
       retries: 3
@@ -1226,9 +1276,10 @@ spec:
 
                 cp4d:
                 - project: cpd
-                  cp4d_version: $(params.cp4d-version)
-                  use_fs_iam: False
-                  sequential_install: False
+                  openshift_cluster_name: cpd-demo
+                  cp4d_version: $(params.cp4d-version) 
+                  sequential_install: $(params.cpd-sequential-install)
+                  use_fs_iam: $(params.cpd-use-fs-iam)
                   accept_licenses: True
                   cartridges:
                   - name: cp-foundation
@@ -1297,12 +1348,12 @@ spec:
                   - name: db2
                     description: Db2 OLTP
                     size: $(params.db2-size)
-                    # instances:
-                    # - name: Db2
-                    #   metadata_size_gb: 20
-                    #   data_size_gb: 20
-                    #   backup_size_gb: 20  
-                    #   transactionlog_size_gb: 20
+                    instances:
+                    - name: ca-metastore
+                      metadata_size_gb: 20
+                      data_size_gb: 20
+                      backup_size_gb: 20  
+                      transactionlog_size_gb: 20
                     state: $(params.db2-state)
 
                   - name: db2wh
@@ -1311,8 +1362,6 @@ spec:
 
                   - name: dmc
                     description: Db2 Data Management Console
-                    instances:
-                    - name: data-management-console
                     state: $(params.dmc-state)
 
                   - name: dods
@@ -1414,6 +1463,9 @@ spec:
                     # noobaa_account_secret: noobaa-admin
                     # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-discovery-state)
+                    instances:
+                    - name: $(params.watson-discovery-instance)
+                      description: "Watson Discovery instance"
 
                   # For Watson Knowledge Studio, the case version is needed due to defect in olm utils
                   - name: watson-ks
@@ -1600,7 +1652,7 @@ spec:
             do
               is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
               if [[ $is_complete != "true" ]]; then
-                echo "Waiting for job to be Complete."
+                echo "Waiting for job to be Complete. See cloud-pak-deployer pod's logs in project $(params.namespace) for more details."
               else
                 echo "Cloud Pak Deployer job is Complete."
                 break
@@ -1614,5 +1666,5 @@ spec:
                 exit 68
               fi
               
-              sleep 10
+              sleep 60
             done

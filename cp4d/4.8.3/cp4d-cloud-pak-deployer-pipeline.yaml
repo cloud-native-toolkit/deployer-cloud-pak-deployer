@@ -975,17 +975,19 @@ spec:
           ]
         }
       default: "removed"
-    - name: ws-pipelines-state
-      type: string
-      description: |
-        Do you want to install watson studio pipelines?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed" }
-          ]
-        }
-      default: "removed"
+    # IMPORTANT: WS PIPELINES CANNOT BE INSTALLED IN A CLUSTER THAT ALSO HAS OPENSHIFT PIPELINES.
+    # BECAUSE OPENSHIFT PIPELINES IS NECESSARY FOR DEPLOYER, WS PIPELINES CANNOT BE INSTALLED
+    # - name: ws-pipelines-state
+    #   type: string
+    #   description: |
+    #     Do you want to install watson studio pipelines?
+    #     {
+    #       "options": [
+    #         {"text": "No","value": "removed", "default": "true"},
+    #         {"text": "Yes","value": "installed" }
+    #       ]
+    #     }
+    #   default: "removed"
     - name: ws-runtimes-state
       type: string
       description: |
@@ -1551,7 +1553,7 @@ spec:
 
                   - name: ws-pipelines
                     description: Watson Studio Pipelines
-                    state: $(params.ws-pipelines-state)
+                    state: removed
                   
                   - name: ws-runtimes
                     description: Watson Studio Runtimes
