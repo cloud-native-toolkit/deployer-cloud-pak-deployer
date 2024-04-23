@@ -22,15 +22,15 @@ spec:
       value: "False"
     - name: cpd-use-fs-iam
       value: "True"
-    - name: ws-state
-      value: "installed"
-    - name: wml-state
-      value: "installed"
-    - name: watsonx-orchestrate-state
-      value: "installed"
-    - name: watson-discovery-state
-      value: "installed"
-    - name: watsonx-data-state
-      value: "installed"
-    - name: watsonx-assistant-state
-      value: "installed"
+    # - name: ws-state
+    #   value: "installed"
+    # - name: wml-state
+    #   value: "installed"
+    # - name: watsonx-orchestrate-state
+    #   value: "installed"
+    # - name: watson-discovery-state
+    #   value: "installed"
+    # - name: watsonx-data-state
+    #   value: "installed"
+    # - name: watsonx-assistant-state
+    #   value: "installed"
