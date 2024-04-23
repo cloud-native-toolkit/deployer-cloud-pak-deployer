@@ -4,7 +4,7 @@ metadata:
   generateName: cloud-pak-deployer-4.8.x-run-
 spec:
   timeouts:
-    pipeline: 6h0m0s
+    pipeline: 8h0m0s
   pipelineRef:
     name: cloud-pak-deployer-4.8.x
   params:
@@ -22,9 +22,15 @@ spec:
       value: "False"
     - name: cpd-use-fs-iam
       value: "True"
-    # - name: ws-state
-    #   value: "installed"
-    # - name: wml-state
-    #   value: "installed"
-    # - name: watsonx-ai-state
-    #   value: "installed"
+    - name: ws-state
+      value: "installed"
+    - name: wml-state
+      value: "installed"
+    - name: watsonx-orchestrate-state
+      value: "installed"
+    - name: watson-discovery-state
+      value: "installed"
+    - name: watsonx-data-state
+      value: "installed"
+    - name: watsonx-assistant-state
+      value: "installed"
