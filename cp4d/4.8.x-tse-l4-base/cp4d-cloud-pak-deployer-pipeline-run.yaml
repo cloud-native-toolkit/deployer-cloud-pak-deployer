@@ -18,29 +18,31 @@ spec:
       value: "4.8.4"
     - name: ibm-entitlement-key
       value: "false"
-    # - name: analyticsengine-state
-    #   value: "installed"
-    # - name: dashboard-state
-    #   value: "installed"
-    # - name: datastage-ent-plus-state
-    #   value: "installed"
-    # - name: db2-state
-    #   value: "installed"
-    # - name: dmc-state
-    #   value: "installed"
-    # - name: dp-state
-    #   value: "installed"
-    # - name: dv-state
-    #   value: "installed"
-    # - name: mantaflow-state
-    #   value: "installed"
-    # - name: wkc-state
-    #   value: "installed"
-    # - name: wkc-options-core-only
-    #   value: "True"
-    # - name: wkc-options-knowledge-graph
-    #   value: "True"
-    # - name: wkc-options-enable-data-quality
-    #   value: "True"
-    # - name: watsonx-orchestrate-state
-    #   value: "installed"
+    - name: analyticsengine-state
+      value: "installed"
+    - name: dashboard-state
+      value: "installed"
+    - name: datastage-ent-plus-state
+      value: "installed"
+    - name: db2-state
+      value: "installed"
+    - name: dmc-state
+      value: "installed"
+    - name: dp-state
+      value: "installed"
+    - name: dv-state
+      value: "installed"
+    - name: mantaflow-state
+      value: "installed"
+    - name: wkc-state
+      value: "installed"
+    - name: wkc-options-core-only
+      value: "True"
+    - name: wkc-options-knowledge-graph
+      value: "True"
+    - name: wkc-options-enable-data-quality
+      value: "True"
+    - name: watsonx-orchestrate-state
+      value: "installed"
+    - name: watsonx-assistant-state
+      value: "installed"
