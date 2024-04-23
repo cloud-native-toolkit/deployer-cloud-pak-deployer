@@ -44,3 +44,5 @@ spec:
     #   value: "True"
     # - name: watsonx-orchestrate-state
     #   value: "installed"
+    # - name: watsonx-assistant-state
+    #   value: "installed"
