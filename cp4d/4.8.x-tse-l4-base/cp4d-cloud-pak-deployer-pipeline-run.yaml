@@ -4,7 +4,7 @@ metadata:
   generateName: cloud-pak-deployer-4.8.x-tse-l4-base
 spec:
   timeouts:
-    pipeline: 6h0m0s
+    pipeline: 8h0m0s
   pipelineRef:
     name: cloud-pak-deployer-4.8.x-tse-l4-base
   params:
@@ -18,27 +18,29 @@ spec:
       value: "4.8.4"
     - name: ibm-entitlement-key
       value: "false"
-    # - name: analyticsengine-state
-    #   value: "installed"
-    # - name: dashboard-state
-    #   value: "installed"
-    # - name: datastage-ent-plus-state
-    #   value: "installed"
-    # - name: db2-state
-    #   value: "installed"
-    # - name: dmc-state
-    #   value: "installed"
-    # - name: dp-state
-    #   value: "installed"
-    # - name: dv-state
-    #   value: "installed"
-    # - name: mantaflow-state
-    #   value: "installed"
-    # - name: wkc-state
-    #   value: "installed"
-    # - name: wkc-options-core-only
-    #   value: "True"
-    # - name: wkc-options-knowledge-graph
-    #   value: "True"
-    # - name: wkc-options-enable-data-quality
-    #   value: "True"
+    - name: analyticsengine-state
+      value: "installed"
+    - name: dashboard-state
+      value: "installed"
+    - name: datastage-ent-plus-state
+      value: "installed"
+    - name: db2-state
+      value: "installed"
+    - name: dmc-state
+      value: "installed"
+    - name: dp-state
+      value: "installed"
+    - name: dv-state
+      value: "installed"
+    - name: mantaflow-state
+      value: "installed"
+    - name: wkc-state
+      value: "installed"
+    - name: wkc-options-core-only
+      value: "True"
+    - name: wkc-options-knowledge-graph
+      value: "True"
+    - name: wkc-options-enable-data-quality
+      value: "True"
+    - name: watsonx-orchestrate-state
+      value: "installed"

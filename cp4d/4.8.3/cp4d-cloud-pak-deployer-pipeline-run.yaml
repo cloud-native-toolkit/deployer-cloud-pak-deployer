@@ -4,7 +4,7 @@ metadata:
   generateName: cloud-pak-deployer-4.8.3-run-
 spec:
   timeouts:
-    pipeline: 6h0m0s
+    pipeline: 8h0m0s
   pipelineRef:
     name: cloud-pak-deployer-4.8.3
   params:

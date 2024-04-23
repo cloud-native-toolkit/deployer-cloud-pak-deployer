@@ -61,6 +61,10 @@ spec:
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
+    - name: cpd-confirm-destroy
+      type: string
+      description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
+      default: "True"
     - name: cpd-sequential-install
       type: string
       description: |
@@ -245,6 +249,10 @@ spec:
           ]
         }
       default: "removed"
+    - name: dmc-instance
+      type: string
+      description: Provide name of the data management console instance.
+      default: "data-management-console"
     - name: dods-state
       type: string
       description: |
@@ -478,6 +486,17 @@ spec:
           ]
         }
       default: "removed"
+    - name: syntheticdata-state
+      type: string
+      description: |
+        Do you want to install Synthetic Data Generator?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: voice-gateway-state
       type: string
       description: |
@@ -493,10 +512,10 @@ spec:
       type: string
       description: Provide number of voice gateway replicas.
       default: "1"
-    - name: watson-assistant-state
+    - name: watsonx-assistant-state
       type: string
       description: |
-        Do you want to install watson assistant.
+        Do you want to install watsonx assistant.
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -504,10 +523,10 @@ spec:
           ]
         }
       default: "removed"
-    - name: watson-assistant-size
+    - name: watsonx-assistant-size
       type: string
       description: |
-        Choose size of watson assistant installation. (only applied if component is installed)
+        Choose size of watsonx assistant installation. (only applied if component is installed)
         {
           "options": [
             {"text": "Small","value": "small", "default": "true"},
@@ -516,6 +535,10 @@ spec:
           ]
         }
       default: "small"
+    - name: wa-instance
+      type: string
+      description: Choose the name of Watsonx Assistant instance.
+      default: "wa-instance"
     - name: watson-discovery-state
       type: string
       description: |
@@ -735,10 +758,87 @@ spec:
           ]
         }
       default: "removed"
+    - name: llm-codellama-codellama-34b-instruct-hf-state
+      type: string
+      description: |
+        Do you want to install codellama-codellama-34b-instruct-hf?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-elyza-japanese-llama-2-7b-instruct-state
+      type: string
+      description: |
+        Do you want to install elyza-japanese-llama-2-7b-instruct?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-mistralai-mixtral-8x7b-instruct-v01-q-state
+      type: string
+      description: |
+        Do you want to install ibm-mistralai-mixtral-8x7b-instruct-v01-q?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: llm-bigcode-starcoder-state
       type: string
       description: |
         Do you want to install bigcode-starcoder llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-granite-8b-japanese-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-8b-japanese llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-granite-20b-multilingual-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-20b-multilingual llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-meta-llama-llama-2-13b-chat-state
+      type: string
+      description: |
+        Do you want to install meta-llama-llama-2-13b-chat llm?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-google-flan-t5-xl-state
+      type: string
+      description: |
+        Do you want to install google-flan-t5-xl llm?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -824,6 +924,17 @@ spec:
           ]
         }
       default: "False"
+    - name: watsonx-orchestrate-state
+      type: string
+      description: |
+        Do you want to install watsonx orchestrate?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
     - name: planning-analytics-state
       type: string
       description: |
@@ -1252,7 +1363,7 @@ spec:
                 global_config:
                   environment_name: demo
                   cloud_platform: existing-ocp
-                  confirm_destroy: True
+                  confirm_destroy: $(params.cpd-confirm-destroy)
 
                 openshift:
                 - name: cpd-demo
@@ -1363,6 +1474,11 @@ spec:
                   - name: dmc
                     description: Db2 Data Management Console
                     state: $(params.dmc-state)
+                    instances:
+                    - name: $(params.dmc-instance)
+                      description: Data Management Console
+                      size: medium
+                      storage_size_gb: 50
 
                   - name: dods
                     description: Decision Optimization
@@ -1445,6 +1561,10 @@ spec:
                   - name: spss
                     description: SPSS Modeler
                     state: $(params.spss-state)
+                  
+                  - name: syntheticdata
+                    description: Synthetic Data Generator
+                    state: $(params.syntheticdata-state)
 
                   - name: voice-gateway
                     description: Voice Gateway
@@ -1452,11 +1572,14 @@ spec:
                     state: $(params.voice-gateway-state)
 
                   - name: watson-assistant
-                    description: Watson Assistant
-                    size: $(params.watson-assistant-size)
+                    description: Watsonx Assistant
+                    size: $(params.watsonx-assistant-size)
                     # noobaa_account_secret: noobaa-admin
                     # noobaa_cert_secret: noobaa-s3-serving-cert
-                    state: $(params.watson-assistant-state)
+                    state: $(params.watsonx-assistant-state)
+                    instances:
+                    - name: $(params.wa-instance)
+                      description: "Watsonx Assistant instance"
 
                   - name: watson-discovery
                     description: Watson Discovery
@@ -1494,6 +1617,8 @@ spec:
                       state: $(params.llm-google-flan-t5-xxl-state)
                     - model_id: google-flan-ul2
                       state: $(params.llm-google-flan-ul2-state)
+                    - model_id: google-flan-t5-xl
+                      state: $(params.llm-google-flan-t5-xl-state)
                     - model_id: eleutherai-gpt-neox-20b
                       state: $(params.llm-eleutherai-gpt-neox-20b-state)
                     - model_id: ibm-granite-13b-chat-v1
@@ -1504,14 +1629,26 @@ spec:
                       state: $(params.llm-ibm-granite-13b-instruct-v1-state)
                     - model_id: ibm-granite-13b-instruct-v2
                       state: $(params.llm-ibm-granite-13b-instruct-v2-state)
+                    - model_id: ibm-granite-8b-japanese
+                      state: $(params.llm-ibm-granite-8b-japanese-state)
+                    - model_id: ibm-granite-20b-multilingual
+                      state: $(params.llm-ibm-granite-20b-multilingual-state)
                     - model_id: meta-llama-llama-2-70b-chat
                       state: $(params.llm-meta-llama-llama-2-70b-chat-state)
+                    - model_id: meta-llama-llama-2-13b-chat
+                      state: $(params.llm-meta-llama-llama-2-13b-chat-state)
                     - model_id: ibm-mpt-7b-instruct2
                       state: $(params.llm-ibm-mpt-7b-instruct2-state)
                     - model_id: bigscience-mt0-xxl
                       state: $(params.llm-bigscience-mt0-xxl-state)
                     - model_id: bigcode-starcoder
                       state: $(params.llm-bigcode-starcoder-state)
+                    - model_id: codellama-codellama-34b-instruct-hf
+                      state: $(params.llm-codellama-codellama-34b-instruct-hf-state)
+                    - model_id: elyza-japanese-llama-2-7b-instruct
+                      state: $(params.llm-elyza-japanese-llama-2-7b-instruct-state)
+                    - model_id: ibm-mistralai-mixtral-8x7b-instruct-v01-q
+                      state: $(params.llm-ibm-mistralai-mixtral-8x7b-instruct-v01-q-state)
 
                   - name: watsonx_data
                     description: watsonx.data
@@ -1525,6 +1662,10 @@ spec:
                       enableFactsheet: $(params.watsonx-gov-enableFactsheet)
                       enableOpenpages: $(params.watsonx-gov-enableOpenpages)
                       enableOpenscale: $(params.watsonx-gov-enableOpenscale)
+
+                  - name: watsonx_orchestrate
+                    description: watsonx.orchestrate
+                    state: $(params.watsonx-orchestrate-state)
 
                   - name: wkc
                     description: Watson Knowledge Catalog
