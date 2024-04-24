@@ -46,3 +46,19 @@ spec:
     #   value: "installed"
     # - name: watsonx-assistant-state
     #   value: "installed"
+    # - name: watsonx-governance-state
+    #   value: "installed"
+    # - name: watsonx-gov-installType
+    #   value: "all"
+    # - name: watsonx-gov-enableFactsheet
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenpages
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenscale
+    #   value: "true"
+    # - name: ws-state
+    #   value: "installed"
+    # - name: wml-state
+    #   value: "installed"
+    # - name: cpd-confirm-destroy
+    #   value: "False"
