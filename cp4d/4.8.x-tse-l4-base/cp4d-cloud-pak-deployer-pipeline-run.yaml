@@ -18,6 +18,8 @@ spec:
       value: "4.8.4"
     - name: ibm-entitlement-key
       value: "false"
+    - name: cpd-use-fs-iam
+      value: "False"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: dashboard-state
@@ -61,6 +63,4 @@ spec:
     # - name: wml-state
     #   value: "installed"
     # - name: cpd-confirm-destroy
-    #   value: "False"
-    # - name: cpd-use-fs-iam
     #   value: "False"
