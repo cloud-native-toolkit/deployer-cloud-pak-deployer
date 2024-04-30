@@ -38,17 +38,10 @@ spec:
           ]
         }
       default: "auto"
-    - name: configure-gpu
+    - name: cloud-pak-deployer-version
       type: string
-      description: |
-        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
-        {
-          "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
-          ]
-        }
-      default: "False"
+      description: The Cloud Pak Deployer version you want to use for the deployment
+      default: "latest"
     - name: ocp-client-version
       type: string
       description: Openshift client version
@@ -618,6 +611,17 @@ spec:
           ]
         }
       default: "xsmall"
+    - name: configure-gpu
+      type: string
+      description: |
+        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
     - name: watsonx-ai-state
       type: string
       description: |
@@ -1730,7 +1734,7 @@ spec:
                 spec:
                   containers:
                   - name: cloud-pak-deployer
-                    image: quay.io/cloud-pak-deployer/cloud-pak-deployer:v2.6.5
+                    image: quay.io/cloud-pak-deployer/cloud-pak-deployer:$(params.cloud-pak-deployer-version)
                     imagePullPolicy: Always
                     terminationMessagePath: /dev/termination-log
                     terminationMessagePolicy: File
