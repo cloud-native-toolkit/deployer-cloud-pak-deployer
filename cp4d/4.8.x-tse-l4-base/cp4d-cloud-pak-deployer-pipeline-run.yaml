@@ -20,6 +20,8 @@ spec:
       value: "false"
     - name: cpd-use-fs-iam
       value: "False"
+    - name: cloud-pak-deployer-version
+      value: "v2.6.5"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: dashboard-state
