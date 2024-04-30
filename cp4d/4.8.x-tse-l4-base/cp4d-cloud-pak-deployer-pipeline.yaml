@@ -65,6 +65,17 @@ spec:
       type: string
       description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
       default: "True"
+    - name: cpd-use-fs-iam
+      type: string
+      description: |
+        Do you want to enable FS IAM?
+        {
+          "options": [
+            {"text": "Yes","value": "True", "default": "true"},
+            {"text": "No","value": "False"}
+          ]
+        }
+      default: "True"
 
     - name: scheduler-state
       type: string
@@ -1093,11 +1104,14 @@ spec:
         - name: SCRIPT
           value: |
             oc patch configmap/pipeline-output -p '{"data":{"Status":"Pipeline run failed. See Pipeline run for more details and consider running the pipeline again."}}'
-    - name: update-configmap-success
+    - name: update-configmap-success-no-iam
       when:
         - input: $(tasks.run-the-deployer.status)
           operator: in
           values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: notin
+          values: ["True"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1111,6 +1125,27 @@ spec:
             echo "Password: $initial_admin_password"
 
             oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"admin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
+    - name: update-configmap-success-iam
+      when:
+        - input: $(tasks.run-the-deployer.status)
+          operator: in
+          values: ["Succeeded"]
+        - input: $(params.cpd-use-fs-iam)
+          operator: in
+          values: ["True"]
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      params:
+        - name: SCRIPT
+          value: |
+            initial_admin_password=$(oc extract --namespace cpd secret/platform-auth-idp-credentials --keys=admin_password --to=-)
+            cpd_route=$(oc get route cpd -n cpd --template='{{ .spec.host }}')
+            echo "Console Route: $cpd_route"
+            echo "Username: cpadmin"
+            echo "Password: $initial_admin_password"
+
+            oc patch configmap/pipeline-output -p "{\"data\":{\"Status\":\"Pipeline run Successful\",\"CP4D-Console-Route\":\"${cpd_route}\",\"CP4D-Initial-Admin-Username\":\"cpadmin\",\"CP4D-Initial-Admin-Password\":\"${initial_admin_password}\"}}"
   tasks:
     - name: add-namespace
       retries: 3
@@ -1334,7 +1369,7 @@ spec:
                 cp4d:
                 - project: cpd
                   cp4d_version: $(params.cp4d-version)
-                  use_fs_iam: False
+                  use_fs_iam: $(params.cpd-use-fs-iam)
                   sequential_install: False
                   accept_licenses: True
                   cartridges:

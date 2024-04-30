@@ -22,15 +22,47 @@ spec:
       value: "False"
     - name: cpd-use-fs-iam
       value: "True"
+    # - name: analyticsengine-state
+    #   value: "installed"
+    # - name: dashboard-state
+    #   value: "installed"
+    # - name: datastage-ent-plus-state
+    #   value: "installed"
+    # - name: db2-state
+    #   value: "installed"
+    # - name: dmc-state
+    #   value: "installed"
+    # - name: dp-state
+    #   value: "installed"
+    # - name: dv-state
+    #   value: "installed"
+    # - name: mantaflow-state
+    #   value: "installed"
+    # - name: wkc-state
+    #   value: "installed"
+    # - name: wkc-options-core-only
+    #   value: "True"
+    # - name: wkc-options-knowledge-graph
+    #   value: "True"
+    # - name: wkc-options-enable-data-quality
+    #   value: "True"
+    # - name: watsonx-orchestrate-state
+    #   value: "installed"
+    # - name: watsonx-assistant-state
+    #   value: "installed"
+    # - name: watsonx-governance-state
+    #   value: "installed"
+    # - name: watsonx-gov-installType
+    #   value: "all"
+    # - name: watsonx-gov-enableFactsheet
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenpages
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenscale
+    #   value: "true"
     # - name: ws-state
     #   value: "installed"
     # - name: wml-state
     #   value: "installed"
-    # - name: watsonx-orchestrate-state
-    #   value: "installed"
-    # - name: watson-discovery-state
-    #   value: "installed"
-    # - name: watsonx-data-state
-    #   value: "installed"
-    # - name: watsonx-assistant-state
-    #   value: "installed"
+    # - name: cpd-confirm-destroy
+    #   value: "False"
