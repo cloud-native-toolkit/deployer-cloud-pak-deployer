@@ -1,0 +1,68 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: cloud-pak-deployer-5.0.x-tse-l4-base-run-
+spec:
+  timeouts:
+    pipeline: 8h0m0s
+  pipelineRef:
+    name: cloud-pak-deployer-5.0.x-tse-l4-base
+  params:
+    - name: namespace
+      value: "cloud-pak-deployer"
+    - name: storage-class
+      value: "ocs-storagecluster-cephfs"
+    - name: ocp-client-version
+      value: "4.14"
+    - name: cp4d-version
+      value: "5.0.0"
+    - name: ibm-entitlement-key
+      value: "false"
+    - name: cpd-use-fs-iam
+      value: "False"
+    - name: cloud-pak-deployer-version
+      value: "v2.6.5"
+    # - name: analyticsengine-state
+    #   value: "installed"
+    # - name: dashboard-state
+    #   value: "installed"
+    # - name: datastage-ent-plus-state
+    #   value: "installed"
+    # - name: db2-state
+    #   value: "installed"
+    # - name: dmc-state
+    #   value: "installed"
+    # - name: dp-state
+    #   value: "installed"
+    # - name: dv-state
+    #   value: "installed"
+    # - name: mantaflow-state
+    #   value: "installed"
+    # - name: wkc-state
+    #   value: "installed"
+    # - name: wkc-options-core-only
+    #   value: "True"
+    # - name: wkc-options-knowledge-graph
+    #   value: "True"
+    # - name: wkc-options-enable-data-quality
+    #   value: "True"
+    # - name: watsonx-orchestrate-state
+    #   value: "installed"
+    # - name: watsonx-assistant-state
+    #   value: "installed"
+    # - name: watsonx-governance-state
+    #   value: "installed"
+    # - name: watsonx-gov-installType
+    #   value: "all"
+    # - name: watsonx-gov-enableFactsheet
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenpages
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenscale
+    #   value: "true"
+    # - name: ws-state
+    #   value: "installed"
+    # - name: wml-state
+    #   value: "installed"
+    # - name: cpd-confirm-destroy
+    #   value: "False"
