@@ -617,6 +617,17 @@ spec:
           ]
         }
       default: "xsmall"
+    - name: install-openshift-ai
+      type: string
+      description: |
+        Install the OpenShift AI operator and configure it for CP4D.
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
     - name: configure-gpu
       type: string
       description: |
@@ -1438,6 +1449,9 @@ spec:
                   ocp_version: '$(params.ocp-client-version)'
                   cluster_name: cpd-demo
                   domain_name: example.com
+                  openshift_ai:
+                    install: $(params.install-openshift-ai)
+                    channel: fast
                   gpu:
                     install: $(params.configure-gpu)
                   openshift_storage:
