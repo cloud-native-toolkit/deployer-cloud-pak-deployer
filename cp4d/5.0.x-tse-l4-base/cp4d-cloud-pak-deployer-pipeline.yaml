@@ -1863,7 +1863,7 @@ spec:
             do
               is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
               if [[ $is_complete != "true" ]]; then
-                echo "Waiting for job to be Complete."
+                echo "Waiting for job to be Complete. See cloud-pak-deployer pod's logs in project cloud-pak-deployer for more details."
               else
                 echo "Cloud Pak Deployer job is Complete."
                 break
