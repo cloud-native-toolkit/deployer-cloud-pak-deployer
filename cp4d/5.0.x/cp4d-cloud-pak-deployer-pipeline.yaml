@@ -1465,6 +1465,8 @@ spec:
                 podman login cp.icr.io --username cp --password $(params.ibm-entitlement-key)
               else
                 echo "techzone key - $(params.tz-ibm-entitlement-key)"
+                echo "testing key for cp.icr.io"
+                podman login cp.icr.io --username cp --password $(params.tz-ibm-entitlement-key)
                 printf "$(params.tz-ibm-entitlement-key)" | tee $(results.key.path)
               fi
       runAfter:
