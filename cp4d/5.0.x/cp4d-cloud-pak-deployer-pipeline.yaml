@@ -939,7 +939,7 @@ spec:
     - name: wkc-state
       type: string
       description: |
-        Do you want to install watson knowledge catalog?
+        Do you want to install IBM Knowledge Catalog?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -959,17 +959,6 @@ spec:
           ]
         }
       default: "small"
-    - name: wkc-options-core-only
-      type: string
-      description: |
-        Do you want to install core wkc only? (only applied if wkc is installed)
-        {
-          "options": [
-            {"text": "Yes","value": "True", "default": "true"},
-            {"text": "No","value": "False"}
-          ]
-        }
-      default: "True"
     - name: wkc-options-knowledge-graph
       type: string
       description: |
@@ -992,10 +981,33 @@ spec:
           ]
         }
       default: "False"
-    - name: wkc-options-enable-fact-sheet
+    - name: ikc-premium-state
       type: string
       description: |
-        Do you want to enable fact sheet for wkc?
+        Do you want to install ikc-premium (IBM Knowledge Catalog Premium?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: ikc-premium-size
+      type: string
+      description: |
+        Choose size of ikc-premium. (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
+            {"text": "Large","value": "large"}
+          ]
+        }
+      default: "small"
+    - name: ikc-premium-options-knowledge-graph
+      type: string
+      description: |
+        Do you want to enable knowledge graph for ikc-premium? (only applied if ikc-premium is installed)
         {
           "options": [
             {"text": "No","value": "False", "default": "true"},
@@ -1003,6 +1015,63 @@ spec:
           ]
         }
       default: "False"
+    - name: ikc-premium-options-enable-data-quality
+      type: string
+      description: |
+        Do you want to enable data quality for ikc-premium?
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
+    - name: ikc-standard-state
+      type: string
+      description: |
+        Do you want to install ikc-standard (IBM Knowledge Catalog Standard?
+        {
+          "options": [
+            {"text": "No","value": "removed", "default": "true"},
+            {"text": "Yes","value": "installed"}
+          ]
+        }
+      default: "removed"
+    - name: ikc-standard-size
+      type: string
+      description: |
+        Choose size of ikc-standard. (only applied if component is installed)
+        {
+          "options": [
+            {"text": "Small","value": "small", "default": "true"},
+            {"text": "Medium","value": "medium"},
+            {"text": "Large","value": "large"}
+          ]
+        }
+      default: "small"
+    - name: ikc-standard-options-knowledge-graph
+      type: string
+      description: |
+        Do you want to enable knowledge graph for ikc-standard? (only applied if ikc-standard is installed)
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
+    - name: ikc-standard-options-enable-data-quality
+      type: string
+      description: |
+        Do you want to enable data quality for ikc-standard?
+        {
+          "options": [
+            {"text": "No","value": "False", "default": "true"},
+            {"text": "Yes","value": "True"}
+          ]
+        }
+      default: "False"
+
     - name: watsonx-orchestrate-state
       type: string
       description: |
@@ -1608,7 +1677,7 @@ spec:
                     size: $(params.factsheet-size)
                     state: $(params.factsheet-state)
 
-                  - name: hadoop
+                  - name: hee
                     description: Execution Engine for Apache Hadoop
                     size: $(params.hadoop-size)
                     state: $(params.hadoop-state)
@@ -1759,19 +1828,33 @@ spec:
                     description: watsonx.orchestrate
                     app_connect:
                       app_connect_project: ibm-app-connect
-                      app_connect_case_version: 11.3.0
-                      app_connect_channel_version: v11.3
+                      app_connect_case_version: 11.5.0
+                      app_connect_channel_version: v11.5
                     state: $(params.watsonx-orchestrate-state)
 
                   - name: wkc
-                    description: Watson Knowledge Catalog
+                    description: IBM Knowledge Catalog
                     size: $(params.wkc-size)
                     state: $(params.wkc-state)
                     installation_options:
-                      install_wkc_core_only: $(params.wkc-options-core-only)
                       enableKnowledgeGraph: $(params.wkc-options-knowledge-graph)
                       enableDataQuality: $(params.wkc-options-enable-data-quality)
-                      enableFactSheet: $(params.wkc-options-enable-fact-sheet)
+                  
+                  - name: ikc_premium
+                    description: IBM Knowledge Catalog - Premium edition
+                    size: $(params.ikc-premium-size)
+                    state: $(params.ikc-premium-state)
+                    installation_options:
+                      enableKnowledgeGraph: $(params.ikc-premium-options-knowledge-graph)
+                      enableDataQuality: $(params.ikc-premium-options-enable-data-quality)
+
+                  - name: ikc_standard
+                    description: IBM Knowledge Catalog - Standard edition
+                    size: $(params.ikc-standard-size)
+                    state: $(params.ikc-standard-state)
+                    installation_options:
+                      enableKnowledgeGraph: $(params.ikc-standard-options-knowledge-graph)
+                      enableDataQuality: $(params.ikc-standard-options-enable-data-quality)
 
                   - name: wml
                     description: Watson Machine Learning
@@ -1795,13 +1878,11 @@ spec:
                   - name: ws-runtimes
                     description: Watson Studio Runtimes
                     runtimes:
-                    - ibm-cpd-ws-runtime-py39
-                    - ibm-cpd-ws-runtime-222-py
-                    - ibm-cpd-ws-runtime-py39gpu
-                    - ibm-cpd-ws-runtime-222-pygpu
+                    - ibm-cpd-ws-runtime-241-py
+                    - ibm-cpd-ws-runtime-231-py
+                    - ibm-cpd-ws-runtime-241-pygpu
                     - ibm-cpd-ws-runtime-231-pygpu
-                    - ibm-cpd-ws-runtime-r36
-                    - ibm-cpd-ws-runtime-222-r
+                    - ibm-cpd-ws-runtime-241-r
                     - ibm-cpd-ws-runtime-231-r
                     state: $(params.ws-runtimes-state)
 

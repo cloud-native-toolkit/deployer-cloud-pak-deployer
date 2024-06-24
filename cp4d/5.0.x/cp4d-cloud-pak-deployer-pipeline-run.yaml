@@ -42,11 +42,21 @@ spec:
     #   value: "installed"
     # - name: wkc-state
     #   value: "installed"
-    # - name: wkc-options-core-only
-    #   value: "True"
     # - name: wkc-options-knowledge-graph
     #   value: "True"
     # - name: wkc-options-enable-data-quality
+    #   value: "True"
+    # - name: ikc-premium-state
+    #   value: "installed"
+    # - name: ikc-premium-options-knowledge-graph
+    #   value: "True"
+    # - name: ikc-premium-options-enable-data-quality
+    #   value: "True"
+    # - name: ikc-standard-state
+    #   value: "installed"
+    # - name: ikc-standard-options-knowledge-graph
+    #   value: "True"
+    # - name: ikc-standard-options-enable-data-quality
     #   value: "True"
     # - name: watsonx-orchestrate-state
     #   value: "installed"
@@ -71,8 +81,12 @@ spec:
     # - name: configure-gpu #Set this to False if you already installed/configured NVIDIA and NFD operators or don't have GPUs
     #   value: "False"
     # - name: install-openshift-ai
-    #   value: "installed"
+    #   value: "True"
     # - name: ws-state
     #   value: "installed"
     # - name: wml-state
+    #   value: "installed"
+    # - name: match360-state
+    #   value: "installed"
+    # - name: watson-discovery-state
     #   value: "installed"
