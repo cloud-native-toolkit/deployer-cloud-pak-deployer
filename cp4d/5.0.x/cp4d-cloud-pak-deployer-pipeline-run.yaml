@@ -28,6 +28,8 @@ spec:
     #   value: "installed"
     # - name: dashboard-state
     #   value: "installed"
+    # - name: dataproduct-state
+    #   value: "installed"
     # - name: datastage-ent-plus-state
     #   value: "installed"
     # - name: db2-state
