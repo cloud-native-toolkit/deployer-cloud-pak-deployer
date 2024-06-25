@@ -1965,26 +1965,63 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
-
-            sleep 20
-
-            while true
-            do
-              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
-              if [[ $is_complete != "true" ]]; then
-                echo "Waiting for job to be Complete. See cloud-pak-deployer pod's logs in project $(params.namespace) for more details."
-              else
-                echo "Cloud Pak Deployer job is Complete."
-                break
-              fi
-
-              did_fail=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | contains({"status": "'True'"})')
-              if [[ $did_fail == "true" ]]; then
-                echo "Cloud Pak Deployer job failed."
-                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .reason')
-                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .message')
-                exit 68
-              fi
-              
-              sleep 60
-            done
+    - name: run-the-deployer-debug
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      timeout: 6h0m0s
+      retries: 3
+      runAfter:
+        - configure-cloud-paks-services
+      params:
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: batch/v1
+            kind: Job
+            metadata:
+              labels:
+                app: cloud-pak-deployer-debug
+              name: cloud-pak-deployer-debug
+              namespace: $(params.namespace)
+            spec:
+              parallelism: 1
+              completions: 1
+              backoffLimit: 2
+              template:
+                metadata:
+                  name: cloud-pak-deployer-debug
+                  labels:
+                    app: cloud-pak-deployer-debug
+                spec:
+                  containers:
+                  - name: cloud-pak-deployer-debug
+                    image: quay.io/cloud-pak-deployer/cloud-pak-deployer:$(params.cloud-pak-deployer-version)
+                    imagePullPolicy: Always
+                    terminationMessagePath: /dev/termination-log
+                    terminationMessagePolicy: File
+                    env:
+                    - name: CONFIG_DIR
+                      value: /Data/cpd-config
+                    - name: STATUS_DIR
+                      value: /Data/cpd-status
+                    volumeMounts:
+                    - name: config-volume
+                      mountPath: /Data/cpd-config/config
+                    - name: status-volume
+                      mountPath: /Data/cpd-status
+                    command: ["/bin/sh","-xc"]
+                    args: 
+                      - sleep infinity
+                  restartPolicy: Never
+                  securityContext:
+                    runAsUser: 0
+                  serviceAccountName: cloud-pak-deployer-sa
+                  volumes:
+                  - name: config-volume
+                    configMap:
+                      name: cloud-pak-deployer-config
+                  - name: status-volume
+                    persistentVolumeClaim:
+                      claimName: cloud-pak-deployer-status
+            EOF
