@@ -92,5 +92,5 @@ spec:
     #   value: "installed"
     # - name: match360-state
     #   value: "installed"
-    - name: watson-discovery-state
-      value: "installed"
+    # - name: watson-discovery-state
+    #   value: "installed"
