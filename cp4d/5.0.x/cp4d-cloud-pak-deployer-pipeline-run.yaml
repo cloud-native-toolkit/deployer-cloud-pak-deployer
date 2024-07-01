@@ -26,6 +26,8 @@ spec:
       value: "v2.8.1"
     # - name: analyticsengine-state
     #   value: "installed"
+    # - name: spss-state
+    #   value: "installed"
     # - name: dashboard-state
     #   value: "installed"
     # - name: dataproduct-state
@@ -80,11 +82,13 @@ spec:
     #   value: "installed"
     # - name: watsonx-ai-tuning-disabled #Set this to true if you wat to not install the tuning studio
     #   value: "true"
-    # - name: configure-gpu #Set this to False if you already installed/configured NVIDIA and NFD operators or don't have GPUs
-    #   value: "False"
-    # - name: install-openshift-ai
+    # - name: configure-gpu #Set this to False if you already installed/configured NVIDIA and NFD operators
+    #   value: "True"
+    # - name: install-openshift-ai #Set this to False if you already installed and configured OpenShift AI operator
     #   value: "True"
     # - name: ws-state
+    #   value: "installed"
+    # - name: ws-runtimes-state
     #   value: "installed"
     # - name: wml-state
     #   value: "installed"
