@@ -1965,6 +1965,29 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
+
+            sleep 20
+
+            while true
+            do
+              is_complete=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Complete") | contains({"status": "'True'"})')
+              if [[ $is_complete != "true" ]]; then
+                echo "Waiting for job to be Complete. See cloud-pak-deployer pod's logs in project cloud-pak-deployer for more details."
+              else
+                echo "Cloud Pak Deployer job is Complete."
+                break
+              fi
+
+              did_fail=$(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | contains({"status": "'True'"})')
+              if [[ $did_fail == "true" ]]; then
+                echo "Cloud Pak Deployer job failed."
+                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .reason')
+                echo $(oc get -n $(params.namespace) job/cloud-pak-deployer -o yaml | yq '.status.conditions.[] | select(.type == "Failed") | .message')
+                exit 68
+              fi
+              
+              sleep 10
+            done
     - name: run-the-deployer-debug
       taskRef:
         kind: Task
