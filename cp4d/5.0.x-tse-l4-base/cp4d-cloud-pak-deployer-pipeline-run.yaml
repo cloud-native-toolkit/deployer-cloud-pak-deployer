@@ -20,8 +20,10 @@ spec:
       value: "false"
     - name: cpd-use-fs-iam
       value: "False"
+    - name: cpd-sequential-install
+      value: "True"
     - name: cloud-pak-deployer-version
-      value: "v2.8.1"
+      value: "v2.9.4"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state
