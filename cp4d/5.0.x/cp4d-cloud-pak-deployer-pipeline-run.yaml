@@ -19,11 +19,11 @@ spec:
     - name: ibm-entitlement-key
       value: "false"
     - name: cpd-sequential-install
-      value: "False"
+      value: "True"
     - name: cpd-use-fs-iam
       value: "True"
     - name: cloud-pak-deployer-version
-      value: "v2.8.1"
+      value: "v2.9.4"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state

@@ -45,7 +45,6 @@ spec:
     - name: ocp-client-version
       type: string
       description: Openshift client version
-      default: "4.14"
     - name: cp4d-version
       type: string
       description: Cloud Pak for Data version
@@ -63,11 +62,11 @@ spec:
         Do you want to install components sequentially?
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"text": "No","value": "False"},
+            {"text": "Yes","value": "True", "default": "true"}
           ]
         }
-      default: "False"
+      default: "True"
     - name: cpd-use-fs-iam
       type: string
       description: |
@@ -694,32 +693,10 @@ spec:
           ]
         }
       default: "removed"
-    - name: llm-granite-13b-chat-v1-state
-      type: string
-      description: |
-        Do you want to install ibm-granite-13b-chat-v1 llm?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
     - name: llm-granite-13b-chat-v2-state
       type: string
       description: |
         Do you want to install ibm-granite-13b-chat-v2 llm?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
-    - name: llm-ibm-granite-13b-instruct-v1-state
-      type: string
-      description: |
-        Do you want to install ibm-granite-13b-instruct-v1 llm?
         {
           "options": [
             {"text": "No","value": "removed", "default": "true"},
@@ -737,6 +714,26 @@ spec:
             {"text": "Yes","value": "installed"}
           ]
         }
+      default: "removed"
+    - name: llm-ibm-granite-3b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-3b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
+      default: "removed"
+    - name: llm-ibm-granite-8b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-8b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
+      default: "removed"
+    - name: llm-ibm-granite-20b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-20b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
+      default: "removed"
+    - name: llm-ibm-granite-34b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-34b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
       default: "removed"
     - name: llm-meta-llama-llama-2-70b-chat-state
       type: string
@@ -1780,14 +1777,18 @@ spec:
                       state: $(params.llm-eleutherai-gpt-neox-20b-state)
                     - model_id: ibm-granite-8b-japanese
                       state: $(params.llm-ibm-granite-8b-japanese-state)
-                    - model_id: ibm-granite-13b-chat-v1
-                      state: $(params.llm-granite-13b-chat-v1-state)
                     - model_id: ibm-granite-13b-chat-v2
                       state: $(params.llm-granite-13b-chat-v2-state)
-                    - model_id: ibm-granite-13b-instruct-v1
-                      state: $(params.llm-ibm-granite-13b-instruct-v1-state)
                     - model_id: ibm-granite-13b-instruct-v2
                       state: $(params.llm-ibm-granite-13b-instruct-v2-state)
+                    - model_id: ibm-granite-3b-code-instruct
+                      state: $(params.llm-ibm-granite-3b-code-instruct-state)
+                    - model_id: ibm-granite-8b-code-instruct
+                      state: $(params.llm-ibm-granite-8b-code-instruct-state)
+                    - model_id: ibm-granite-20b-code-instruct
+                      state: $(params.llm-ibm-granite-20b-code-instruct-state)
+                    - model_id: ibm-granite-34b-code-instruct
+                      state: $(params.llm-ibm-granite-34b-code-instruct-state)
                     - model_id: ibm-granite-20b-multilingual
                       state: $(params.llm-ibm-granite-20b-multilingual-state)
                     - model_id: core42-jais-13b-chat
@@ -1999,6 +2000,10 @@ spec:
       params:
         - name: SCRIPT
           value: |
+            oc delete job cloud-pak-deployer-debug -n $(params.namespace) --ignore-not-found
+
+            sleep 20
+
             oc apply -f - <<EOF
             apiVersion: batch/v1
             kind: Job
