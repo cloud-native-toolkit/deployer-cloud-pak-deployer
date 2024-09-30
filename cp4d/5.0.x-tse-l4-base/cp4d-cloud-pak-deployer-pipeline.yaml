@@ -12,8 +12,12 @@ spec:
       default: "cloud-pak-deployer"
     - name: storage-class
       type: string
-      description: RWX storage class needed for cp4d
+      description: RWX file storage class needed for cp4d
       default: "ocs-storagecluster-cephfs"
+    - name: block-storage-class
+      type: string
+      description: Block storage class needed for cp4d
+      default: "ocs-storagecluster-ceph-rbd"
     - name: cloud-pak-deployer-storage-class
       type: string
       description: |
@@ -22,6 +26,7 @@ spec:
           "options": [
             {"text": "auto-storage","value": "auto-storage", "default": "true"},
             {"text": "ocs-storage","value": "ocs-storage"},
+            {"text": "custom","value": "custom"},
             {"text": "nfs-storage","value": "nfs-storage"}
           ]
         }
@@ -1516,6 +1521,8 @@ spec:
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)
+                    ocp_storage_class_file: $(params.storage-class)
+                    ocp_storage_class_block: $(params.block-storage-class)
 
                 #
                 # All tested cartridges. To install, change the "state" property to "installed". To uninstall, change the state
