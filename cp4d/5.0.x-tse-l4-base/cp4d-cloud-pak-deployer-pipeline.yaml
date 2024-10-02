@@ -12,8 +12,16 @@ spec:
       default: "cloud-pak-deployer"
     - name: storage-class
       type: string
-      description: RWX storage class needed for cp4d
+      description: storage class for the cloud pak deployer PVC
       default: "ocs-storagecluster-cephfs"
+    - name: custom-file-storage-class
+      type: string
+      description: Custom RWX file storage class needed for cp4d
+      default: ""
+    - name: custom-block-storage-class
+      type: string
+      description: Custom block storage class needed for cp4d
+      default: ""
     - name: cloud-pak-deployer-storage-class
       type: string
       description: |
@@ -22,6 +30,7 @@ spec:
           "options": [
             {"text": "auto-storage","value": "auto-storage", "default": "true"},
             {"text": "ocs-storage","value": "ocs-storage"},
+            {"text": "custom","value": "custom"},
             {"text": "nfs-storage","value": "nfs-storage"}
           ]
         }
@@ -1490,6 +1499,15 @@ spec:
       params:
         - name: SCRIPT
           value: |
+
+            if [[ "$(params.cloud-pak-deployer-storage-type)" == "custom" ]]; then
+              custom_file_class_yml="ocp_storage_class_file: $(params.custom-file-storage-class)"
+              custom_block_class_yml="ocp_storage_class_block: $(params.custom-block-storage-class)"
+            else
+              custom_file_class_yml=""
+              custom_block_class_yml=""
+            fi
+
             oc apply -f - <<EOF
             apiVersion: v1
             kind: ConfigMap
@@ -1516,6 +1534,8 @@ spec:
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)
+                    $custom_file_class_yml
+                    $custom_block_class_yml
 
                 #
                 # All tested cartridges. To install, change the "state" property to "installed". To uninstall, change the state

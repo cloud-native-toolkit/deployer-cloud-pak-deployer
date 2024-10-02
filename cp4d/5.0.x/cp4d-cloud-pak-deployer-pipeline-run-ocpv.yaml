@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: cloud-pak-deployer-5.0.x-tse-l4-base-run-
+spec:
+  timeouts:
+    pipeline: 9h0m0s
+  pipelineRef:
+    name: cloud-pak-deployer-5.0.x-tse-l4-base
+  params:
+    - name: namespace
+      value: "cloud-pak-deployer"
+    - name: storage-class
+      value: "ocs-external-storagecluster-cephfs"
+    - name: custom-file-storage-class
+      value: "ocs-external-storagecluster-cephfs"
+    - name: custom-block-storage-class
+      value: "ocs-external-storagecluster-ceph-rbd"
+    - name: cloud-pak-deployer-storage-type
+      value: "custom"
+    - name: ocp-client-version
+      value: "4.16"
+    - name: cp4d-version
+      value: "5.0.3"
+    - name: cpd-use-fs-iam
+      value: "False"
+    - name: cpd-sequential-install
+      value: "True"
+    - name: db2-state
+      value: "installed"
+    - name: wml-state
+      value: "installed"
+    - name: ws-state
+      value: "installed"
+    - name: watsonx-governance-state
+      value: "installed"
+    - name: watsonx-gov-installType
+      value: "all"
+    - name: watsonx-gov-enableFactsheet
+      value: "true"
+    - name: watsonx-gov-enableOpenpages
+      value: "true"
+    - name: watsonx-gov-enableOpenscale
+      value: "true"
