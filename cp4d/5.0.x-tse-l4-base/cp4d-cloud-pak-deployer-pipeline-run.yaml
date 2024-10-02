@@ -15,18 +15,18 @@ spec:
     - name: ocp-client-version
       value: "4.14"
     - name: cp4d-version
-      value: "5.0.0"
+      value: "5.0.2"
     - name: ibm-entitlement-key
       value: "false"
     - name: cpd-use-fs-iam
       value: "False"
     - name: cpd-sequential-install
       value: "True"
-    - name: cloud-pak-deployer-version
-      value: "v2.9.4"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state
+    #   value: "installed"
+    # - name: ca-state
     #   value: "installed"
     # - name: dashboard-state
     #   value: "installed"
