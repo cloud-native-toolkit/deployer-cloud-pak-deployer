@@ -4,7 +4,7 @@ metadata:
   generateName: cloud-pak-deployer-5.0.x-tse-l4-base-run-
 spec:
   timeouts:
-    pipeline: 9h0m0s
+    pipeline: 10h0m0s
   pipelineRef:
     name: cloud-pak-deployer-5.0.x-tse-l4-base
   params:
