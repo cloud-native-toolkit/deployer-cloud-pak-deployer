@@ -1921,7 +1921,7 @@ spec:
       taskRef:
         kind: Task
         name: ibm-pak
-      timeout: 6h0m0s
+      timeout: 8h0m0s
       retries: 3
       runAfter:
         - configure-cloud-paks-services
