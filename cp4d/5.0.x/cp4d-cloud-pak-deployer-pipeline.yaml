@@ -628,25 +628,25 @@ spec:
     - name: install-openshift-ai
       type: string
       description: |
-        Install the OpenShift AI operator and configure it for CP4D.
+        Do you want to install the OpenShift AI operator and configure it for CP4D? Use value 'True' if yes
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "'False'",
+            "'True'"
           ]
         }
-      default: "True"
+      default: "'True'"
     - name: configure-gpu
       type: string
       description: |
-        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
+        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? Use value 'True' if yes
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "'False'",
+            "'True'"
           ]
         }
-      default: "True"
+      default: "'True'"
     - name: watsonx-ai-state
       type: string
       description: |

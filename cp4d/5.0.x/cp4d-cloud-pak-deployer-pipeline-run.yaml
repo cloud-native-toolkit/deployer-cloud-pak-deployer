@@ -24,6 +24,10 @@ spec:
       value: "True"
     - name: cloud-pak-deployer-version
       value: "v2.9.4"
+    - name: install-openshift-ai
+      value: "'True'"
+    - name: configure-gpu
+      value: "'True'"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state

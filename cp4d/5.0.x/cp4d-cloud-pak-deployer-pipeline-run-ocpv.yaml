@@ -26,19 +26,81 @@ spec:
       value: "False"
     - name: cpd-sequential-install
       value: "True"
-    - name: db2-state
-      value: "installed"
-    - name: wml-state
-      value: "installed"
-    - name: ws-state
-      value: "installed"
-    - name: watsonx-governance-state
-      value: "installed"
-    - name: watsonx-gov-installType
-      value: "all"
-    - name: watsonx-gov-enableFactsheet
-      value: "true"
-    - name: watsonx-gov-enableOpenpages
-      value: "true"
-    - name: watsonx-gov-enableOpenscale
-      value: "true"
+    - name: install-openshift-ai
+      value: "'True'"
+    - name: configure-gpu
+      value: "'True'"
+    # - name: analyticsengine-state
+    #   value: "installed"
+    # - name: spss-state
+    #   value: "installed"
+    # - name: ca-state
+    #   value: "installed"
+    # - name: dashboard-state
+    #   value: "installed"
+    # - name: dataproduct-state
+    #   value: "installed"
+    # - name: datastage-ent-plus-state
+    #   value: "installed"
+    # - name: db2-state
+    #   value: "installed"
+    # - name: dmc-state
+    #   value: "installed"
+    # - name: dp-state
+    #   value: "installed"
+    # - name: dv-state
+    #   value: "installed"
+    # - name: mantaflow-state
+    #   value: "installed"
+    # - name: wkc-state
+    #   value: "installed"
+    # - name: wkc-options-knowledge-graph
+    #   value: "True"
+    # - name: wkc-options-enable-data-quality
+    #   value: "True"
+    # - name: ikc-premium-state
+    #   value: "installed"
+    # - name: ikc-premium-options-knowledge-graph
+    #   value: "True"
+    # - name: ikc-premium-options-enable-data-quality
+    #   value: "True"
+    # - name: ikc-standard-state
+    #   value: "installed"
+    # - name: ikc-standard-options-knowledge-graph
+    #   value: "True"
+    # - name: ikc-standard-options-enable-data-quality
+    #   value: "True"
+    # - name: watsonx-orchestrate-state
+    #   value: "installed"
+    # - name: watsonx-assistant-state
+    #   value: "installed"
+    # - name: watsonx-governance-state
+    #   value: "installed"
+    # - name: watsonx-gov-installType
+    #   value: "all"
+    # - name: watsonx-gov-enableFactsheet
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenpages
+    #   value: "true"
+    # - name: watsonx-gov-enableOpenscale
+    #   value: "true"
+    # - name: watsonx-data-state
+    #   value: "installed"
+    # - name: watsonx-ai-state
+    #   value: "installed"
+    # - name: watsonx-ai-tuning-disabled #Set this to true if you wat to not install the tuning studio
+    #   value: "true"
+    # - name: configure-gpu #Set this to False if you already installed/configured NVIDIA and NFD operators
+    #   value: "True"
+    # - name: install-openshift-ai #Set this to False if you already installed and configured OpenShift AI operator
+    #   value: "True"
+    # - name: ws-state
+    #   value: "installed"
+    # - name: ws-runtimes-state
+    #   value: "installed"
+    # - name: wml-state
+    #   value: "installed"
+    # - name: match360-state
+    #   value: "installed"
+    # - name: watson-discovery-state
+    #   value: "installed"
