@@ -34,34 +34,34 @@ spec:
       value: "'True'"
     - name: configure-gpu
       value: "'True'"
-    - name: analyticsengine-state
-      value: "installed"
+    # - name: analyticsengine-state
+    #   value: "installed"
     # - name: spss-state
     #   value: "installed"
     # - name: ca-state
     #   value: "installed"
-    - name: dashboard-state
-      value: "installed"
-    - name: dataproduct-state
-      value: "installed"
-    - name: datastage-ent-plus-state
-      value: "installed"
-    - name: db2-state
-      value: "installed"
-    - name: dmc-state
-      value: "installed"
+    # - name: dashboard-state
+    #   value: "installed"
+    # - name: dataproduct-state
+    #   value: "installed"
+    # - name: datastage-ent-plus-state
+    #   value: "installed"
+    # - name: db2-state
+    #   value: "installed"
+    # - name: dmc-state
+    #   value: "installed"
     # - name: dp-state
     #   value: "installed"
     # - name: dv-state
     #   value: "installed"
-    - name: mantaflow-state
-      value: "installed"
-    - name: wkc-state
-      value: "installed"
-    - name: wkc-options-knowledge-graph
-      value: "True"
-    - name: wkc-options-enable-data-quality
-      value: "True"
+    # - name: mantaflow-state
+    #   value: "installed"
+    # - name: wkc-state
+    #   value: "installed"
+    # - name: wkc-options-knowledge-graph
+    #   value: "True"
+    # - name: wkc-options-enable-data-quality
+    #   value: "True"
     # - name: ikc-premium-state
     #   value: "installed"
     # - name: ikc-premium-options-knowledge-graph
@@ -98,8 +98,8 @@ spec:
     #   value: "True"
     # - name: install-openshift-ai #Set this to False if you already installed and configured OpenShift AI operator
     #   value: "True"
-    - name: ws-state
-      value: "installed"
+    # - name: ws-state
+    #   value: "installed"
     # - name: ws-runtimes-state
     #   value: "installed"
     # - name: wml-state
