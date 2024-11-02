@@ -28,10 +28,10 @@ spec:
         Choose the defined storage class for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto-storage","value": "auto-storage", "default": "true"},
-            {"text": "ocs-storage","value": "ocs-storage"},
-            {"text": "custom","value": "custom"},
-            {"text": "nfs-storage","value": "nfs-storage"}
+            "auto-storage",
+            "ocs-storage",
+            "custom",
+            "nfs-storage"
           ]
         }
       default: "auto-storage"
@@ -41,9 +41,9 @@ spec:
         Choose the defined storage type for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto","value": "auto", "default": "true"},
-            {"text": "ocs","value": "ocs"},
-            {"text": "nfs","value": "nfs"}
+            "auto",
+            "ocs",
+            "nfs"
           ]
         }
       default: "auto"
@@ -68,22 +68,22 @@ spec:
     - name: cpd-sequential-install
       type: string
       description: |
-        Do you want to install components sequentially?
+        Do you want to install components sequentially? Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "False",
+            "True"
           ]
         }
       default: "True"
     - name: cpd-use-fs-iam
       type: string
       description: |
-        Do you want to enable FS IAM?
+        Do you want to enable FS IAM? Choose "True" if yes.
         {
           "options": [
-            {"text": "Yes","value": "True", "default": "true"},
-            {"text": "No","value": "False"}
+            "True",
+            "False"
           ]
         }
       default: "True"
@@ -91,22 +91,22 @@ spec:
     - name: scheduler-state
       type: string
       description: |
-        Do you want to install scheduler?
+        Do you want to install scheduler? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: analyticsengine-state
       type: string
       description: |
-        Do you want to install analytics engine?
+        Do you want to install analytics engine? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -116,31 +116,31 @@ spec:
         Choose the size of analytics engine installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            "small",
+            "medium",
+            "large"
           ]
         }
       default: "small"
     - name: bigsql-state
       type: string
       description: |
-        Do you want to install bigsql?
+        Do you want to install bigsql? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: ca-state
       type: string
       description: |
-        Do you want to install cognos analytics?
+        Do you want to install cognos analytics? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -150,9 +150,9 @@ spec:
         Choose size of cognos analytics installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            "small",
+            "medium",
+            "large"
           ]
         }
       default: "small"
@@ -163,33 +163,33 @@ spec:
     - name: dashboard-state
       type: string
       description: |
-        Do you want to install cognos dashboards?
+        Do you want to install cognos dashboards? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: datagate-state
       type: string
       description: |
-        Do you want to install datagate?
+        Do you want to install datagate? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: dataproduct-state
       type: string
       description: |
-        Do you want to install Data Product Hub?
+        Do you want to install Data Product Hub? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -620,25 +620,25 @@ spec:
     - name: install-openshift-ai
       type: string
       description: |
-        Install the OpenShift AI operator and configure it for CP4D.
+        Do you want to install the OpenShift AI operator and configure it for CP4D? If yes, use value 'True'
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "'False'",
+            "'True'"
           ]
         }
-      default: "True"
+      default: "'True'"
     - name: configure-gpu
       type: string
       description: |
-        Install the NVIDIA operator and Node Feature Discovery for GPU nodes.
+        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? If yes, use value 'True'
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "'False'",
+            "'True'"
           ]
         }
-      default: "True"
+      default: "'True'"
     - name: watsonx-ai-state
       type: string
       description: |

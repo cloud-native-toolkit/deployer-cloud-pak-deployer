@@ -26,6 +26,10 @@ spec:
       value: "False"
     - name: cpd-sequential-install
       value: "True"
+    - name: install-openshift-ai
+      value: "'True'"
+    - name: configure-gpu
+      value: "'True'"
     - name: db2-state
       value: "installed"
     - name: wml-state
