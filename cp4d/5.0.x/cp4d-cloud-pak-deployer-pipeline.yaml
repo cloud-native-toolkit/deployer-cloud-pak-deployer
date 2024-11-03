@@ -628,25 +628,25 @@ spec:
     - name: install-openshift-ai
       type: string
       description: |
-        Do you want to install the OpenShift AI operator and configure it for CP4D? Use value 'True' if yes
+        Do you want to install the OpenShift AI operator and configure it for CP4D? Use value True if yes
         {
           "options": [
-            "'False'",
-            "'True'"
+            "False",
+            "True"
           ]
         }
-      default: "'True'"
+      default: "True"
     - name: configure-gpu
       type: string
       description: |
-        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? Use value 'True' if yes
+        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? Use value True if yes
         {
           "options": [
-            "'False'",
-            "'True'"
+            "False",
+            "True"
           ]
         }
-      default: "'True'"
+      default: "True"
     - name: watsonx-ai-state
       type: string
       description: |
@@ -1536,10 +1536,10 @@ spec:
                   cluster_name: cpd-demo
                   domain_name: example.com
                   openshift_ai:
-                    install: $(params.install-openshift-ai)
+                    install: '$(params.install-openshift-ai)'
                     channel: fast
                   gpu:
-                    install: $(params.configure-gpu)
+                    install: '$(params.configure-gpu)'
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)
