@@ -27,9 +27,9 @@ spec:
     - name: cpd-sequential-install
       value: "True"
     - name: install-openshift-ai
-      value: "'True'"
+      value: "True"
     - name: configure-gpu
-      value: "'True'"
+      value: "True"
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state
