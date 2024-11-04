@@ -638,7 +638,7 @@ spec:
             "True"
           ]
         }
-      default: "'True'"
+      default: "True"
     - name: watsonx-ai-state
       type: string
       description: |
