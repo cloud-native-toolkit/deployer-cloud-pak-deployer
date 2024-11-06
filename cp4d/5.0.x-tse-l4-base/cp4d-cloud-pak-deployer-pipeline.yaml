@@ -1275,7 +1275,7 @@ spec:
           values: ["Succeeded"]
         - input: $(params.cpd-use-fs-iam)
           operator: notin
-          values: ["True"]
+          values: ["True", "true"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1296,7 +1296,7 @@ spec:
           values: ["Succeeded"]
         - input: $(params.cpd-use-fs-iam)
           operator: in
-          values: ["True"]
+          values: ["True","true"]
       taskRef:
         kind: Task
         name: ibm-pak
