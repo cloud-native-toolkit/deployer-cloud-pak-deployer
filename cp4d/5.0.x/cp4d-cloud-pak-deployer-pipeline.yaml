@@ -16,7 +16,7 @@ spec:
       default: "ocs-storagecluster-cephfs"
     - name: custom-file-storage-class
       type: string
-      description: Custom RWX storage class needed for cp4d
+      description: Custom RWX file storage class needed for cp4d
       default: "ocs-storagecluster-cephfs"
     - name: custom-block-storage-class
       type: string
@@ -28,9 +28,10 @@ spec:
         Choose the defined storage class for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto-storage","value": "auto-storage", "default": "true"},
-            {"text": "ocs-storage","value": "ocs-storage"},
-            {"text": "nfs-storage","value": "nfs-storage"}
+            "auto-storage",
+            "ocs-storage",
+            "custom",
+            "nfs-storage"
           ]
         }
       default: "auto-storage"
@@ -40,10 +41,9 @@ spec:
         Choose the defined storage type for the cloud pak deployer.
         {
           "options": [
-            {"text": "auto","value": "auto", "default": "true"},
-            {"text": "ocs","value": "ocs"},
-            {"text": "custom","value": "custom"},
-            {"text": "nfs","value": "nfs"}
+            "auto",
+            "ocs",
+            "nfs"
           ]
         }
       default: "auto"
@@ -61,6 +61,10 @@ spec:
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
+    - name: pih-full-git-url
+      type: string
+      description: Post install hook full git url for cloning the repo. If repo is private then format it https://<personal-access-token>@github.com/<account/org>/<repo>.git
+      default: "false"
     - name: cpd-confirm-destroy
       type: string
       description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
@@ -68,22 +72,22 @@ spec:
     - name: cpd-sequential-install
       type: string
       description: |
-        Do you want to install components sequentially?
+        Do you want to install components sequentially? Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False"},
-            {"text": "Yes","value": "True", "default": "true"}
+            "False",
+            "True"
           ]
         }
       default: "True"
     - name: cpd-use-fs-iam
       type: string
       description: |
-        Do you want to enable FS IAM?
+        Do you want to enable FS IAM? Choose "True" if yes.
         {
           "options": [
-            {"text": "Yes","value": "True", "default": "true"},
-            {"text": "No","value": "False"}
+            "True",
+            "False"
           ]
         }
       default: "True"
@@ -91,22 +95,22 @@ spec:
     - name: scheduler-state
       type: string
       description: |
-        Do you want to install scheduler?
+        Do you want to install scheduler? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: analyticsengine-state
       type: string
       description: |
-        Do you want to install analytics engine?
+        Do you want to install analytics engine? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -116,31 +120,31 @@ spec:
         Choose the size of analytics engine installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            "small",
+            "medium",
+            "large"
           ]
         }
       default: "small"
     - name: bigsql-state
       type: string
       description: |
-        Do you want to install bigsql?
+        Do you want to install bigsql? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: ca-state
       type: string
       description: |
-        Do you want to install cognos analytics?
+        Do you want to install cognos analytics? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -150,9 +154,9 @@ spec:
         Choose size of cognos analytics installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            "small",
+            "medium",
+            "large"
           ]
         }
       default: "small"
@@ -163,33 +167,33 @@ spec:
     - name: dashboard-state
       type: string
       description: |
-        Do you want to install cognos dashboards?
+        Do you want to install cognos dashboards? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
-    - name: dataproduct-state
-      type: string
-      description: |
-        Do you want to install Data Product Hub?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
     - name: datagate-state
       type: string
       description: |
-        Do you want to install datagate?
+        Do you want to install datagate? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            "removed",
+            "installed"
+          ]
+        }
+      default: "removed"
+    - name: dataproduct-state
+      type: string
+      description: |
+        Do you want to install Data Product Hub? Choose "installed" if yes.
+        {
+          "options": [
+            "removed",
+            "installed"
           ]
         }
       default: "removed"
@@ -628,7 +632,7 @@ spec:
     - name: install-openshift-ai
       type: string
       description: |
-        Do you want to install the OpenShift AI operator and configure it for CP4D? Use value True if yes
+        Do you want to install the OpenShift AI operator and configure it for CP4D? If yes, use value 'True'
         {
           "options": [
             "False",
@@ -639,7 +643,7 @@ spec:
     - name: configure-gpu
       type: string
       description: |
-        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? Use value True if yes
+        Do you want to install the NVIDIA operator and Node Feature Discovery for GPU nodes? If yes, use value 'True'
         {
           "options": [
             "False",
@@ -1077,7 +1081,6 @@ spec:
           ]
         }
       default: "False"
-
     - name: watsonx-orchestrate-state
       type: string
       description: |
@@ -1284,7 +1287,7 @@ spec:
           values: ["Succeeded"]
         - input: $(params.cpd-use-fs-iam)
           operator: notin
-          values: ["True","true"]
+          values: ["True",z"true"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1735,7 +1738,7 @@ spec:
                   - name: spss
                     description: SPSS Modeler
                     state: $(params.spss-state)
-                  
+
                   - name: syntheticdata
                     description: Synthetic Data Generator
                     state: $(params.syntheticdata-state)
@@ -2073,3 +2076,43 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
+    - name: post-install-hook
+      when:
+        - input: $(params.pih-full-git-url)
+          operator: notin
+          values: ["False","false"]
+      runAfter:
+        - run-the-deployer-debug
+        - run-the-deployer
+      params:
+        - name: git-url
+          value: "$(params.pih-full-git-url)"
+        - name: executable-filename
+          value: "$(params.pih-executable-file-name)"
+      taskSpec:
+        params:
+          - name: git-url
+          - name: executable-filename
+        steps:
+          - name: get-marketplace-yaml
+            image: quay.io/ibmtz/ibm-pak-ubi:latest
+            script: |
+              #!/usr/bin/env bash
+              repo=$(params.git-url)
+              executable_file=main.sh
+
+              git clone $repo git-repo
+
+              currentDir=$(pwd)
+
+              chmod u+x $currentDir/git-repo/$executable_file
+
+              cd git-repo
+              ./$executable_file
+
+              if [ $? -eq 0 ]; then
+                echo "Post install script execution succeeded."
+              else
+                echo "Post install script execution failed."
+              fi
+    

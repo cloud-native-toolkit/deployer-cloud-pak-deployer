@@ -61,6 +61,10 @@ spec:
       type: string
       description: The IBM entitlement key with permissions for pulling cp4d images
       default: "false"
+    - name: pih-full-git-url
+      type: string
+      description: Post install hook full git url for cloning the repo. If repo is private then format it https://<personal-access-token>@github.com/<account/org>/<repo>.git
+      default: "false"
     - name: cpd-confirm-destroy
       type: string
       description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
@@ -2057,3 +2061,43 @@ spec:
                     persistentVolumeClaim:
                       claimName: cloud-pak-deployer-status
             EOF
+    - name: post-install-hook
+      when:
+        - input: $(params.pih-full-git-url)
+          operator: notin
+          values: ["False","false"]
+      runAfter:
+        - run-the-deployer-debug
+        - run-the-deployer
+      params:
+        - name: git-url
+          value: "$(params.pih-full-git-url)"
+        - name: executable-filename
+          value: "$(params.pih-executable-file-name)"
+      taskSpec:
+        params:
+          - name: git-url
+          - name: executable-filename
+        steps:
+          - name: get-marketplace-yaml
+            image: quay.io/ibmtz/ibm-pak-ubi:latest
+            script: |
+              #!/usr/bin/env bash
+              repo=$(params.git-url)
+              executable_file=main.sh
+
+              git clone $repo git-repo
+
+              currentDir=$(pwd)
+
+              chmod u+x $currentDir/git-repo/$executable_file
+
+              cd git-repo
+              ./$executable_file
+
+              if [ $? -eq 0 ]; then
+                echo "Post install script execution succeeded."
+              else
+                echo "Post install script execution failed."
+              fi
+    
