@@ -20,6 +20,8 @@ spec:
       value: "false"
     - name: cpd-use-fs-iam
       value: "False"
+    - name: pih-full-git-url
+      value: "false" # https://<personal-access-token>@github.com/<account/org>/<repo>.git
     - name: cpd-sequential-install
       value: "True"
     - name: cloud-pak-deployer-version
