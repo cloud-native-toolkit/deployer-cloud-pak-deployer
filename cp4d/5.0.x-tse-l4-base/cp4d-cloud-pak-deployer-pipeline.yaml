@@ -2072,7 +2072,6 @@ spec:
       params:
         - name: git-url
           value: "$(params.pih-full-git-url)"
-        - name: executable-filename
       taskSpec:
         params:
           - name: git-url
