@@ -2073,11 +2073,9 @@ spec:
         - name: git-url
           value: "$(params.pih-full-git-url)"
         - name: executable-filename
-          value: "$(params.pih-executable-file-name)"
       taskSpec:
         params:
           - name: git-url
-          - name: executable-filename
         steps:
           - name: get-marketplace-yaml
             image: quay.io/ibmtz/ibm-pak-ubi:latest
