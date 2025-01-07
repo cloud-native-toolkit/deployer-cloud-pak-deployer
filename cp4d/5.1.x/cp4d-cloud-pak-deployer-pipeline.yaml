@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cloud-pak-deployer-5.0.x-tse-l4-base
+  name: cloud-pak-deployer-5.1.x
   annotations:
 spec:
   params:
@@ -17,11 +17,11 @@ spec:
     - name: custom-file-storage-class
       type: string
       description: Custom RWX file storage class needed for cp4d
-      default: ""
+      default: "ocs-storagecluster-cephfs"
     - name: custom-block-storage-class
       type: string
       description: Custom block storage class needed for cp4d
-      default: ""
+      default: "ocs-storagecluster-ceph-rbd"
     - name: cloud-pak-deployer-storage-class
       type: string
       description: |
@@ -68,17 +68,6 @@ spec:
     - name: cpd-confirm-destroy
       type: string
       description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
-      default: "True"
-    - name: cpd-sequential-install
-      type: string
-      description: |
-        Do you want to install components sequentially? Choose "True" if yes.
-        {
-          "options": [
-            "False",
-            "True"
-          ]
-        }
       default: "True"
     - name: cpd-use-fs-iam
       type: string
@@ -186,6 +175,17 @@ spec:
           ]
         }
       default: "removed"
+    - name: datalineage-state
+      type: string
+      description: |
+        Do you want to install IBM MANTA Data Lineage? Choose "installed" if yes.
+        {
+          "options": [
+            "removed",
+            "installed"
+          ]
+        }
+      default: "removed"
     - name: dataproduct-state
       type: string
       description: |
@@ -200,33 +200,33 @@ spec:
     - name: datastage-ent-state
       type: string
       description: |
-        Do you want to install datastage enterprise?
+        Do you want to install datastage enterprise? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: datastage-ent-plus-state
       type: string
       description: |
-        Do you want to install datastage enterprise plus?
+        Do you want to install datastage enterprise plus? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: db2-state
       type: string
       description: |
-        Do you want to install db2?
+        Do you want to install db2? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -236,42 +236,46 @@ spec:
         Choose size of db2 installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: db2wh-state
       type: string
       description: |
-        Do you want to install db2 warehouse?
+        Do you want to install db2 warehouse? Choose "installed" if yes.
         {
           "options": [
-            {"text": "False","value": "removed", "default": "true"},
-            {"text": "True","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: dmc-state
       type: string
       description: |
-        Do you want to install db2 data management console?
+        Do you want to install db2 data management console? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
+    - name: dmc-instance
+      type: string
+      description: Provide name of the data management console instance.
+      default: "data-management-console"
     - name: dods-state
       type: string
       description: |
-        Do you want to install decision optimization?
+        Do you want to install decision optimization? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -281,20 +285,20 @@ spec:
         Choose size of decision optimization installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: dp-state
       type: string
       description: |
-        Do you want to install data privacy?
+        Do you want to install data privacy? Choose "installed" if yes. Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -304,31 +308,31 @@ spec:
         Choose size of data privacy installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: dpra-state
       type: string
       description: |
-        Do you want to install data privacy risk assessment?
+        Do you want to install data privacy risk assessment? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: factsheet-state
       type: string
       description: |
-        Do you want to install ai factsheets?
+        Do you want to install ai factsheets? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -338,20 +342,20 @@ spec:
         Choose size of ai factsheets installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: dv-state
       type: string
       description: |
-        Do you want to install data virtualization?
+        Do you want to install data virtualization? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -361,9 +365,9 @@ spec:
         Choose size of data virtualization installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
@@ -374,11 +378,11 @@ spec:
     - name: hadoop-state
       type: string
       description: |
-        Do you want to install hadoop?
+        Do you want to install hadoop? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -388,20 +392,20 @@ spec:
         Choose size of hadoop installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: mantaflow-state
       type: string
       description: |
-        Do you want to install MANTA Automated Lineage?
+        Do you want to install MANTA Automated Lineage? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -411,21 +415,21 @@ spec:
         Choose size of MANTA Automated Lineage installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small with min cpu","value": "small_mincpureq"},
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small_mincpureq"},
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: match360-state
       type: string
       description: |
-        Do you want to install match360?
+        Do you want to install match360? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -435,9 +439,9 @@ spec:
         Choose size of match360 installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
@@ -447,30 +451,41 @@ spec:
         Do you want wkc enabled for match360 installation? (only applied if component is installed)
         {
           "options": [
-            {"text": "Yes","value": "true", "default": "true"},
-            {"text": "No","value": "false"}
+            {"true"},
+            {"false"}
           ]
         }
       default: "true"
+    - name: mongodb-state
+      type: string
+      description: |
+        Do you want to install MongoDB for Cloud Pak for Data? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
     - name: openpages-state
       type: string
       description: |
-        Do you want to install openpages?
+        Do you want to install openpages? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: rstudio-state
       type: string
       description: |
-        Do you want to install rstudio?
+        Do you want to install rstudio? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -480,42 +495,42 @@ spec:
         Choose size of rstudio installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: spss-state
       type: string
       description: |
-        Do you want to install spss modeler?
+        Do you want to install spss modeler? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: syntheticdata-state
       type: string
       description: |
-        Do you want to install Synthetic Data Generator?
+        Do you want to install Synthetic Data Generator? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: voice-gateway-state
       type: string
       description: |
-        Do you want to install voice gateway?
+        Do you want to install voice gateway? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -526,11 +541,11 @@ spec:
     - name: watsonx-assistant-state
       type: string
       description: |
-        Do you want to install watsonx assistant.
+        Do you want to install watsonx assistant. Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -540,9 +555,9 @@ spec:
         Choose size of watsonx assistant installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
@@ -553,22 +568,26 @@ spec:
     - name: watson-discovery-state
       type: string
       description: |
-        Do you want to install watson discovery?
+        Do you want to install watson discovery? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
+    - name: watson-discovery-instance
+      type: string
+      description: Choose the name of Watson Discovery instance.
+      default: "wd-instance"
     - name: watson-openscale-state
       type: string
       description: |
-        Do you want to install watson openscale?
+        Do you want to install watson openscale? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -578,20 +597,20 @@ spec:
         Choose size of watson openscale installation. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: watson-speech-state
       type: string
       description: |
-        Do you want to install watson speech?
+        Do you want to install watson speech? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -601,10 +620,10 @@ spec:
         Choose size of watson speech to text. (only applied if component is installed)
         {
           "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"},
-            {"text": "Small","value": "small"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"xsmall"},
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "xsmall"
@@ -614,10 +633,10 @@ spec:
         Choose size of watson text to speech. (only applied if component is installed)
         {
           "options": [
-            {"text": "Extra Small","value": "xsmall", "default": "true"},
-            {"text": "Small","value": "small"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"xsmall"},
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "xsmall"
@@ -646,11 +665,11 @@ spec:
     - name: watsonx-ai-state
       type: string
       description: |
-        Do you want to install watsonx.ai?
+        Do you want to install watsonx.ai? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -660,292 +679,525 @@ spec:
         Do you want to disable the watsonx.ai tuning studio installation
         {
           "options": [
-            {"text": "No","value": "false"},
-            {"text": "Yes","value": "true", "default": "true"}
+            {"false"},
+            {"true"}
           ]
         }
-      default: "true"
+      default: "false"
     - name: llm-google-flan-t5-xxl-state
       type: string
       description: |
-        Do you want to install google-flan-t5-xxl llm?
+        Do you want to install google-flan-t5-xxl llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-granite-7b-lab-state
+      type: string
+      description: |
+        Do you want to install ibm-granite-7b-lab llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-google-flan-ul2-state
       type: string
       description: |
-        Do you want to install google-flan-ul2 llm?
+        Do you want to install google-flan-ul2 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
-    - name: llm-eleutherai-gpt-neox-20b-state
-      type: string
-      description: |
-        Do you want to install eleutherai-gpt-neox-20b llm?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-granite-13b-chat-v2-state
       type: string
       description: |
-        Do you want to install ibm-granite-13b-chat-v2 llm?
+        Do you want to install ibm-granite-13b-chat-v2 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-ibm-granite-13b-instruct-v2-state
       type: string
       description: |
-        Do you want to install ibm-granite-13b-instruct-v2 llm?
+        Do you want to install ibm-granite-13b-instruct-v2 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
-    - name: llm-ibm-granite-3b-code-instruct-state
+    - name: llm-granite-3b-code-instruct-state
       type: string
       description: |
-        Do you want to install ibm-granite-3b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
-      default: "removed"
-    - name: llm-ibm-granite-8b-code-instruct-state
-      type: string
-      description: |
-        Do you want to install ibm-granite-8b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
-      default: "removed"
-    - name: llm-ibm-granite-20b-code-instruct-state
-      type: string
-      description: |
-        Do you want to install ibm-granite-20b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
-      default: "removed"
-    - name: llm-ibm-granite-34b-code-instruct-state
-      type: string
-      description: |
-        Do you want to install ibm-granite-34b-code-instruct llm? If yes then make this parameter "installed" and if no then make this parameter "removed"
-      default: "removed"
-    - name: llm-meta-llama-llama-2-70b-chat-state
-      type: string
-      description: |
-        Do you want to install meta-llama-llama-2-70b-chat llm?
+        Do you want to install granite-3b-code-instruct llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-8b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-8b-code-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-20b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-20b-code-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-34b-code-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-34b-code-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-mncai-llama-2-13b-dpo-v7-state
       type: string
       description: |
-        Do you want to install mncai-llama-2-13b-dpo-v7 llm?
+        Do you want to install mncai-llama-2-13b-dpo-v7 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
-    - name: llm-ibm-mistralai-merlinite-7b-state
+    - name: llm-ministral-8b-instruct-state
       type: string
       description: |
-        Do you want to install ibm-mistralai-merlinite-7b llm?
+        Do you want to install ministral-8b-instruct llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-mistral-small-instruct-state
+      type: string
+      description: |
+        Do you want to install mistral-small-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-mistral-large-state
+      type: string
+      description: |
+        Do you want to install mistral-large llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-ibm-mpt-7b-instruct2-state
       type: string
       description: |
-        Do you want to install ibm-mpt-7b-instruct2 llm?
+        Do you want to install ibm-mpt-7b-instruct2 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-mistralai-mixtral-8x7b-instruct-v01-state
       type: string
       description: |
-        Do you want to install mistralai-mixtral-8x7b-instruct-v01 llm?
+        Do you want to install mistralai-mixtral-8x7b-instruct-v01 llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-allam-1-13b-instruct-state
       type: string
       description: |
-        Do you want to install allam-1-13b-instruct?
+        Do you want to install allam-1-13b-instruct? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-codellama-codellama-34b-instruct-hf-state
       type: string
       description: |
-        Do you want to install codellama-codellama-34b-instruct-hf?
+        Do you want to install codellama-codellama-34b-instruct-hf? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-elyza-japanese-llama-2-7b-instruct-state
       type: string
       description: |
-        Do you want to install elyza-japanese-llama-2-7b-instruct?
+        Do you want to install elyza-japanese-llama-2-7b-instruct? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
-          ]
-        }
-      default: "removed"
-    - name: llm-ibm-mistralai-mixtral-8x7b-instruct-v01-q-state
-      type: string
-      description: |
-        Do you want to install ibm-mistralai-mixtral-8x7b-instruct-v01-q?
-        {
-          "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-bigscience-mt0-xxl-state
       type: string
       description: |
-        Do you want to install bigscience-mt0-xxl llm?
+        Do you want to install bigscience-mt0-xxl llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
-    - name: llm-bigcode-starcoder-state
+    - name: llm-pixtral-12b-state
       type: string
       description: |
-        Do you want to install bigcode-starcoder llm?
+        Do you want to install pixtral-12b llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-all-minilm-l6-v2-state
+      type: string
+      description: |
+        Do you want to install all-minilm-l6-v2 embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-all-minilm-l12-v2-state
+      type: string
+      description: |
+        Do you want to install all-minilm-l12-v2 embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ms-marco-minilm-l-12-v2-state
+      type: string
+      description: |
+        Do you want to install ms-marco-minilm-l-12-v2 embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-multilingual-e5-large-state
+      type: string
+      description: |
+        Do you want to install multilingual-e5-large embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-slate-30m-english-rtrvr-state
+      type: string
+      description: |
+        Do you want to install ibm-slate-30m-english-rtrvr embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-ibm-slate-125m-english-rtrvr-state
+      type: string
+      description: |
+        Do you want to install ibm-slate-125m-english-rtrvr embedding/reranker model? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-ibm-granite-8b-japanese-state
       type: string
       description: |
-        Do you want to install ibm-granite-8b-japanese llm?
+        Do you want to install ibm-granite-8b-japanese llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-ibm-granite-20b-multilingual-state
       type: string
       description: |
-        Do you want to install ibm-granite-20b-multilingual llm?
+        Do you want to install ibm-granite-20b-multilingual llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-3-2b-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-3-2b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-3-8b-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-3-8b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-guardian-3-2b-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-guardian-3-2b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-granite-guardian-3-8b-instruct-state
+      type: string
+      description: |
+        Do you want to install granite-guardian-3-8b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-core42-jais-13b-chat-state
       type: string
       description: |
-        Do you want to install core42-jais-13b-chat llm?
+        Do you want to install core42-jais-13b-chat llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-2-1b-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-2-1b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-2-3b-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-2-3b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-2-11b-vision-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-2-11b-vision-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-2-90b-vision-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-2-90b-vision-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-guard-3-11b-vision-state
+      type: string
+      description: |
+        Do you want to install llama-guard-3-11b-vision llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-1-8b-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-1-8b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-1-70b-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-1-70b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-llama-3-405b-instruct-state
+      type: string
+      description: |
+        Do you want to install llama-3-405b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-meta-llama-llama-2-13b-chat-state
       type: string
       description: |
-        Do you want to install meta-llama-llama-2-13b-chat llm?
+        Do you want to install meta-llama-llama-2-13b-chat llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-meta-llama-llama-3-8b-instruct-state
       type: string
       description: |
-        Do you want to install meta-llama-llama-3-8b-instruct llm?
+        Do you want to install meta-llama-llama-3-8b-instruct llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: llm-meta-llama-llama-3-70b-instruct-state
+      type: string
+      description: |
+        Do you want to install meta-llama-llama-3-70b-instruct llm? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: llm-google-flan-t5-xl-state
       type: string
       description: |
-        Do you want to install google-flan-t5-xl llm?
+        Do you want to install google-flan-t5-xl llm? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: watsonx-data-state
       type: string
       description: |
-        Do you want to install watsonx.data?
+        Do you want to install watsonx.data? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: wkc-state
       type: string
       description: |
-        Do you want to install IBM Knowledge Catalog?
+        Do you want to install IBM Knowledge Catalog? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -955,42 +1207,42 @@ spec:
         Choose size of watson knowledge catalogue. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: wkc-options-knowledge-graph
       type: string
       description: |
-        Do you want to enable knowledge graph for wkc? (only applied if wkc is installed)
+        Do you want to enable knowledge graph for wkc? (only applied if wkc is installed) Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
     - name: wkc-options-enable-data-quality
       type: string
       description: |
-        Do you want to enable data quality for wkc?
+        Do you want to enable data quality for wkc? (only applied if wkc is installed) Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
     - name: ikc-premium-state
       type: string
       description: |
-        Do you want to install ikc-premium (IBM Knowledge Catalog Premium?
+        Do you want to install ikc-premium (IBM Knowledge Catalog Premium? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1000,42 +1252,42 @@ spec:
         Choose size of ikc-premium. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: ikc-premium-options-knowledge-graph
       type: string
       description: |
-        Do you want to enable knowledge graph for ikc-premium? (only applied if ikc-premium is installed)
+        Do you want to enable knowledge graph for ikc-premium? (only applied if ikc-premium is installed) Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
     - name: ikc-premium-options-enable-data-quality
       type: string
       description: |
-        Do you want to enable data quality for ikc-premium?
+        Do you want to enable data quality for ikc-premium? (only applied if ikc-premium is installed) Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
     - name: ikc-standard-state
       type: string
       description: |
-        Do you want to install ikc-standard (IBM Knowledge Catalog Standard?
+        Do you want to install ikc-standard (IBM Knowledge Catalog Standard? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1045,64 +1297,86 @@ spec:
         Choose size of ikc-standard. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: ikc-standard-options-knowledge-graph
       type: string
       description: |
-        Do you want to enable knowledge graph for ikc-standard? (only applied if ikc-standard is installed)
+        Do you want to enable knowledge graph for ikc-standard? (only applied if ikc-standard is installed) Choose "True" if yes.
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
-    - name: ikc-standard-options-enable-data-quality
+    - name: ikc-standard-options-enable-data-quality (only applied if ikc-standard is installed) Choose "True" if yes.
       type: string
       description: |
         Do you want to enable data quality for ikc-standard?
         {
           "options": [
-            {"text": "No","value": "False", "default": "true"},
-            {"text": "Yes","value": "True"}
+            {"False"},
+            {"True"}
           ]
         }
       default: "False"
     - name: watsonx-orchestrate-state
       type: string
       description: |
-        Do you want to install watsonx orchestrate?
+        Do you want to install watsonx orchestrate? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: wca-ansible-state
+      type: string
+      description: |
+        Do you want to install watsonx Code Assistant for Red Hat® Ansible® Lightspeed? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
+          ]
+        }
+      default: "removed"
+    - name: wca-z-state
+      type: string
+      description: |
+        Do you want to install watsonx Code Assistant for Z? Choose "installed" if yes.
+        {
+          "options": [
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: planning-analytics-state
       type: string
       description: |
-        Do you want to install planning analytics?
+        Do you want to install planning analytics? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
     - name: replication-state
       type: string
       description: |
-        Do you want to install data replication?
+        Do you want to install data replication? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1112,20 +1386,20 @@ spec:
         Choose size of data replication. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: watsonx-governance-state
       type: string
       description: |
-        Do you want to install watsonx governance?
+        Do you want to install watsonx governance? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1133,55 +1407,58 @@ spec:
       type: string
       description: |
         Specify which watsonx.governance entitlement you purchased.
+        For both Model Management and Risk & Compliance Foundation entitlements choose "all"
+        For just Model Management entitlement choose "mm"
+        For just Risk and Compliance Foundation entitlement choose "rcf"
         {
           "options": [
-            {"text": "Both Model Management and Risk & Compliance Foundation entitlements","value": "all", "default": "true"},
-            {"text": "Just Model Management entitlement","value": "mm"},
-            {"text": "Just Risk and Compliance Foundation entitlement","value": "rcf"}
+            {"all"},
+            {"mm"},
+            {"rcf"}
           ]
         }
       default: "all"
     - name: watsonx-gov-enableFactsheet
       type: string
       description: |
-        Do you want Factsheets enabled for watsonx governance installation? (only applied if component is installed)
+        Do you want Factsheets enabled for watsonx governance installation? (only applied if component is installed) Choose "true" if yes.
         {
           "options": [
-            {"text": "Yes","value": "true", "default": "true"},
-            {"text": "No","value": "false"}
+            {"true"},
+            {"false"}
           ]
         }
       default: "true"
     - name: watsonx-gov-enableOpenpages
       type: string
       description: |
-        Do you want OpenPages enabled for watsonx governance installation? (only applied if component is installed)
+        Do you want OpenPages enabled for watsonx governance installation? (only applied if component is installed) Choose "true" if yes.
         {
           "options": [
-            {"text": "Yes","value": "true", "default": "true"},
-            {"text": "No","value": "false"}
+            {"true"},
+            {"false"}
           ]
         }
       default: "true"
     - name: watsonx-gov-enableOpenscale
       type: string
       description: |
-        Do you want OpenScale enabled for watsonx governance installation? (only applied if component is installed)
+        Do you want OpenScale enabled for watsonx governance installation? (only applied if component is installed) Choose "true" if yes.
         {
           "options": [
-            {"text": "Yes","value": "true", "default": "true"},
-            {"text": "No","value": "false"}
+            {"true"},
+            {"false"}
           ]
         }
       default: "true"
     - name: wml-state
       type: string
       description: |
-        Do you want to install watson machine learning?
+        Do you want to install watson machine learning? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1191,20 +1468,20 @@ spec:
         Choose size of watson machine learning. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
     - name: wml-accelerator-state
       type: string
       description: |
-        Do you want to install watson machine learning accelerator?
+        Do you want to install watson machine learning accelerator? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1214,9 +1491,9 @@ spec:
         Choose size of watson machine learning accelerator. (only applied if component is installed)
         {
           "options": [
-            {"text": "Small","value": "small", "default": "true"},
-            {"text": "Medium","value": "medium"},
-            {"text": "Large","value": "large"}
+            {"small"},
+            {"medium"},
+            {"large"}
           ]
         }
       default: "small"
@@ -1227,11 +1504,11 @@ spec:
     - name: ws-state
       type: string
       description: |
-        Do you want to install watson studio?
+        Do you want to install watson studio? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed"}
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1251,11 +1528,11 @@ spec:
     - name: ws-runtimes-state
       type: string
       description: |
-        Do you want to install watson studio runtimes?
+        Do you want to install watson studio runtimes? Choose "installed" if yes.
         {
           "options": [
-            {"text": "No","value": "removed", "default": "true"},
-            {"text": "Yes","value": "installed" }
+            {"removed"},
+            {"installed"}
           ]
         }
       default: "removed"
@@ -1531,10 +1808,10 @@ spec:
                   cluster_name: cpd-demo
                   domain_name: example.com
                   openshift_ai:
-                    install: '$(params.install-openshift-ai)'
+                    install: $(params.install-openshift-ai)
                     channel: fast
                   gpu:
-                    install: '$(params.configure-gpu)'
+                    install: $(params.configure-gpu)
                   openshift_storage:
                   - storage_name: $(params.cloud-pak-deployer-storage-class)
                     storage_type: $(params.cloud-pak-deployer-storage-type)
@@ -1552,10 +1829,34 @@ spec:
 
                 cp4d:
                 - project: cpd
+                  openshift_cluster_name: cpd-demo
                   cp4d_version: $(params.cp4d-version)
+                  cp4d_entitlement:
+                  - cpd-enterprise
+                  # - cpd-standard
+                  # - cognos-analytics
+                  # - data-product-hub
+                  # - datastage
+                  # - ikc-premium
+                  # - ikc-standard
+                  # - openpages
+                  # - planning-analytics
+                  # - product-master
+                  # - speech-to-text
+                  # - text-to-speech
+                  # - watson-assistant
+                  # - watson-discovery
+                  # - watsonx-ai
+                  # - watsonx-code-assistant-ansible
+                  # - watsonx-code-assistant-z
+                  # - watsonx-data
+                  # - watsonx-gov-mm
+                  # - watsonx-gov-rc
+                  # - watsonx-orchestrate
                   use_fs_iam: $(params.cpd-use-fs-iam)
-                  sequential_install: $(params.cpd-sequential-install)
                   accept_licenses: True
+                  operators_project: cpd-operators
+                  state: installed
                   cartridges:
                   - name: cp-foundation
                     license_service:
@@ -1566,6 +1867,15 @@ spec:
 
                   - name: scheduler 
                     state: $(params.scheduler-state)
+
+                  #
+                  # All tested cartridges. To install, change the "state" property to "installed". To uninstall, change the state
+                  # to "removed" or comment out the entire cartridge. Make sure that the "-" and properties are aligned with the lite
+                  # cartridge; the "-" is at position 3 and the property starts at position 5.
+                  #
+                  # If a cartridge has dependencies and you want to install it, you must ensure that the dependent cartridge is also
+                  # installed.
+                  #
 
                   - name: analyticsengine
                     description: Analytics Engine Powered by Apache Spark 
@@ -1591,6 +1901,11 @@ spec:
                   - name: datagate
                     description: Db2 Data Gate
                     state: $(params.datagate-state)
+
+                  - name: datalineage
+                    description: IBM MANTA Data Lineage
+                    size: small
+                    state: $(params.datalineage-state)
 
                   - name: dataproduct
                     description: Data Product Hub
@@ -1627,12 +1942,12 @@ spec:
                   - name: db2
                     description: Db2 OLTP
                     size: $(params.db2-size)
-                    # instances:
-                    # - name: Db2
-                    #   metadata_size_gb: 20
-                    #   data_size_gb: 20
-                    #   backup_size_gb: 20  
-                    #   transactionlog_size_gb: 20
+                    instances:
+                    - name: ca-metastore
+                      metadata_size_gb: 20
+                      data_size_gb: 20
+                      backup_size_gb: 20  
+                      transactionlog_size_gb: 20
                     state: $(params.db2-state)
 
                   - name: db2wh
@@ -1642,7 +1957,10 @@ spec:
                   - name: dmc
                     description: Db2 Data Management Console
                     instances:
-                    - name: data-management-console
+                    - name: $(params.dmc-instance)
+                      description: Data Management Console
+                      size: medium
+                      storage_size_gb: 50
                     state: $(params.dmc-state)
 
                   - name: dods
@@ -1703,6 +2021,10 @@ spec:
                     wkc_enabled: $(params.match360-wkc-enabled)
                     state: $(params.match360-state)
 
+                  - name: mongodb
+                    description: MongoDB for Cloud Pak for Data
+                    state: $(params.mongodb-state)
+
                   - name: openpages
                     description: OpenPages
                     state: $(params.openpages-state)
@@ -1742,15 +2064,18 @@ spec:
                     # noobaa_account_secret: noobaa-admin
                     # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watsonx-assistant-state)
-                    instances:
-                    - name: $(params.wa-instance)
-                      description: "Watsonx Assistant instance"
+                    # instances:
+                    # - name: $(params.wa-instance)
+                    #   description: "Watsonx Assistant instance"
 
                   - name: watson-discovery
                     description: Watson Discovery
                     # noobaa_account_secret: noobaa-admin
                     # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-discovery-state)
+                    instances:
+                    - name: $(params.watson-discovery-instance)
+                      description: "Watson Discovery instance"
 
                   - name: watson-openscale
                     description: Watson OpenScale
@@ -1761,8 +2086,14 @@ spec:
                     description: Watson Speech (STT and TTS)
                     stt_size: $(params.watson-speech-stt-size)
                     tts_size: $(params.watson-speech-tts-size)
+                    # noobaa_account_secret: noobaa-admin
+                    # noobaa_cert_secret: noobaa-s3-serving-cert
                     state: $(params.watson-speech-state)
 
+                  # Please note that for watsonx.ai, the following pre-requisites exist:
+                  # If you want to use foundation models, you neeed to install the Node Feature Discovery and NVIDIA GPU operators. 
+                  #    You can do so by setting the openshift.gpu.install property to True
+                  # OpenShift AI is a requirement for watsonx.ai. You can install this by setting the openshift.openshift_ai.install property to True
                   - name: watsonx_ai
                     description: watsonx.ai
                     state: $(params.watsonx-ai-state)
@@ -1781,46 +2112,84 @@ spec:
                       state: $(params.llm-google-flan-t5-xl-state)
                     - model_id: google-flan-t5-xxl
                       state: $(params.llm-google-flan-t5-xxl-state)
-                    - model_id: eleutherai-gpt-neox-20b
-                      state: $(params.llm-eleutherai-gpt-neox-20b-state)
+                    - model_id: ibm-granite-7b-lab
+                      state: $(params.llm-ibm-granite-7b-lab-state)
                     - model_id: ibm-granite-8b-japanese
                       state: $(params.llm-ibm-granite-8b-japanese-state)
                     - model_id: ibm-granite-13b-chat-v2
                       state: $(params.llm-granite-13b-chat-v2-state)
                     - model_id: ibm-granite-13b-instruct-v2
                       state: $(params.llm-ibm-granite-13b-instruct-v2-state)
-                    - model_id: granite-3b-code-instruct
-                      state: $(params.llm-ibm-granite-3b-code-instruct-state)
-                    - model_id: granite-8b-code-instruct
-                      state: $(params.llm-ibm-granite-8b-code-instruct-state)
-                    - model_id: granite-20b-code-instruct
-                      state: $(params.llm-ibm-granite-20b-code-instruct-state)
-                    - model_id: granite-34b-code-instruct
-                      state: $(params.llm-ibm-granite-34b-code-instruct-state)
                     - model_id: ibm-granite-20b-multilingual
                       state: $(params.llm-ibm-granite-20b-multilingual-state)
+                    - model_id: granite-3-2b-instruct
+                      state: $(params.llm-granite-3-2b-instruct-state)
+                    - model_id: granite-3-8b-instruct
+                      state: $(params.llm-granite-3-8b-instruct-state)
+                    - model_id: granite-guardian-3-2b-instruct
+                      state: $(params.llm-granite-guardian-3-2b-instruct-state)
+                    - model_id: granite-guardian-3-8b-instruct
+                      state: $(params.llm-granite-guardian-3-8b-instruct-state)
+                    - model_id: granite-3b-code-instruct
+                      state: $(params.llm-granite-3b-code-instruct-state)
+                    - model_id: granite-8b-code-instruct
+                      state: $(params.llm-granite-8b-code-instruct-state)
+                    - model_id: granite-20b-code-instruct
+                      state: $(params.llm-granite-20b-code-instruct-state)
+                    - model_id: granite-34b-code-instruct
+                      state: $(params.llm-granite-34b-code-instruct-state)
                     - model_id: core42-jais-13b-chat
                       state: $(params.llm-core42-jais-13b-chat-state)
-                    - model_id: meta-llama-llama-2-13b-chat
-                      state: $(params.llm-meta-llama-llama-2-13b-chat-state)
+                    - model_id: llama-3-2-1b-instruct
+                      state: $(params.llm-llama-3-2-1b-instruct-state)
+                    - model_id: llama-3-2-3b-instruct
+                      state: $(params.llm-llama-3-2-3b-instruct-state)
+                    - model_id: llama-3-2-11b-vision-instruct
+                      state: $(params.llm-llama-3-2-11b-vision-instruct-state)
+                    - model_id: llama-3-2-90b-vision-instruct
+                      state: $(params.llm-llama-3-2-90b-vision-instruct-state)
+                    - model_id: llama-guard-3-11b-vision
+                      state: $(params.llm-llama-guard-3-11b-vision-state)
+                    - model_id: llama-3-1-8b-instruct
+                      state: $(params.llm-llama-3-1-8b-instruct-state)
+                    - model_id: llama-3-1-70b-instruct
+                      state: $(params.llm-llama-3-1-70b-instruct-state)
+                    - model_id: llama-3-405b-instruct
+                      state: $(params.llm-llama-3-405b-instruct-state)
                     - model_id: meta-llama-llama-3-8b-instruct
                       state: $(params.llm-meta-llama-llama-3-8b-instruct-state)
-                    - model_id: meta-llama-llama-2-70b-chat
-                      state: $(params.llm-meta-llama-llama-2-70b-chat-state)
+                    - model_id: meta-llama-llama-3-70b-instruct
+                      state: $(params.llm-meta-llama-llama-3-70b-instruct-state)
+                    - model_id: meta-llama-llama-2-13b-chat
+                      state: $(params.llm-meta-llama-llama-2-13b-chat-state)
                     - model_id: mncai-llama-2-13b-dpo-v7
                       state: $(params.llm-mncai-llama-2-13b-dpo-v7-state)
-                    - model_id: ibm-mistralai-merlinite-7b
-                      state: $(params.llm-ibm-mistralai-merlinite-7b-state)
-                    - model_id: ibm-mpt-7b-instruct2
-                      state: $(params.llm-ibm-mpt-7b-instruct2-state)
+                    # You must purchase Mistral AI with IBM separately before you are entitled to download and use the mixtral models
+                    - model_id: ministral-8b-instruct
+                      state: $(params.llm-ministral-8b-instruct-state)
+                    - model_id: mistral-small-instruct
+                      state: $(params.llm-mistral-small-instruct-state)
+                    - model_id: mistral-large
+                      state: $(params.llm-mistral-large-state)
                     - model_id: mistralai-mixtral-8x7b-instruct-v01
                       state: $(params.llm-mistralai-mixtral-8x7b-instruct-v01-state)
-                    - model_id: ibm-mistralai-mixtral-8x7b-instruct-v01-q
-                      state: $(params.llm-ibm-mistralai-mixtral-8x7b-instruct-v01-q-state)
                     - model_id: bigscience-mt0-xxl
                       state: $(params.llm-bigscience-mt0-xxl-state)
-                    - model_id: bigcode-starcoder
-                      state: $(params.llm-bigcode-starcoder-state) 
+                    - model_id: pixtral-12b
+                      state: $(params.llm-pixtral-12b-state)
+                    # Embedding models
+                    - model_id: all-minilm-l6-v2
+                      state: $(params.llm-all-minilm-l6-v2-state)
+                    - model_id: all-minilm-l12-v2
+                      state: $(params.llm-all-minilm-l12-v2-state)
+                    - model_id: ms-marco-minilm-l-12-v2
+                      state: $(params.llm-ms-marco-minilm-l-12-v2-state)
+                    - model_id: multilingual-e5-large
+                      state: $(params.llm-multilingual-e5-large-state)
+                    - model_id: ibm-slate-30m-english-rtrvr
+                      state: $(params.llm-ibm-slate-30m-english-rtrvr-state)
+                    - model_id: ibm-slate-125m-english-rtrvr
+                      state: $(params.llm-ibm-slate-125m-english-rtrvr-state)
 
                   - name: watsonx_data
                     description: watsonx.data
@@ -1834,15 +2203,25 @@ spec:
                       enableFactsheet: $(params.watsonx-gov-enableFactsheet)
                       enableOpenpages: $(params.watsonx-gov-enableOpenpages)
                       enableOpenscale: $(params.watsonx-gov-enableOpenscale)
-                  
+
                   - name: watsonx_orchestrate
                     description: watsonx.orchestrate
                     app_connect:
                       app_connect_project: ibm-app-connect
-                      app_connect_case_version: 11.5.0
-                      app_connect_channel_version: v11.5
+                      app_connect_case_version: 12.5.0
+                      app_connect_channel_version: v12.5
                     state: $(params.watsonx-orchestrate-state)
 
+                  - name: wca-ansible
+                    description: watsxonx Code Assistant for Red Hat Ansible Lightspeed
+                    state: $(params.wca-ansible-state)
+
+                  - name: wca-z
+                    description: watsxonx Code Assistant for Z
+                    state: $(params.wca-z-state)
+
+                  # For the IBM Knowledge Catalog, you can specify 3 editions: wkx, ikc_premium, or ikc_standard
+                  # Choose the correct IBM Knowledge Catalog edition below
                   - name: wkc
                     description: IBM Knowledge Catalog
                     size: $(params.wkc-size)

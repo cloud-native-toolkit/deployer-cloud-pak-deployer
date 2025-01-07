@@ -1,31 +1,29 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  generateName: cloud-pak-deployer-5.0.x-run-
+  generateName: cloud-pak-deployer-5.1.x-run-
 spec:
   timeouts:
     pipeline: 10h0m0s
   pipelineRef:
-    name: cloud-pak-deployer-5.0.x
+    name: cloud-pak-deployer-5.1.x
   params:
     - name: namespace
       value: "cloud-pak-deployer"
     - name: storage-class
-      value: "ocs-external-storagecluster-cephfs"
-    - name: custom-file-storage-class
-      value: "ocs-external-storagecluster-cephfs"
-    - name: custom-block-storage-class
-      value: "ocs-external-storagecluster-ceph-rbd"
-    - name: cloud-pak-deployer-storage-type
-      value: "custom"
+      value: "ocs-storagecluster-cephfs"
     - name: ocp-client-version
       value: "4.16"
     - name: cp4d-version
-      value: "5.0.3"
+      value: "5.1.0"
+    - name: ibm-entitlement-key
+      value: "false"
     - name: cpd-use-fs-iam
-      value: "False"
-    - name: cpd-sequential-install
       value: "True"
+    - name: pih-full-git-url
+      value: "false" # https://<personal-access-token>@github.com/<account/org>/<repo>.git
+    - name: cloud-pak-deployer-version
+      value: "v3.1.2"
     - name: install-openshift-ai
       value: "True"
     - name: configure-gpu
@@ -33,8 +31,6 @@ spec:
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state
-    #   value: "installed"
-    # - name: ca-state
     #   value: "installed"
     # - name: dashboard-state
     #   value: "installed"

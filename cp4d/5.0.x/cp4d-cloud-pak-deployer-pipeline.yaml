@@ -1287,7 +1287,7 @@ spec:
           values: ["Succeeded"]
         - input: $(params.cpd-use-fs-iam)
           operator: notin
-          values: ["True",z"true"]
+          values: ["True","true"]
       taskRef:
         kind: Task
         name: ibm-pak
@@ -1804,13 +1804,13 @@ spec:
                       state: $(params.llm-granite-13b-chat-v2-state)
                     - model_id: ibm-granite-13b-instruct-v2
                       state: $(params.llm-ibm-granite-13b-instruct-v2-state)
-                    - model_id: ibm-granite-3b-code-instruct
+                    - model_id: granite-3b-code-instruct
                       state: $(params.llm-ibm-granite-3b-code-instruct-state)
-                    - model_id: ibm-granite-8b-code-instruct
+                    - model_id: granite-8b-code-instruct
                       state: $(params.llm-ibm-granite-8b-code-instruct-state)
-                    - model_id: ibm-granite-20b-code-instruct
+                    - model_id: granite-20b-code-instruct
                       state: $(params.llm-ibm-granite-20b-code-instruct-state)
-                    - model_id: ibm-granite-34b-code-instruct
+                    - model_id: granite-34b-code-instruct
                       state: $(params.llm-ibm-granite-34b-code-instruct-state)
                     - model_id: ibm-granite-20b-multilingual
                       state: $(params.llm-ibm-granite-20b-multilingual-state)
