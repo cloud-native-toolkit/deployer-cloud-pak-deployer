@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  generateName: cloud-pak-deployer-5.0.x-run-
+  generateName: cloud-pak-deployer-5.1.x-run-
 spec:
   timeouts:
     pipeline: 10h0m0s
   pipelineRef:
-    name: cloud-pak-deployer-5.0.x
+    name: cloud-pak-deployer-5.1.x
   params:
     - name: namespace
       value: "cloud-pak-deployer"
@@ -21,11 +21,9 @@ spec:
     - name: ocp-client-version
       value: "4.16"
     - name: cp4d-version
-      value: "5.0.3"
+      value: "5.1.0"
     - name: cpd-use-fs-iam
       value: "False"
-    - name: cpd-sequential-install
-      value: "True"
     - name: install-openshift-ai
       value: "True"
     - name: configure-gpu

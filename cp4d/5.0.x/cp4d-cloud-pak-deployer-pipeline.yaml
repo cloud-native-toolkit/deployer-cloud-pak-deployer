@@ -1287,7 +1287,7 @@ spec:
           values: ["Succeeded"]
         - input: $(params.cpd-use-fs-iam)
           operator: notin
-          values: ["True",z"true"]
+          values: ["True","true"]
       taskRef:
         kind: Task
         name: ibm-pak
