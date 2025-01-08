@@ -1314,10 +1314,10 @@ spec:
           ]
         }
       default: "False"
-    - name: ikc-standard-options-enable-data-quality (only applied if ikc-standard is installed) Choose "True" if yes.
+    - name: ikc-standard-options-enable-data-quality
       type: string
       description: |
-        Do you want to enable data quality for ikc-standard?
+        Do you want to enable data quality for ikc-standard? (only applied if ikc-standard is installed) Choose "True" if yes.
         {
           "options": [
             {"False"},
