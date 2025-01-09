@@ -2269,11 +2269,8 @@ spec:
                     description: Watson Studio Runtimes
                     runtimes:
                     - ibm-cpd-ws-runtime-241-py
-                    - ibm-cpd-ws-runtime-231-py
                     - ibm-cpd-ws-runtime-241-pygpu
-                    - ibm-cpd-ws-runtime-231-pygpu
                     - ibm-cpd-ws-runtime-241-r
-                    - ibm-cpd-ws-runtime-231-r
                     state: $(params.ws-runtimes-state)
 
                   # Cartridges where extra work is needed (will not install automatically)
