@@ -69,6 +69,14 @@ spec:
       type: string
       description: Should the cloud pak deployer delete components that already exist in the cluster if you don't define them? True to delete components, False to not delete components.
       default: "True"
+    - name: install-nvidia-gpu-operator-mig
+      type: string
+      description: Attempt to install only the nvidia gpu operator to configure MIG?
+      default: "false"
+    - name: install-mig-config
+      type: string
+      description: Attempt to install only the nvidia gpu operator to configure MIG?
+      default: "false"
     - name: cpd-use-fs-iam
       type: string
       description: |
@@ -1770,6 +1778,102 @@ spec:
               cp-entitlement-key: |
                 $(tasks.assign-ibm-entitlement-key.results.key)
             EOF
+    - name: install-nvidia-gpu-operator-mig
+      when:
+        - input: "$(params.install-nvidia-gpu-operator-mig)"
+          operator: in
+          values: ["true", "True"] 
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - create-entitlement-key-secret
+      params:
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: nvidia-gpu-operator
+            EOF
+
+            oc apply -f - <<EOF
+            apiVersion: operators.coreos.com/v1
+            kind: OperatorGroup
+            metadata:
+              name: nvidia-gpu-operator-group
+              namespace: nvidia-gpu-operator
+            spec:
+            targetNamespaces:
+            - nvidia-gpu-operator
+            EOF
+
+            oc apply -f - <<EOF
+            apiVersion: operators.coreos.com/v1
+            kind: OperatorGroup
+            metadata:
+              name: nvidia-gpu-operator-group
+              namespace: nvidia-gpu-operator
+            spec:
+            targetNamespaces:
+            - nvidia-gpu-operator
+            EOF
+
+            CHANNEL=$(oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}')
+            echo "$CHANNEL"
+
+            STARTING_CSV=$(oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV')
+
+            oc apply -f - <<EOF
+            apiVersion: operators.coreos.com/v1alpha1
+            kind: Subscription
+            metadata:
+              name: gpu-operator-certified
+              namespace: nvidia-gpu-operator
+            spec:
+              channel: "$CHANNEL"
+              installPlanApproval: Manual
+              name: gpu-operator-certified
+              source: certified-operators
+              sourceNamespace: openshift-marketplace
+              startingCSV: "$STARTING_CSV"
+            EOF
+
+            oc get csv -n nvidia-gpu-operator $STARTING_CSV -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+
+            oc apply -f clusterpolicy.json
+    - name: install-mig-config
+      when:
+        - input: "$(params.install-mig-config)"
+          operator: in
+          values: ["true", "True"] 
+      taskRef:
+        kind: Task
+        name: ibm-pak
+      runAfter:
+        - install-nvidia-gpu-operator-mig
+      params:
+        - name: SCRIPT
+          value: |
+            oc apply -f - <<EOF
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: nvidia-gpu-operator
+            EOF
+
+            oc apply -f - <<EOF
+            apiVersion: operators.coreos.com/v1
+            kind: OperatorGroup
+            metadata:
+              name: nvidia-gpu-operator-group
+              namespace: nvidia-gpu-operator
+            spec:
+            targetNamespaces:
+            - nvidia-gpu-operator
+            EOF
+            
     - name: configure-cloud-paks-services
       runAfter:
         - create-entitlement-key-secret

@@ -28,6 +28,11 @@ spec:
       value: "True"
     - name: configure-gpu
       value: "True"
+    - name: install-nvidia-gpu-operator-mig
+      value: "true"
+    - name: install-mig-config
+      value: "true"
+    
     # - name: analyticsengine-state
     #   value: "installed"
     # - name: spss-state
