@@ -1,0 +1,303 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: cloud-pak-deployer-5.1.2-
+  annotations:
+    techzone.ibm.com/backstageEntityRef: component:default/deployer-cp4d-cloud-pak-deployer-5.1.x-pipeline
+  namespace: default
+spec:
+  pipelineRef:
+    name: cloud-pak-deployer-5.1.x
+  params:
+    - name: namespace
+      value: cloud-pak-deployer
+    - name: storage-class
+      value: ocs-external-storagecluster-cephfs
+    - name: custom-file-storage-class
+      value: ocs-external-storagecluster-cephfs
+    - name: custom-block-storage-class
+      value: ocs-external-storagecluster-ceph-rbd
+    - name: cloud-pak-deployer-storage-class
+      value: auto-storage
+    - name: cloud-pak-deployer-storage-type
+      value: auto
+    - name: cloud-pak-deployer-version
+      value: latest
+    - name: ocp-client-version
+      value: "4.16"
+    - name: cp4d-version
+      value: 5.1.2
+    - name: ibm-entitlement-key
+      value: "false"
+    - name: pih-full-git-url
+      value: "false"
+    - name: cpd-confirm-destroy
+      value: "True"
+    - name: cpd-use-fs-iam
+      value: "True"
+    - name: scheduler-state
+      value: removed
+    - name: analyticsengine-state
+      value: removed
+    - name: analyticsengine-size
+      value: small
+    - name: bigsql-state
+      value: removed
+    - name: ca-state
+      value: removed
+    - name: ca-size
+      value: small
+    - name: ca-instance
+      value: ca-instance
+    - name: dashboard-state
+      value: removed
+    - name: datagate-state
+      value: removed
+    - name: datalineage-state
+      value: removed
+    - name: dataproduct-state
+      value: removed
+    - name: datastage-ent-state
+      value: removed
+    - name: datastage-ent-plus-state
+      value: removed
+    - name: db2-state
+      value: removed
+    - name: db2-size
+      value: small
+    - name: db2wh-state
+      value: removed
+    - name: dmc-state
+      value: removed
+    - name: dmc-instance
+      value: data-management-console
+    - name: dods-state
+      value: removed
+    - name: dods-size
+      value: small
+    - name: dp-state
+      value: removed
+    - name: dp-size
+      value: small
+    - name: dpra-state
+      value: removed
+    - name: factsheet-state
+      value: removed
+    - name: factsheet-size
+      value: small
+    - name: dv-state
+      value: removed
+    - name: dv-size
+      value: small
+    - name: dv-instance
+      value: data-virtualization
+    - name: hadoop-state
+      value: removed
+    - name: hadoop-size
+      value: small
+    - name: mantaflow-state
+      value: removed
+    - name: mantaflow-size
+      value: small
+    - name: match360-state
+      value: removed
+    - name: match360-size
+      value: small
+    - name: match360-wkc-enabled
+      value: "true"
+    - name: mongodb-state
+      value: removed
+    - name: openpages-state
+      value: removed
+    - name: rstudio-state
+      value: removed
+    - name: rstudio-size
+      value: small
+    - name: spss-state
+      value: removed
+    - name: syntheticdata-state
+      value: removed
+    - name: voice-gateway-state
+      value: removed
+    - name: voice-gateway-replicas
+      value: "1"
+    - name: watsonx-assistant-state
+      value: removed
+    - name: watsonx-assistant-size
+      value: small
+    - name: wa-instance
+      value: wa-instance
+    - name: watson-discovery-state
+      value: removed
+    - name: watson-discovery-instance
+      value: wd-instance
+    - name: watson-openscale-state
+      value: removed
+    - name: watson-openscale-size
+      value: small
+    - name: watson-speech-state
+      value: removed
+    - name: watson-speech-stt-size
+      value: xsmall
+    - name: watson-speech-tts-size
+      value: xsmall
+    - name: install-openshift-ai
+      value: "True"
+    - name: configure-gpu
+      value: "True"
+    - name: watsonx-ai-state
+      value: installed
+    - name: watsonx-ai-tuning-disabled
+      value: "true"
+    - name: llm-google-flan-t5-xxl-state
+      value: removed
+    - name: llm-ibm-granite-7b-lab-state
+      value: removed
+    - name: llm-google-flan-ul2-state
+      value: removed
+    - name: llm-granite-13b-chat-v2-state
+      value: removed
+    - name: llm-ibm-granite-13b-instruct-v2-state
+      value: removed
+    - name: llm-granite-3b-code-instruct-state
+      value: removed
+    - name: llm-granite-8b-code-instruct-state
+      value: removed
+    - name: llm-granite-20b-code-instruct-state
+      value: removed
+    - name: llm-granite-34b-code-instruct-state
+      value: removed
+    - name: llm-mncai-llama-2-13b-dpo-v7-state
+      value: removed
+    - name: llm-ministral-8b-instruct-state
+      value: removed
+    - name: llm-mistral-small-instruct-state
+      value: removed
+    - name: llm-mistral-large-state
+      value: removed
+    - name: llm-ibm-mpt-7b-instruct2-state
+      value: removed
+    - name: llm-mistralai-mixtral-8x7b-instruct-v01-state
+      value: removed
+    - name: llm-allam-1-13b-instruct-state
+      value: removed
+    - name: llm-codellama-codellama-34b-instruct-hf-state
+      value: removed
+    - name: llm-elyza-japanese-llama-2-7b-instruct-state
+      value: removed
+    - name: llm-bigscience-mt0-xxl-state
+      value: removed
+    - name: llm-pixtral-12b-state
+      value: removed
+    - name: llm-all-minilm-l6-v2-state
+      value: removed
+    - name: llm-all-minilm-l12-v2-state
+      value: removed
+    - name: llm-ms-marco-minilm-l-12-v2-state
+      value: removed
+    - name: llm-multilingual-e5-large-state
+      value: removed
+    - name: llm-ibm-slate-30m-english-rtrvr-state
+      value: removed
+    - name: llm-ibm-slate-125m-english-rtrvr-state
+      value: removed
+    - name: llm-ibm-granite-8b-japanese-state
+      value: removed
+    - name: llm-ibm-granite-20b-multilingual-state
+      value: removed
+    - name: llm-granite-3-2b-instruct-state
+      value: installed
+    - name: llm-granite-3-8b-instruct-state
+      value: removed
+    - name: llm-granite-guardian-3-2b-instruct-state
+      value: removed
+    - name: llm-granite-guardian-3-8b-instruct-state
+      value: removed
+    - name: llm-core42-jais-13b-chat-state
+      value: removed
+    - name: llm-llama-3-2-1b-instruct-state
+      value: removed
+    - name: llm-llama-3-2-3b-instruct-state
+      value: removed
+    - name: llm-llama-3-2-11b-vision-instruct-state
+      value: removed
+    - name: llm-llama-3-2-90b-vision-instruct-state
+      value: removed
+    - name: llm-llama-guard-3-11b-vision-state
+      value: removed
+    - name: llm-llama-3-1-8b-instruct-state
+      value: removed
+    - name: llm-llama-3-1-70b-instruct-state
+      value: removed
+    - name: llm-llama-3-405b-instruct-state
+      value: removed
+    - name: llm-meta-llama-llama-2-13b-chat-state
+      value: removed
+    - name: llm-meta-llama-llama-3-8b-instruct-state
+      value: removed
+    - name: llm-meta-llama-llama-3-70b-instruct-state
+      value: removed
+    - name: llm-google-flan-t5-xl-state
+      value: removed
+    - name: watsonx-data-state
+      value: removed
+    - name: wkc-state
+      value: removed
+    - name: wkc-size
+      value: small
+    - name: wkc-options-knowledge-graph
+      value: "False"
+    - name: wkc-options-enable-data-quality
+      value: "False"
+    - name: ikc-premium-state
+      value: removed
+    - name: ikc-premium-size
+      value: small
+    - name: ikc-premium-options-knowledge-graph
+      value: "False"
+    - name: ikc-premium-options-enable-data-quality
+      value: "False"
+    - name: ikc-standard-state
+      value: removed
+    - name: ikc-standard-size
+      value: small
+    - name: ikc-standard-options-knowledge-graph
+      value: "False"
+    - name: ikc-standard-options-enable-data-quality
+      value: "False"
+    - name: watsonx-orchestrate-state
+      value: removed
+    - name: wca-ansible-state
+      value: removed
+    - name: wca-z-state
+      value: removed
+    - name: planning-analytics-state
+      value: removed
+    - name: replication-state
+      value: removed
+    - name: replication-size
+      value: small
+    - name: watsonx-governance-state
+      value: removed
+    - name: watsonx-gov-installType
+      value: all
+    - name: watsonx-gov-enableFactsheet
+      value: "true"
+    - name: watsonx-gov-enableOpenpages
+      value: "true"
+    - name: watsonx-gov-enableOpenscale
+      value: "true"
+    - name: wml-state
+      value: installed
+    - name: wml-size
+      value: small
+    - name: wml-accelerator-state
+      value: removed
+    - name: wml-accelerator-size
+      value: small
+    - name: wml-accelerator-replicas
+      value: "1"
+    - name: ws-state
+      value: installed
+    - name: ws-runtimes-state
+      value: removed
